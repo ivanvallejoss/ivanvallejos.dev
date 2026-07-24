@@ -1,0 +1,29 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ivan Vallejos — Backend Developer</title>
+    <link rel="canonical" href="https://ivanvallejos.dev/">
+</head>
+<body>
+    {# Sección 1-2: hero + CTA — el partial varía por audiencia #}
+    {% include "landing/partials/hero_"|add:audience|add:".html" %}
+
+    {# Sección 3: proyectos — datos compartidos, framing variable (siguiente iteración) #}
+    <section id="proyectos"></section>
+
+    {# Sección 4: prueba social (siguiente iteración) #}
+    <section id="confianza"></section>
+
+    {# Sección 5: hub de links — invariante #}
+    <section id="links">
+        <a href="{% url 'go' 'github' %}?a={{ audience }}">GitHub</a>
+        <a href="{% url 'go' 'linkedin' %}?a={{ audience }}">LinkedIn</a>
+        <a href="{% url 'go' 'blog' %}?a={{ audience }}">Blog</a>
+        <a href="mailto:contacto@ivanvallejos.dev">Contacto</a>
+    </section>
+
+    <footer>contacto@ivanvallejos.dev</footer>
+</body>
+</html>
