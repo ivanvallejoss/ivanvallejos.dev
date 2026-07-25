@@ -1,0 +1,48 @@
+{# 03 · proyectos — placeholder realista; datos reales en fase posterior #}
+<section id="proyectos" class="sec">
+    <div class="sec-head">
+        <span class="sec-tick"></span>
+        <span class="sec-num">03</span>
+        <h2 class="sec-title">Proyectos</h2>
+        <span class="sec-sub">Entregados end-to-end a clientes reales.</span>
+    </div>
+    <div class="pcards">
+
+        <article class="pcard">
+            <div>
+                <div class="pcard-head">
+                    <h3 class="pcard-title">CRM inmobiliario</h3>
+                    <span class="badge-live">En producción</span>
+                </div>
+                <p class="pcard-desc">Gestión de propiedades, leads y visitas para una inmobiliaria: multiusuario con roles, búsqueda por zona y reportes de operación. Diseñé el modelo de datos y las vistas server-side de punta a punta; hoy está en producción con su equipo.</p>
+                <div class="pcard-chips">
+                    <span class="chip">Django</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span>
+                </div>
+                <a class="plink" href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss</a>
+            </div>
+            <div class="shot">
+                <div class="shot-label">▢ screenshot</div>
+                <div class="shot-cap">panel del CRM · dashboard de propiedades</div>
+            </div>
+        </article>
+
+        <article class="pcard">
+            <div>
+                <div class="pcard-head">
+                    <h3 class="pcard-title">Sistema de gestión de gastos</h3>
+                    <span class="badge-live">En producción</span>
+                </div>
+                <p class="pcard-desc">Gateway en Go que valida y encola operaciones, y un worker en Python que las procesa, concilia y notifica. Colas en Redis, datos en PostgreSQL, todo containerizado. Reemplazó un proceso manual de conciliación que un cliente hacía a mano cada mes.</p>
+                <div class="pcard-chips">
+                    <span class="chip">Go</span><span class="chip">Python</span><span class="chip">Redis</span><span class="chip">PostgreSQL</span>
+                </div>
+                <a class="plink" href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss</a>
+            </div>
+            <div class="shot">
+                <div class="shot-label">▢ screenshot</div>
+                <div class="shot-cap">flujo gateway → worker · monitor de colas</div>
+            </div>
+        </article>
+
+    </div>
+</section>

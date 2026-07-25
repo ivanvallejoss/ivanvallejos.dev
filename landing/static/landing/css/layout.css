@@ -1,0 +1,209 @@
+/* ============================================================
+   LAYOUT — backdrop "sistema de módulos", bandas, secciones.
+   Mobile-first: base = mobile (2×4), desktop en min-width:841px.
+   ============================================================ */
+
+/* ===== BACKDROP: grilla de módulos (la firma del sitio) ===== */
+.frag-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  padding: 8px;
+}
+
+.frag {
+  background-color: var(--mod-neutral);
+  border: 1px solid rgba(255, 255, 255, .05);
+  border-radius: 3px;
+  opacity: var(--o, .35);
+  animation: pulse 6s ease-out calc(var(--cd, 0s) + var(--rd, 0s)) infinite;
+}
+.frag.warm  { background-color: var(--mod-warm);  border-color: oklch(0.78 0.13 70 / .12); }
+.frag.slate { background-color: var(--mod-slate); border-color: rgba(160, 175, 210, .06); }
+.frag.deep  { background-color: var(--mod-deep);  border-color: rgba(255, 255, 255, .04); }
+
+/* pulso asimétrico: pico al 12%, decae el resto */
+@keyframes pulse {
+  0%   { opacity: calc(var(--o, .35) * .35); }
+  12%  { opacity: var(--o, .35); }
+  100% { opacity: calc(var(--o, .35) * .35); }
+}
+
+/* --- mobile: 2 columnas, pares/impares, sin módulos 9-16 --- */
+.frag:nth-child(n+9) { display: none; }
+.frag:nth-child(odd)  { --o: .22; --cd: 0s; }
+.frag:nth-child(even) { --o: .48; --cd: .5s; }
+.frag:nth-child(-n+2)              { --rd: 0s; }
+.frag:nth-child(n+3):nth-child(-n+4) { --rd: .3s; }
+.frag:nth-child(n+5):nth-child(-n+6) { --rd: .6s; }
+.frag:nth-child(n+7)               { --rd: .9s; }
+
+/* ===== señales en los gaps (el bus) ===== */
+.gapline { position: absolute; background: rgba(255, 255, 255, .045); overflow: hidden; }
+.gapline.v { top: 10px; bottom: 10px; width: 1px; }
+.gapline.h { left: 10px; right: 10px; height: 1px; }
+.gapline.v1 { left: 25%; }
+.gapline.v2 { left: 50%; }
+.gapline.v3 { left: 75%; }
+.gapline.h2 { top: 50%; }
+
+.gapline.live.v::after {
+  content: "";
+  position: absolute;
+  left: -1px; width: 3px; height: 150px; top: -150px;
+  background: linear-gradient(180deg, transparent, oklch(0.78 0.13 70 / .9), transparent);
+  filter: blur(.5px);
+  animation: sigV var(--sd, 8s) linear var(--sdl, 0s) infinite;
+}
+.gapline.live.h::after {
+  content: "";
+  position: absolute;
+  top: -1px; height: 3px; width: 150px; left: -150px;
+  background: linear-gradient(90deg, transparent, oklch(0.78 0.13 70 / .9), transparent);
+  filter: blur(.5px);
+  animation: sigH var(--sd, 8s) linear var(--sdl, 0s) infinite;
+}
+@keyframes sigV { from { top: -150px; }  to { top: 100%; } }
+@keyframes sigH { from { left: -150px; } to { left: 100%; } }
+
+.gapline.v1 { --sd: 7s;  --sdl: 0s; }
+.gapline.v3 { --sd: 9s;  --sdl: -3s; }
+.gapline.h2 { --sd: 11s; --sdl: -5s; }
+
+/* --- mobile: un solo riel central con señal --- */
+.gapline.v1, .gapline.v3, .gapline.h2 { display: none; }
+.gapline.v2 { display: block; --sd: 8s; --sdl: 0s; }
+/* ajuste técnico acordable: en mobile la única señal viaja por v2
+   (el prototipo seteaba --sd en v2 sin .live; acá se materializa) */
+.gapline.v2::after {
+  content: "";
+  position: absolute;
+  left: -1px; width: 3px; height: 150px; top: -150px;
+  background: linear-gradient(180deg, transparent, oklch(0.78 0.13 70 / .9), transparent);
+  filter: blur(.5px);
+  animation: sigV var(--sd, 8s) linear var(--sdl, 0s) infinite;
+}
+
+/* --- desktop: grilla 4×4, gradiente de intensidad por columna --- */
+@media (min-width: 841px) {
+  .frag-field {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+  .frag:nth-child(n+9) { display: block; }
+  /* intensidad: izq 0.20 (penumbra, donde se lee) → der 0.58 */
+  .frag:nth-child(4n+1) { --o: .20; --cd: 0s; }
+  .frag:nth-child(4n+2) { --o: .33; --cd: .45s; }
+  .frag:nth-child(4n+3) { --o: .46; --cd: .9s; }
+  .frag:nth-child(4n+4) { --o: .58; --cd: 1.35s; }
+  .frag:nth-child(-n+4)               { --rd: 0s; }
+  .frag:nth-child(n+5):nth-child(-n+8)  { --rd: .3s; }
+  .frag:nth-child(n+9):nth-child(-n+12) { --rd: .6s; }
+  .frag:nth-child(n+13)               { --rd: .9s; }
+  /* módulo "hueco" fijo del lado apagado */
+  .frag:nth-child(9) { --o: .10; animation: none; }
+
+  .gapline.v1, .gapline.v3, .gapline.h2 { display: block; }
+  .gapline.v2::after { display: none; }   /* v2 vuelve a ser riel estático */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frag { animation: none; }
+  .gapline.live::after, .gapline.v2::after { animation: none; display: none; }
+  .ring-arc { animation: none; }
+  .ticker-track { animation: none; }
+  .bio-mod { animation: none; }
+}
+
+/* ===== capa de contenido ===== */
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* banda translúcida: deja ver el backdrop difuminado */
+.band {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--band-bg);
+  backdrop-filter: blur(3px);
+}
+
+/* interludio: pausa full-width de fondo sólido, UN objeto adentro */
+.interlude {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-solid);
+  border-top: 1px solid rgba(255, 255, 255, .06);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  padding: clamp(64px, 10vw, 110px) var(--pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+}
+
+/* contenedor de sección */
+.sec {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: clamp(56px, 9vw, 104px) var(--pad-x);
+  scroll-margin-top: var(--nav-h);
+}
+.band .sec { padding-block: clamp(56px, 9vw, 96px); }
+
+/* ===== NAV ===== */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: var(--nav-h);
+  padding: 0 var(--pad-x);
+  background: var(--band-bg);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo { font: 600 13px/1 var(--font-mono); letter-spacing: .04em; color: var(--ink); }
+.nav-logo .dot { color: var(--amber); }
+.nav-links { display: none; }
+.nav-links a { font: 400 14px/1 var(--font-sans); color: var(--ink-3); }
+
+.lang-switch {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 8px;
+}
+.lang-btn {
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: .02em;
+  padding: 6px 11px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #8f8f8a;
+}
+.lang-btn.is-active { background: var(--ink); color: #0a0a0b; }
+
+@media (min-width: 841px) {
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+}

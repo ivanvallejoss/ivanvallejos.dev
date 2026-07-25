@@ -3,27 +3,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ivan Vallejos — Backend Developer</title>
+    <title>Iván Vallejos — Software Developer</title>
+    <meta name="description" content="Construyo y ensamblo los sistemas detrás del producto: del modelo de datos al deploy.">
     <link rel="canonical" href="https://ivanvallejos.dev/">
+    <link rel="preload" href="{% static 'landing/fonts/Geist-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{% static 'landing/fonts/GeistMono-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{% static 'landing/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/tokens.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/components.css' %}">
 </head>
 <body>
-    {# Sección 1-2: hero + CTA — el partial varía por audiencia #}
+
+{# backdrop: sistema de módulos + señales en los gaps #}
+{% include "landing/partials/backdrop.html" %}
+
+<div class="page">
+
+    {% include "landing/partials/nav.html" %}
+
+    {# 01 · hero — el partial varía por audiencia #}
     {% include "landing/partials/hero_"|add:audience|add:".html" %}
 
-    {# Sección 3: proyectos — datos compartidos, framing variable (siguiente iteración) #}
-    <section id="proyectos"></section>
+    {% include "landing/partials/ticker.html" %}
 
-    {# Sección 4: prueba social (siguiente iteración) #}
-    <section id="confianza"></section>
+    {# Composición de la variante default. Las variantes por audiencia #}
+    {# reordenan / reemplazan estos mismos partials en fases posteriores. #}
+    {% include "landing/partials/section_perfil.html" %}
+    {% include "landing/partials/section_proyectos.html" %}
+    {% include "landing/partials/interlude_blog.html" %}
+    {% include "landing/partials/section_confianza.html" %}
+    {% include "landing/partials/section_links.html" %}
+    {% include "landing/partials/interlude_quote.html" %}
+    {% include "landing/partials/footer.html" %}
 
-    {# Sección 5: hub de links — invariante #}
-    <section id="links">
-        <a href="{% url 'go' 'github' %}?a={{ audience }}">GitHub</a>
-        <a href="{% url 'go' 'linkedin' %}?a={{ audience }}">LinkedIn</a>
-        <a href="{% url 'go' 'blog' %}?a={{ audience }}">Blog</a>
-        <a href="mailto:contacto@ivanvallejos.dev">Contacto</a>
-    </section>
-
-    <footer>contacto@ivanvallejos.dev</footer>
+</div>
 </body>
 </html>

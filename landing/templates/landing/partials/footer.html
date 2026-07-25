@@ -1,0 +1,12 @@
+{# footer — mail + © + "Abierto a roles" #}
+<footer class="band site-footer">
+    <div class="footer-inner">
+        <div class="footer-id">
+            <a class="footer-mail" href="{% url 'go' 'contacto' %}?a={{ audience }}">ivan@ivanvallejos.dev</a>
+            <span class="footer-copy">© 2026 Iván Vallejos · Software Developer</span>
+        </div>
+        <a class="footer-open" href="{% url 'go' 'contacto' %}?a={{ audience }}">
+            <span class="live-dot"></span>Abierto a roles
+        </a>
+    </div>
+</footer>

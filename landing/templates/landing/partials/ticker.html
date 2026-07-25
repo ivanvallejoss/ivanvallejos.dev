@@ -1,0 +1,11 @@
+{# ticker de tecnologías — la lista llega como `ticker_items` desde la view #}
+<div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+        <div class="ticker-seq">
+            {% for tech in ticker_items %}<span>{{ tech }}</span><span class="t-dot"></span>{% endfor %}
+        </div>
+        <div class="ticker-seq">
+            {% for tech in ticker_items %}<span>{{ tech }}</span><span class="t-dot"></span>{% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{# 05 · hub de links — invariante #}
+<section id="links" class="sec">
+    <div class="sec-head">
+        <span class="sec-tick"></span>
+        <span class="sec-num">05</span>
+        <h2 class="sec-title">Links</h2>
+    </div>
+    <div class="hub">
+        <a class="hub-item" href="{% url 'go' 'github' %}?a={{ audience }}">
+            <span class="hub-left"><span class="hub-name">GitHub</span><span class="hub-handle">@ivanvallejoss</span></span>
+            <span class="hub-arr">↗</span>
+        </a>
+        <a class="hub-item" href="{% url 'go' 'linkedin' %}?a={{ audience }}">
+            <span class="hub-left"><span class="hub-name">LinkedIn</span><span class="hub-handle">/in/ivanvallejoss</span></span>
+            <span class="hub-arr">↗</span>
+        </a>
+        <a class="hub-item" href="{% url 'go' 'blog' %}?a={{ audience }}">
+            <span class="hub-left"><span class="hub-name">Blog</span><span class="hub-handle">notas de backend</span></span>
+            <span class="hub-arr">↗</span>
+        </a>
+        <a class="hub-item" href="{% url 'go' 'contacto' %}?a={{ audience }}">
+            <span class="hub-left"><span class="hub-name">Contacto</span><span class="hub-handle">ivan@ivanvallejos.dev</span></span>
+            <span class="hub-arr">↗</span>
+        </a>
+    </div>
+</section>

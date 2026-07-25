@@ -1,0 +1,17 @@
+{# interludio · blog — pila de posts: la card es el último, las hojas que asoman SON links a posts anteriores #}
+{# EN PRODUCCIÓN: los 3 posts salen del blog real (título, fecha, minutos) #}
+<div class="interlude">
+    <div class="blog-stack">
+        <a class="blog-mod" href="{% url 'go' 'blog' %}?a={{ audience }}">
+            <div class="k">Del blog</div>
+            <div class="v">Cómo estructuro el logging de un Django en producción</div>
+            <div class="d"><span>12 jul 2026 · 6 min de lectura</span><span class="arr">leer →</span></div>
+        </a>
+        <a class="blog-sheet s1" href="{% url 'go' 'blog' %}?a={{ audience }}">
+            <span>Idempotencia en workers: qué testeo</span><span class="arr">↗</span>
+        </a>
+        <a class="blog-sheet s2" href="{% url 'go' 'blog' %}?a={{ audience }}">
+            <span>De sqlite a PostgreSQL sin drama</span><span class="arr">↗</span>
+        </a>
+    </div>
+</div>

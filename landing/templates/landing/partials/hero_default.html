@@ -1,6 +1,51 @@
-<section id="hero">
-    <h1>Ivan Vallejos — Backend Developer</h1>
-    <p>Python · Go · PostgreSQL · Redis · Docker</p>
-    <p>Construyo y ensamblo los sistemas detrás del producto.</p>
-    <a href="#proyectos">Ver proyectos</a>
-</section>
+{# 01 · hero — variante default #}
+<header id="top" class="hero-wrap">
+    <div class="hero-inner">
+
+        {# anillo-monograma (preparado para foto futura vía clipPath circular) #}
+        <div class="ring" aria-hidden="true">
+            <svg viewBox="0 0 82 82">
+                <circle class="ring-base" cx="41" cy="41" r="39"/>
+                <circle class="ring-arc" cx="41" cy="41" r="39"/>
+            </svg>
+            <span class="ring-mono">IV<span>.</span></span>
+        </div>
+
+        <h1 class="hero-name">Iván Vallejos</h1>
+        <div class="hero-role">Software Developer</div>
+
+        <div class="bio-mods">
+            <div class="bio-mod">
+                <div class="k">Experiencia</div>
+                <div class="v">+2 años</div>
+                <div class="d">empresas y particulares</div>
+            </div>
+            <div class="bio-mod warm">
+                <div class="k">Formación</div>
+                <div class="v">Analista en Sistemas</div>
+                <div class="d">2023 - 2026</div>
+            </div>
+            <div class="bio-mod">
+                <div class="k">Inglés</div>
+                <div class="v">C1</div>
+                <div class="d">equipos internacionales</div>
+            </div>
+        </div>
+
+        <div class="hero-actions">
+            <a class="cta-primary" href="{% url 'go' 'contacto' %}?a={{ audience }}">Contactame</a>
+            {# secundario en default: CV (recruiter=CV · tech=GitHub · business=ninguno) #}
+            <a class="cta-secondary" href="{% url 'go' 'cv' %}?a={{ audience }}">Descargar CV</a>
+        </div>
+
+        <div class="hero-social">
+            <a href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span>GitHub</a>
+            <a href="{% url 'go' 'linkedin' %}?a={{ audience }}"><span class="arr">↗</span>LinkedIn</a>
+            <a href="{% url 'go' 'blog' %}?a={{ audience }}"><span class="arr">↗</span>Blog</a>
+            <span class="sep"></span>
+            <span>AR · remoto</span>
+        </div>
+    </div>
+
+    <a class="scroll-cue" href="#perfil">↓ perfil técnico</a>
+</header>
