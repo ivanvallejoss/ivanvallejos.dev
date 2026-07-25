@@ -1,0 +1,38 @@
+{# 04 · señales verificables — reemplaza a section_confianza hasta tener testimonios/logos reales. #}
+{# Regla: cada señal es chequeable por el visitante con un click o un hecho constatable. #}
+<section id="senales" class="band band-clear">
+    <div class="sec">
+        <div class="sec-head">
+            <span class="sec-tick"></span>
+            <span class="sec-num">04</span>
+            <h2 class="sec-title">Hechos, no promesas</h2>
+            <span class="sec-sub">Todo lo que digo aca lo podes chequear vos mismo.</span>
+        </div>
+        <div class="senales">
+
+            <div class="senal">
+                <div class="senal-title">Sistema en producción para un cliente real</div>
+                <p class="senal-desc">Bricka opera hoy para una inmobiliaria: no es un proyecto de práctica, hay un equipo que depende de él a diario.</p>
+                <a class="plink" href="{% url 'go' 'bricka' %}?a={{ audience }}"><span class="arr">↗</span> ver el código</a>
+            </div>
+
+            <div class="senal">
+                <div class="senal-title">Código público</div>
+                <p class="senal-desc">Lo que digo que construí se puede leer: los proyectos principales están en GitHub, con su historia de commits.</p>
+                <a class="plink" href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss</a>
+            </div>
+
+            <div class="senal">
+                <div class="senal-title">Blog activo</div>
+                <p class="senal-desc">Escribo sobre lo que voy resolviendo en backend: decisiones, errores y lo que aprendí operando sistemas.</p>
+                <a class="plink" href="{% url 'go' 'blog' %}?a={{ audience }}"><span class="arr">↗</span> leer el blog</a>
+            </div>
+
+            <div class="senal">
+                <div class="senal-title">Criterios de trabajo</div>
+                <p class="senal-desc">Testing con pytest, errores monitoreados con Sentry y deploy propio sobre VPS — verificable en el código de los proyectos.</p>
+            </div>
+
+        </div>
+    </div>
+</section>

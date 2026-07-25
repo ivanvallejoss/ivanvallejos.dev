@@ -139,6 +139,10 @@
   backdrop-filter: blur(3px);
 }
 
+.band-clear{
+  background: rgba(10, 10, 11, .30);
+}
+
 /* interludio: pausa full-width de fondo sólido, UN objeto adentro */
 .interlude {
   position: relative;

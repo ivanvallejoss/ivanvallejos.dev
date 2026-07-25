@@ -440,3 +440,27 @@
 @media (prefers-reduced-motion: reduce) {
   .blog-sheet { transition: none; }
 }
+
+
+/* ===== SEÑALES VERIFICABLES (reemplaza prueba social hasta tener material real) ===== */
+/* badge de estado "en desarrollo" — ámbar (marca), NO verde (verde = solo estados vivos) */
+.badge-dev {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 500 10.5px/1 var(--font-mono);
+  letter-spacing: .08em;
+  color: var(--amber);
+  text-transform: uppercase;
+  border: 1px solid oklch(0.78 0.13 70 / .3);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+.senales { display: grid; grid-template-columns: 1fr; gap: 28px; }
+.senal { padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, .09); }
+.senal:last-child { border-bottom: none; }
+.senal-title { font: 600 17px/1.3 var(--font-sans); letter-spacing: -.01em; color: var(--ink); }
+.senal-desc { font: 400 14px/1.6 var(--font-sans); color: #8f8f8a; margin: 8px 0 0; max-width: 56ch; }
+.senal .plink { margin-top: 14px; }
+@media (min-width: 841px) {
+  .senales { grid-template-columns: 1fr 1fr; gap: 20px clamp(40px, 5vw, 72px); }
+  .senal:nth-last-child(2) { border-bottom: none; }
+}

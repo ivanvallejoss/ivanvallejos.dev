@@ -1,46 +1,46 @@
-{# 03 · proyectos — placeholder realista; datos reales en fase posterior #}
+{# 03 · proyectos — contenido real (Cimiento v2). Framing neutro: el copy por audiencia llega en fase de variantes. #}
 <section id="proyectos" class="sec">
     <div class="sec-head">
         <span class="sec-tick"></span>
         <span class="sec-num">03</span>
         <h2 class="sec-title">Proyectos</h2>
-        <span class="sec-sub">Entregados end-to-end a clientes reales.</span>
+        <span class="sec-sub">Sistemas reales, con código verificable.</span>
     </div>
     <div class="pcards">
 
         <article class="pcard">
             <div>
                 <div class="pcard-head">
-                    <h3 class="pcard-title">CRM inmobiliario</h3>
+                    <h3 class="pcard-title">Bricka — CRM inmobiliario</h3>
                     <span class="badge-live">En producción</span>
                 </div>
-                <p class="pcard-desc">Gestión de propiedades, leads y visitas para una inmobiliaria: multiusuario con roles, búsqueda por zona y reportes de operación. Diseñé el modelo de datos y las vistas server-side de punta a punta; hoy está en producción con su equipo.</p>
+                <p class="pcard-desc">CRM a medida para una inmobiliaria: gestión de propiedades con sus fotos en object storage (Cloudflare R2), operado a diario por el equipo de la agencia. Corre en producción sobre VPS propio (Hetzner), con monitoreo de errores en Sentry. En desarrollo: publicación de listados hacia plataformas externas.</p>
                 <div class="pcard-chips">
-                    <span class="chip">Django</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span>
+                    <span class="chip">Django</span><span class="chip">PostGIS</span><span class="chip">Celery</span><span class="chip">Cloudflare R2</span><span class="chip">Sentry</span>
                 </div>
-                <a class="plink" href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss</a>
+                <a class="plink" href="{% url 'go' 'bricka' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss/bricka</a>
             </div>
             <div class="shot">
                 <div class="shot-label">▢ screenshot</div>
-                <div class="shot-cap">panel del CRM · dashboard de propiedades</div>
+                <div class="shot-cap">panel de propiedades · datos de prueba</div>
             </div>
         </article>
 
         <article class="pcard">
             <div>
                 <div class="pcard-head">
-                    <h3 class="pcard-title">Sistema de gestión de gastos</h3>
-                    <span class="badge-live">En producción</span>
+                    <h3 class="pcard-title">SmartExpense</h3>
+                    <span class="badge-dev">En desarrollo</span>
                 </div>
-                <p class="pcard-desc">Gateway en Go que valida y encola operaciones, y un worker en Python que las procesa, concilia y notifica. Colas en Redis, datos en PostgreSQL, todo containerizado. Reemplazó un proceso manual de conciliación que un cliente hacía a mano cada mes.</p>
+                <p class="pcard-desc">Sistema de gestión de gastos sobre arquitectura asíncrona desacoplada: un receiver en Go (net/http) que responde de inmediato y encola, con manejo idempotente de mensajes (Redis SETNX + TTL), y workers en Python (ARQ) que categorizan y persisten en background — eliminando fallos por timeout bajo carga. 151 tests validando contratos de API e integración.</p>
                 <div class="pcard-chips">
-                    <span class="chip">Go</span><span class="chip">Python</span><span class="chip">Redis</span><span class="chip">PostgreSQL</span>
+                    <span class="chip">Go</span><span class="chip">Python</span><span class="chip">Redis</span><span class="chip">ARQ</span><span class="chip">pytest</span>
                 </div>
-                <a class="plink" href="{% url 'go' 'github' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss</a>
+                <a class="plink" href="{% url 'go' 'smartexpense' %}?a={{ audience }}"><span class="arr">↗</span> github.com/ivanvallejoss/smartexpense</a>
             </div>
             <div class="shot">
-                <div class="shot-label">▢ screenshot</div>
-                <div class="shot-cap">flujo gateway → worker · monitor de colas</div>
+                <div class="shot-label">▢ diagrama</div>
+                <div class="shot-cap">flujo gateway → redis → worker</div>
             </div>
         </article>
 

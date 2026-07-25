@@ -15,6 +15,7 @@ DESTINATIONS = {
     "github": "https://github.com/ivanvallejoss",  # PENDIENTE: verificar handle
     "linkedin": "https://linkedin.com/in/ivanvallejoss",  # PENDIENTE: verificar handle
     "blog": "https://blog.ivanvallejos.dev",
+    "smartexpense": "https://github.com/ivanvallejoss/smartexpense",
     "cv": "/static/cv-ivan-vallejos.pdf",  # placeholder hasta tener el CV subido
     "contacto": "mailto:ivan@ivanvallejos.dev",  # CTA primario, trackeado como OutboundClick
 }
