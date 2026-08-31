@@ -41,23 +41,38 @@ class VariantResolutionTests(TestCase):
     @unittest.expectedFailure
     def test_variante_recruiter(self):
         # Falla hoy: "recruiter" pasa la allowlist, pero no existe
-        # hero_recruiter.html, así que el include de base.html:26 levanta
-        # TemplateDoesNotExist y la respuesta sale 500.
+        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
+        # y se renderiza el hero equivocado (200, no el partial esperado).
         # Bug preexistente registrado en docs/frontend/cimientos.md:106.
         self.assertHero("?utm=recruiter", "recruiter")
 
     @unittest.expectedFailure
     def test_variante_business(self):
         # Falla hoy: "business" pasa la allowlist, pero no existe
-        # hero_business.html, así que el include de base.html:26 levanta
-        # TemplateDoesNotExist y la respuesta sale 500.
+        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
+        # y se renderiza el hero equivocado (200, no el partial esperado).
         # Bug preexistente registrado en docs/frontend/cimientos.md:106.
         self.assertHero("?utm=business", "business")
 
     @unittest.expectedFailure
     def test_variante_tech(self):
-        # Falla hoy: "tech" pasa la allowlist, pero no existe hero_tech.html,
-        # así que el include de base.html:26 levanta TemplateDoesNotExist y la
-        # respuesta sale 500.
+        # Falla hoy: "tech" pasa la allowlist, pero no existe
+        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
+        # y se renderiza el hero equivocado (200, no el partial esperado).
         # Bug preexistente registrado en docs/frontend/cimientos.md:106.
         self.assertHero("?utm=tech", "tech")
+
+    def test_utm_path_traversal(self):
+        # Candado sobre la protección que da la allowlist: el valor de ?utm= se
+        # concatena a un nombre de plantilla en base.html:26, así que un utm
+        # arbitrario llegaría al loader si views.py:32 no filtrara antes.
+        # Al caer a "default" nunca sale de la allowlist. Si alguien reemplaza
+        # el filtro por algo permisivo, este test se cae.
+        self.assertHero("?utm=../../../etc/passwd", "default")
+
+    def test_variante_valida_no_rompe(self):
+        # A propósito SIN expectedFailure: deja la suite en rojo mientras una
+        # variante declarada en VARIANTS (views.py:12) siga devolviendo 500 por
+        # no tener su partial. Ver docs/frontend/cimientos.md:106.
+        response = self.client.get(reverse("landing") + "?utm=recruiter")
+        self.assertEqual(response.status_code, 200)
