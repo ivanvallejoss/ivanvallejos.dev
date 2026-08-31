@@ -103,8 +103,8 @@ manual — ya nos salvó una vez (layout.css duplicado con el contenido de token
 
 ## 5. PENDIENTES Y FASE SIGUIENTE
 
-**Preexistente:** `?utm=recruiter|business|tech` → 500 (solo existe hero_default).
-Resolver en fase de variantes (o fallback a default en la view para blindar antes).
+**Preexistente:** `?utm=recruiter|business|tech` → En este momento la faltante de otras vistas
+se solucionan mediante un fallback a `hero_default.html`.
 **Contenido (no bloquea):** copy definitivo, screenshots reales (.shot), clientes
 y testimonio reales (desbloquea R5), PDF del CV en /static/cv-ivan-vallejos.pdf,
 posts reales del blog (título/fecha/minutos de la pila — hoy placeholders
@@ -119,3 +119,45 @@ verificar handles `ivanvallejoss` (marcados PENDIENTE en views.py).
    tech invierte énfasis: stack primero).
 4. Después: OG image (asset Higgsfield — guardarlo antes de que expire), i18n del
    selector ES/EN, subdominio del blog, deploy (collectstatic en prod).
+
+### Sistema de variantes UTM — estado
+
+Resuelto: `?utm=recruiter|business|tech` ya no devuelve 500.
+`resolve_hero_audience()` (views.py) cae a `default` si falta el partial.
+
+Pendiente: los partials `hero_recruiter|business|tech` no existen. Las tres
+variantes sirven el hero default. Los tests correspondientes están marcados
+`@expectedFailure`; el día que exista uno, el runner se pone en rojo por
+unexpected success y hay que sacar el decorador.
+
+Deuda del guard:
+
+- Tolera "falta", no "está roto". Un partial que exista con TemplateSyntaxError,
+  o con un `{% include %}` anidado faltante, sigue dando 500: `get_template()`
+  compila la plantilla pero no resuelve los includes, que se resuelven en render.
+- Django >= 4.1 envuelve en cached.Loader siempre que no se declaren `loaders`
+  (ya no depende de DEBUG). El loader cachea los misses, así que el fallback
+  queda congelado por proceso: si aparece `hero_recruiter.html` sin reiniciar,
+  se sigue sirviendo default. Con 2 workers son dos cachés independientes.
+  El restart de deploys.md:63 lo cubre, pero la corrección depende del restart,
+  no del git pull.
+- El fallback es mudo. No loguea. Antes fallaba visible (500), ahora sirve
+  degradado en silencio.
+
+Deuda de atribución:
+
+- El contexto pasa la audiencia ya resuelta, y `base.html` usa esa misma
+  variable para el `?a=` de los links /go/. Un recruiter genera
+  Visit(audience="recruiter") pero OutboundClick(audience="default"): la
+  atribución queda partida entre las dos tablas. Antes del fix coincidían.
+  Salida: separar `hero_audience` de `audience` en el contexto (toca base.html).
+
+Deuda de tests:
+
+- `test_utm_path_traversal` no discrimina. Pasa aunque se borre la allowlist:
+  el guard nuevo atrapa el TemplateDoesNotExist que genera safe_join y devuelve
+  default igual. El rastro real de la allowlist está en `Visit.audience`, y
+  ningún test lo mira.
+- Ningún test toca Visit ni OutboundClick.
+- `resolve_hero_audience` no tiene test unitario directo.
+  
