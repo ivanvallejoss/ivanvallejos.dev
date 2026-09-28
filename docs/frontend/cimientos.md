@@ -1,3 +1,12 @@
+> **DOCUMENTO HISTÓRICO — 2026-09-28.** Cimiento v1 fue reemplazado por el
+> sistema **Minimalismo Editorial** (handoff en `docs/design/handoff/`, sistema
+> en `docs/design/sistema.md`, desvíos en `docs/design/ajustes.md`). Nada de lo
+> que describe este documento sigue en el repo: los tokens ámbar, el backdrop de
+> módulos, el ticker, los partials y el sistema de hero por variante se retiraron
+> en la rama `rediseno/01-base`. El código de esa capa visual se recupera desde
+> el tag **`cimiento-v1`**. Se conserva como registro de lo que existió y de por
+> qué se decidió cada cosa; no es una referencia de implementación.
+
 # CIMIENTO v1 — DISEÑO E IMPLEMENTACIÓN DEFAULT (rev. 3 — FINAL)
 
 **Proyecto:** ivanvallejos.dev · variante default

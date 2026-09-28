@@ -1,7 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
-from django.template import TemplateDoesNotExist
-from django.template.loader import get_template
 
 from .models import OutboundClick, Visit
 
@@ -22,37 +20,15 @@ DESTINATIONS = {
     "contacto": "mailto:ivan@ivanvallejos.dev",  # CTA primario, trackeado como OutboundClick
 }
 
-# ticker de tecnologías (include parametrizado)
-TICKER_ITEMS = [
-    "Python", "Django", "FastAPI", "Celery", "PostgreSQL", "Redis",
-    "Docker", "Go", "Linux", "pytest", "Sentry", "Cloudflare R2",
-]
-
-
-def resolve_hero_audience(audience):
-    """Cae a default si la variante todavía no tiene su partial.
-
-    base.html:26 arma el nombre de plantilla por concatenación, así que una
-    variante declarada en VARIANTS sin hero_<variante>.html rompe el include
-    con TemplateDoesNotExist y devuelve 500 (docs/frontend/cimientos.md:106).
-    """
-    try:
-        get_template(f"landing/partials/hero_{audience}.html")
-    except TemplateDoesNotExist:
-        return "default"
-    return audience
-
 
 def landing(request):
     utm = request.GET.get("utm", "")
-    # La allowlist va primero: es lo que impide que un utm arbitrario llegue al
-    # loader de plantillas. La existencia del partial se chequea después.
+    # La allowlist es lo que impide que un utm arbitrario llegue a la DB o al
+    # contexto. Todo lo que no esté declarado en VARIANTS cae a "default".
     audience = utm if utm in VARIANTS else "default"
-    # Visit registra la audiencia real, aunque el hero caiga a default.
     Visit.objects.create(audience=audience, path=request.path)
     context = {
-        "audience": resolve_hero_audience(audience),
-        "ticker_items": TICKER_ITEMS,
+        "audience": audience,
     }
     return render(request, "landing/base.html", context)
 
