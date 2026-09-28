@@ -1,0 +1,69 @@
+/* ============================================================
+   BASE — reset mínimo y decisiones que valen para todo el documento.
+   Valores: docs/design/handoff/README.md § Tipografía, Forma,
+   Interactions & Behavior.
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Radio 0 en todo. Es identidad cerrada: no se ajusta por componente. */
+*, *::before, *::after,
+input, button, textarea, select {
+  border-radius: 0;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p, figure, blockquote {
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+}
+
+p {
+  /* evita la última línea huérfana en los leads y los párrafos de sección */
+  text-wrap: pretty;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-soft);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+/* No está en el prototipo: lo pide el README explícitamente. */
+:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 2px;
+}
