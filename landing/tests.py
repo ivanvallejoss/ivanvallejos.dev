@@ -102,3 +102,29 @@ class ContentLoaderTests(TestCase):
             with self.subTest(name=name):
                 with self.assertRaises(ValueError):
                     load_content(name)
+
+
+class MuestraTests(TestCase):
+    """El catálogo del sistema visual: /_muestra/ es solo de desarrollo."""
+
+    def test_responde_con_debug(self):
+        with self.settings(DEBUG=True):
+            response = self.client.get(reverse("muestra"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "landing/muestra.html")
+
+    def test_404_sin_debug(self):
+        with self.settings(DEBUG=False):
+            response = self.client.get(reverse("muestra"))
+        self.assertEqual(response.status_code, 404)
+
+    def test_las_fichas_salen_de_tokens_css(self):
+        # El catálogo parsea tokens.css en vez de declarar sus propios hex.
+        # Si el parseo se rompe, la muestra queda vacía sin avisar.
+        with self.settings(DEBUG=True):
+            response = self.client.get(reverse("muestra"))
+        colores = dict(response.context["colores"])
+        self.assertEqual(colores["--bg"], "#0C0E0C")
+        self.assertEqual(colores["--accent-soft"], "#8FB596")
+        self.assertEqual(len(colores), 18)
+        self.assertIn("--gutter", dict(response.context["medidas"]))
