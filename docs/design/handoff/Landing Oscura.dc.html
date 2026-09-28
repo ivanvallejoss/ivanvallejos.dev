@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<script src="./image-slot.js"></script>
+<style>
+  body { margin:0; background:#0C0E0C; color:#ECE6D9; font-family:'Geist',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#8FB596; }
+  ::selection { background:#4F7A57; color:#ECE6D9; }
+  p { text-wrap:pretty; margin:0; }
+  h1, h2 { margin:0; font-weight:600; }
+</style>
+</helmet>
+
+<div style="background:#0C0E0C;color:#ECE6D9;min-width:0">
+
+  <div style="background:#101310;border-bottom:1px solid #2E3329;padding:10px clamp(20px,4vw,60px);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.07em;color:#9C9789">
+    <span>DESARROLLO DE SOFTWARE · ARGENTINA, REMOTO</span>
+    <span style="display:flex;gap:20px"><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span>hola@ivanvallejos.dev</span></sc-if><span style="color:#ECE6D9">ES</span><span>EN</span></span>
+  </div>
+
+  <div style="padding:24px clamp(20px,4vw,60px);border-bottom:2px solid #2E3329;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:16px">
+      <span style="width:36px;height:36px;flex:none;background:#4F7A57;color:#F2EFE6;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">IV</span>
+      <div style="display:flex;flex-direction:column">
+        <span style="font-size:16.5px;font-weight:600;letter-spacing:-0.012em">Iván Vallejos</span>
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">BACKEND &amp; FULLSTACK · PYTHON</span>
+      </div>
+    </div>
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,2.4vw,32px);font-size:14px;color:#C9C3B4">
+        <a href="#perfil">Perfil</a><a href="#areas">Áreas</a><a href="#trabajo">Trabajo</a><a href="#curso">En curso</a><a href="#escritura">Escritura</a>
+        <a href="mailto:hola@ivanvallejos.dev" style="background:#4F7A57;color:#F2EFE6;padding:11px 20px;font-size:14px;font-weight:600">Agendar una llamada</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" style="appearance:none;background:none;border:1px solid #2E3329;color:#ECE6D9;min-height:44px;padding:0 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em">{{ menuLabel }}</button>
+    </sc-if>
+  </div>
+  <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="border-bottom:2px solid #2E3329;padding:8px clamp(20px,4vw,60px) 24px;display:flex;flex-direction:column">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" onClick="{{ closeMenu }}" style="display:flex;justify-content:space-between;align-items:center;min-height:52px;border-bottom:1px solid #23271F;font-size:17px;color:#ECE6D9"><span>{{ n.label }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#9C9789">{{ n.num }}</span></a>
+      </sc-for>
+      <a href="mailto:hola@ivanvallejos.dev" style="margin-top:20px;background:#4F7A57;color:#F2EFE6;min-height:48px;padding:0 20px;display:flex;align-items:center;font-size:15px;font-weight:600">Agendar una llamada</a>
+      <span style="padding-top:16px;font-family:'Geist Mono',monospace;font-size:12px;color:#9C9789">hola@ivanvallejos.dev</span>
+    </div>
+  </sc-if>
+
+  <div id="perfil" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:2px;background:#2E3329">
+    <div style="background:#0C0E0C;padding:clamp(48px,7vw,88px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:30px;min-width:0">
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.13em;color:#C0662F">DESARROLLO DE SISTEMAS A MEDIDA</span>
+      <h1 style="font-size:clamp(34px,4.2vw,50px);line-height:1.1;letter-spacing:-0.025em;max-width:660px">
+        Sistemas de backend construidos, desplegados y sostenidos en producción.
+      </h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#C9C3B4;max-width:580px">
+        Diseño el modelo de datos, construyo la aplicación y me hago cargo de la infraestructura donde corre. Trabajo con empresas y particulares que necesitan software que quede operando.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:8px">
+        <a href="mailto:hola@ivanvallejos.dev" style="background:#ECE6D9;color:#0C0E0C;padding:14px 24px;font-size:15px;font-weight:600">Consultar disponibilidad</a>
+        <a href="#perfil" style="border:1px solid #2E3329;color:#ECE6D9;padding:14px 24px;font-size:15px;font-weight:500">Descargar CV (PDF)</a>
+      </div>
+    </div>
+    <div style="background:#0C0E0C;padding:clamp(40px,7vw,88px) clamp(20px,4vw,60px);display:flex;flex-direction:column;justify-content:center;gap:34px;min-width:0">
+      <sc-if value="{{ showRetrato }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="width:100%;aspect-ratio:4/5;background:#101310;border:1px solid #2E3329;filter:grayscale(1) contrast(1.05)">
+            <image-slot id="iv-retrato" shape="rect" fit="cover" placeholder="Arrastrá tu retrato"></image-slot>
+          </div>
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.09em;color:#9C9789">IVÁN VALLEJOS · BUENOS AIRES</span>
+        </div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column">
+        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#9C9789;padding-bottom:18px">ANTECEDENTES</span>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-top:2px solid #2E3329">
+          <span style="font-size:14.5px;color:#9C9789">Experiencia</span><span style="font-size:15.5px;font-weight:600">+2 años</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-top:1px solid #23271F">
+          <span style="font-size:14.5px;color:#9C9789">Formación</span><span style="font-size:15.5px;font-weight:600">Analista en Sistemas</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-top:1px solid #23271F">
+          <span style="font-size:14.5px;color:#9C9789">Inglés</span><span style="font-size:15.5px;font-weight:600">C1</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-top:1px solid #23271F">
+          <span style="font-size:14.5px;color:#9C9789">Sistemas en producción</span><span style="font-size:15.5px;font-weight:600">1 cliente</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:15px 0;border-top:1px solid #23271F;border-bottom:2px solid #2E3329">
+          <span style="font-size:14.5px;color:#9C9789">Modalidad</span><span style="font-size:15.5px;font-weight:600">Remoto · AR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:2px solid #2E3329;padding:16px clamp(20px,4vw,60px);display:flex;flex-wrap:wrap;gap:22px;font-family:'Geist Mono',monospace;font-size:12.5px;color:#9C9789">
+    <span>Python</span><span>Django</span><span>FastAPI</span><span>Celery</span><span>PostgreSQL</span><span>Redis</span><span>Docker</span><span>Go</span><span>Linux</span><span>pytest</span><span>Sentry</span><span>Cloudflare R2</span>
+  </div>
+
+  <div id="areas" style="border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:44px">
+    <div style="display:flex;align-items:baseline;gap:22px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">01</span>
+      <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Áreas de trabajo</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(28px,3.4vw,44px)">
+      <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+        <span style="font-size:19px;font-weight:600">Aplicaciones y APIs</span>
+        <p style="font-size:15px;line-height:1.65;color:#9C9789">Django y FastAPI: modelado de datos, integraciones, colas de tareas y testing con pytest.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+        <span style="font-size:19px;font-weight:600">Infraestructura y operación</span>
+        <p style="font-size:15px;line-height:1.65;color:#9C9789">Deploy sobre Linux, Docker y VPS, con observabilidad y monitoreo de errores en Sentry.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+        <span style="font-size:19px;font-weight:600">Datos y reporting</span>
+        <p style="font-size:15px;line-height:1.65;color:#9C9789">Ingesta y limpieza con Python y Polars, con salida a tableros para decisiones del negocio.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="trabajo" style="border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:24px">
+      <div style="display:flex;align-items:baseline;gap:22px">
+        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">02</span>
+        <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Trabajo entregado</h2>
+      </div>
+      <span style="font-size:14.5px;color:#9C9789">Proyectos operando para terceros.</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(28px,4vw,52px);padding-top:34px;border-top:2px solid #2E3329">
+      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#8FB596">CLIENTE · INMOBILIARIA</span>
+          <span style="font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-0.022em">Bricka — CRM inmobiliario</span>
+        </div>
+        <p style="font-size:16.5px;line-height:1.65;color:#C9C3B4;max-width:640px">
+          CRM a medida para la gestión de propiedades y sus fotos en object storage, operado a diario por el equipo de la agencia. Corre en producción sobre VPS propio con monitoreo de errores.
+        </p>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Alcance</span><span style="color:#C9C3B4">Datos, aplicación, deploy y operación</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Stack</span><span style="color:#C9C3B4">Django · PostGIS · Celery · Cloudflare R2 · Sentry</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;border-bottom:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Estado</span><span style="color:#8FB596">En producción desde 2025</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center">
+          <a href="Caso Bricka.dc.html" style="border:1px solid #4F7A57;color:#ECE6D9;padding:11px 18px;font-size:14.5px;font-weight:500" style-hover="background:#4F7A57;color:#F2EFE6">Ver el caso completo →</a>
+          <span style="font-size:14px;color:#9C9789">Código privado</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0;max-width:420px">
+        <div style="border:1px solid #2E3329;background:#101310;display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;border-bottom:1px solid #2E3329">
+            <button type="button" onClick="{{ goBrickaArq }}" style="flex:1 1 auto;appearance:none;background:none;border:none;border-right:1px solid #2E3329;border-top:2px solid transparent;position:relative;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:{{ inkBrickaArq }}" style-hover="color:#ECE6D9">
+              <sc-if value="{{ brickaArq }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:-2px;left:0;right:0;height:2px;background:#C0662F"></span></sc-if>ARQUITECTURA
+            </button>
+            <button type="button" onClick="{{ goBrickaFlujo }}" style="flex:1 1 auto;appearance:none;background:none;border:none;border-right:1px solid #2E3329;border-top:2px solid transparent;position:relative;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:{{ inkBrickaFlujo }}" style-hover="color:#ECE6D9">
+              <sc-if value="{{ brickaFlujo }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-2px;left:0;right:0;height:2px;background:#C0662F"></span></sc-if>FLUJO
+            </button>
+            <button type="button" onClick="{{ goBrickaDec }}" style="flex:1 1 auto;appearance:none;background:none;border:none;border-top:2px solid transparent;position:relative;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:{{ inkBrickaDec }}" style-hover="color:#ECE6D9">
+              <sc-if value="{{ brickaDec }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-2px;left:0;right:0;height:2px;background:#C0662F"></span></sc-if>DECISIONES
+            </button>
+          </div>
+          <div style="padding:24px;min-height:196px">
+            <sc-if value="{{ brickaArq }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;white-space:pre;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:1.75;color:#C9C3B4">
+                <span>Equipo de la agencia</span>
+                <span>  └ Django · PostGIS</span>
+                <span>      ├ Celery — fotos → R2</span>
+                <span>      └ Sentry — errores</span>
+                <span>          └ VPS Linux · Docker</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ brickaFlujo }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;line-height:1.6;color:#C9C3B4">
+                <div style="display:flex;gap:12px"><span style="flex:none;font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789;padding-top:2px">01</span><span>El agente carga la propiedad y sus fotos desde el panel.</span></div>
+                <div style="display:flex;gap:12px"><span style="flex:none;font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789;padding-top:2px">02</span><span>Celery procesa las imágenes fuera del request y las sube a R2.</span></div>
+                <div style="display:flex;gap:12px"><span style="flex:none;font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789;padding-top:2px">03</span><span>La propiedad queda geolocalizada y buscable por zona.</span></div>
+                <div style="display:flex;gap:12px"><span style="flex:none;font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789;padding-top:2px">04</span><span>Si algo falla, el error llega a Sentry antes que el reclamo.</span></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ brickaDec }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.6;color:#C9C3B4">
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">PostGIS y no lat/lng a mano</span><span>La búsqueda por zona es el caso de uso central; delegarla a la base evita filtrar en Python.</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">Object storage desde el día uno</span><span>Las fotos son el volumen del sistema. En disco del VPS, el backup se vuelve inmanejable.</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">Deploy propio, no PaaS</span><span>Costo previsible para una agencia chica, a cambio de hacerme cargo de la operación.</span></div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <span style="font-size:12.5px;color:#9C9789">un solo servicio, operación propia</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(28px,4vw,52px);padding-top:34px;border-top:2px solid #2E3329">
+      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#8FB596">CLIENTE · COMERCIO</span>
+          <span style="font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-0.022em">Pipeline de ventas y tablero</span>
+        </div>
+        <p style="font-size:16.5px;line-height:1.65;color:#C9C3B4;max-width:640px">
+          Ingesta y limpieza de ventas con Polars y salida a un tablero en Looker Studio para el seguimiento diario del negocio.
+        </p>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Alcance</span><span style="color:#C9C3B4">Ingesta, limpieza y reporte</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Stack</span><span style="color:#C9C3B4">Python · Polars · Looker Studio</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px 28px;padding:12px 0;border-top:1px solid #23271F;border-bottom:1px solid #23271F;font-size:14.5px">
+            <span style="width:160px;color:#9C9789">Estado</span><span style="color:#C9C3B4">Entregado · en uso</span>
+          </div>
+        </div>
+        <span style="font-size:14px;color:#9C9789">Código privado — disponible a pedido en una llamada.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0;max-width:420px">
+        <div style="border:1px solid #2E3329;background:#101310;display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;border-bottom:1px solid #2E3329">
+            <button type="button" onClick="{{ goPipeFlujo }}" style="flex:1 1 auto;appearance:none;background:none;border:none;border-right:1px solid #2E3329;border-top:2px solid transparent;position:relative;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:{{ inkPipeFlujo }}" style-hover="color:#ECE6D9">
+              <sc-if value="{{ pipeFlujo }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:-2px;left:0;right:0;height:2px;background:#C0662F"></span></sc-if>FLUJO
+            </button>
+            <button type="button" onClick="{{ goPipeDec }}" style="flex:1 1 auto;appearance:none;background:none;border:none;border-top:2px solid transparent;position:relative;padding:13px 16px;text-align:left;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:{{ inkPipeDec }}" style-hover="color:#ECE6D9">
+              <sc-if value="{{ pipeDec }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-2px;left:0;right:0;height:2px;background:#C0662F"></span></sc-if>DECISIONES
+            </button>
+          </div>
+          <div style="padding:24px;min-height:196px">
+            <sc-if value="{{ pipeFlujo }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;white-space:pre;font-family:'Geist Mono',monospace;font-size:12.5px;line-height:1.75;color:#C9C3B4">
+                <span>Exports de ventas</span>
+                <span>  └ Python · Polars</span>
+                <span>      ├ normalización</span>
+                <span>      └ validación</span>
+                <span>          └ Looker Studio</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ pipeDec }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.6;color:#C9C3B4">
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">Polars sobre pandas</span><span>Los exports crecen mes a mes; el consumo de memoria dejó de ser un problema.</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">Validar antes de cargar</span><span>Un dato roto en el tablero cuesta más que una corrida que falla temprano y avisa.</span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600;color:#ECE6D9">Looker Studio y no un dashboard propio</span><span>El cliente ya lo usaba. Mantener una app más no le sumaba nada.</span></div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <span style="font-size:12.5px;color:#9C9789">corrida diaria, sin intervención manual</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="curso" style="border-top:2px solid #2E3329;background:#101310;padding:clamp(48px,6vw,76px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:24px">
+      <div style="display:flex;align-items:baseline;gap:22px">
+        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">03</span>
+        <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">En curso</h2>
+      </div>
+      <span style="font-size:14.5px;color:#9C9789">Actualizado 12 sep 2026</span>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(20px,3vw,44px);padding:28px 0;border-top:2px solid #2E3329;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:19px;font-weight:600">SmartExpense</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.09em;color:#D07B45">EN DESARROLLO</span>
+        </div>
+        <p style="font-size:15.5px;line-height:1.65;color:#C9C3B4;grid-column:span 2;min-width:0">
+          Gestión de gastos sobre arquitectura asíncrona desacoplada: receiver en Go que responde de inmediato y encola con manejo idempotente (Redis SETNX + TTL), y workers en Python que categorizan y persisten en background. 151 tests validando contratos de API e integración.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#9C9789">Go · Python · Redis · ARQ · pytest</span>
+          <a href="https://github.com/ivanvallejoss/smartexpense" style="font-size:14px;color:#8FB596">↗ GitHub</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(20px,3vw,44px);padding:28px 0;border-top:1px solid #23271F;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:19px;font-weight:600">Bricka · fase 2</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.09em;color:#D07B45">EN DESARROLLO</span>
+        </div>
+        <p style="font-size:15.5px;line-height:1.65;color:#C9C3B4;grid-column:span 2;min-width:0">
+          Publicación automática de listados hacia plataformas externas desde el CRM, con reintentos y trazabilidad de cada publicación.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#9C9789">Django · Celery · APIs externas</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(20px,3vw,44px);padding:28px 0;border-top:1px solid #23271F;border-bottom:2px solid #2E3329;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:19px;font-weight:600">Go e ingeniería de datos</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.09em;color:#9C9789">FORMACIÓN</span>
+        </div>
+        <p style="font-size:15.5px;line-height:1.65;color:#C9C3B4;grid-column:span 2;min-width:0">
+          Go como segundo lenguaje e ingeniería de datos. Lo que estoy incorporando, no lo que vendo todavía — lo escribo en el blog mientras avanza.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="#escritura" style="font-size:14px;color:#8FB596">↗ Notas en el blog</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showEscritura }}" hint-placeholder-val="{{ true }}">
+    <div id="escritura" style="border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:24px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">04</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Escritura técnica</h2>
+        </div>
+        <a href="#escritura" style="font-size:14.5px;color:#8FB596">↗ Ver el blog completo</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(28px,3.4vw,44px)">
+        <a href="#escritura" style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789">12 JUL 2026 · 6 MIN</span>
+          <span style="font-size:18px;font-weight:600;line-height:1.35">Cómo estructuro el logging de un Django en producción</span>
+        </a>
+        <a href="#escritura" style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789">JUN 2026 · 8 MIN</span>
+          <span style="font-size:18px;font-weight:600;line-height:1.35">Idempotencia en workers: qué testeo</span>
+        </a>
+        <a href="#escritura" style="display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid #2E3329">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#9C9789">MAY 2026 · 5 MIN</span>
+          <span style="font-size:18px;font-weight:600;line-height:1.35">De SQLite a PostgreSQL sin drama</span>
+        </a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showVerificable }}" hint-placeholder-val="{{ true }}">
+    <div style="border-top:2px solid #2E3329;background:#E8E2D5;color:#16180F;padding:clamp(40px,5vw,60px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px">
+        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#8A4520">05 — VERIFICABLE</span>
+        <span style="font-size:15px;color:#3E4237">Todo lo que afirmo acá se puede comprobar.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;min-width:0">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 40px;padding:19px 0;border-top:2px solid #16180F">
+          <span style="flex:0 0 240px;font-size:15px;font-weight:600">Cliente en producción</span>
+          <span style="flex:1 1 300px;min-width:0;font-size:15px;line-height:1.6;color:#3E4237">Un equipo depende de Bricka a diario. No es un proyecto de práctica.</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 40px;padding:19px 0;border-top:1px solid #C9C1B0">
+          <span style="flex:0 0 240px;font-size:15px;font-weight:600">Código público</span>
+          <span style="flex:1 1 300px;min-width:0;font-size:15px;line-height:1.6;color:#3E4237">Los proyectos principales están en GitHub con su historia de commits.</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 40px;padding:19px 0;border-top:1px solid #C9C1B0">
+          <span style="flex:0 0 240px;font-size:15px;font-weight:600">Blog activo</span>
+          <span style="flex:1 1 300px;min-width:0;font-size:15px;line-height:1.6;color:#3E4237">Escribo sobre decisiones, errores y operación de sistemas reales.</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 40px;padding:19px 0;border-top:1px solid #C9C1B0;border-bottom:2px solid #16180F">
+          <span style="flex:0 0 240px;font-size:15px;font-weight:600">Criterios de trabajo</span>
+          <span style="flex:1 1 300px;min-width:0;font-size:15px;line-height:1.6;color:#3E4237">Testing con pytest, monitoreo con Sentry y deploy propio sobre VPS.</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div id="contacto" style="padding:clamp(48px,6vw,76px) clamp(20px,4vw,60px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:2px;background:#2E3329">
+    <div style="background:#0C0E0C;padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#8FB596">PARA EQUIPOS Y RECRUITERS</span>
+      <span style="font-size:clamp(20px,2.2vw,24px);font-weight:600;letter-spacing:-0.018em">Busco mi primer rol formal</span>
+      <p style="font-size:15px;line-height:1.65;color:#9C9789">Backend con Python, con disposición a hacerme cargo de infraestructura. CV y referencias técnicas a disposición.</p>
+      <a href="#contacto" style="align-self:flex-start;margin-top:8px;border:1px solid #2E3329;padding:12px 20px;font-size:14.5px;font-weight:500">Descargar CV</a>
+    </div>
+    <div style="background:#0C0E0C;padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em;color:#D07B45">PARA EMPRESAS Y PARTICULARES</span>
+      <span style="font-size:clamp(20px,2.2vw,24px);font-weight:600;letter-spacing:-0.018em">Tomo proyectos freelance</span>
+      <p style="font-size:15px;line-height:1.65;color:#9C9789">Desarrollo a medida, con alcance y entrega acordados por escrito. Primera llamada sin costo para evaluar el problema.</p>
+      <a href="mailto:hola@ivanvallejos.dev" style="align-self:flex-start;margin-top:8px;background:#4F7A57;color:#F2EFE6;padding:12px 20px;font-size:14.5px;font-weight:600">Agendar una llamada</a>
+    </div>
+  </div>
+
+  <div style="border-top:2px solid #2E3329;padding:44px clamp(20px,4vw,60px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#9C9789">© 2026 IVÁN VALLEJOS · SOFTWARE DEVELOPER · AR</span>
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,28px);font-size:14.5px;color:#9C9789">
+      <a href="https://github.com/ivanvallejoss">GitHub</a><a href="#contacto">LinkedIn</a><a href="#escritura">Blog</a><a href="mailto:hola@ivanvallejos.dev">hola@ivanvallejos.dev</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRetrato&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;},&quot;showEscritura&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;},&quot;showVerificable&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Secciones&quot;}}">
+class Component extends DCLogic {
+  state = { bricka: 'arq', pipe: 'flujo', narrow: false, menu: false };
+  componentDidMount() {
+    this.onResize = () => { const n = window.innerWidth < 820; if (n !== this.state.narrow) this.setState({ narrow: n, menu: false }); };
+    window.addEventListener('resize', this.onResize); this.onResize();
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onResize); }
+  tab(key, val) { return () => this.setState({ [key]: val }); }
+  ink(key, val) { return this.state[key] === val ? '#ECE6D9' : '#9C9789'; }
+  renderVals() {
+    const s = this.state;
+    return {
+      brickaArq: s.bricka === 'arq', brickaFlujo: s.bricka === 'flujo', brickaDec: s.bricka === 'dec',
+      goBrickaArq: this.tab('bricka', 'arq'), goBrickaFlujo: this.tab('bricka', 'flujo'), goBrickaDec: this.tab('bricka', 'dec'),
+      inkBrickaArq: this.ink('bricka', 'arq'), inkBrickaFlujo: this.ink('bricka', 'flujo'), inkBrickaDec: this.ink('bricka', 'dec'),
+      pipeFlujo: s.pipe === 'flujo', pipeDec: s.pipe === 'dec',
+      goPipeFlujo: this.tab('pipe', 'flujo'), goPipeDec: this.tab('pipe', 'dec'),
+      inkPipeFlujo: this.ink('pipe', 'flujo'), inkPipeDec: this.ink('pipe', 'dec'),
+      narrow: s.narrow, wide: !s.narrow, menuVisible: s.narrow && s.menu,
+      menuLabel: s.menu ? 'CERRAR ✕' : 'MENÚ ☰',
+      toggleMenu: () => this.setState(p => ({ menu: !p.menu })),
+      closeMenu: () => this.setState({ menu: false }),
+      navItems: [['#perfil','Perfil'],['#areas','Áreas'],['#trabajo','Trabajo'],['#curso','En curso'],['#escritura','Escritura']].map(([href,label],i)=>({href,label,num:String(i).padStart(2,'0')})),
+      showRetrato: this.props.showRetrato ?? true,
+      showEscritura: this.props.showEscritura ?? true,
+      showVerificable: this.props.showVerificable ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>
