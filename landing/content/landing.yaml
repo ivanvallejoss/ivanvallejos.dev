@@ -1,0 +1,13 @@
+# Contenido editable de la landing. Cada fase suma su propio bloque.
+# El loader lo lee con yaml.safe_load (landing/content_loader.py).
+
+meta:
+  title: "Iván Vallejos — Software Developer"
+  description: "Construyo y ensamblo los sistemas detrás del producto: del modelo de datos al deploy."
+
+# Secciones ocultables. README del handoff § State Management:
+# "Flags de contenido (para decidir en build/CMS)".
+flags:
+  retrato: true
+  escritura: true
+  verificable: false
