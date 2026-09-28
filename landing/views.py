@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render
 
+from .content_loader import load_content
 from .models import OutboundClick, Visit
 
 
@@ -9,6 +10,9 @@ class GoRedirect(HttpResponseRedirect):
 
     allowed_schemes = ["http", "https", "mailto"]
 
+# Allowlist de audiencias. Es lo único que decide qué llega a la DB, tanto por
+# ?utm= en la landing como por ?a= en los redirects: Visit.audience y
+# OutboundClick.audience son CharField(max_length=20).
 VARIANTS = {"recruiter", "business", "tech"}
 
 DESTINATIONS = {
@@ -16,27 +20,31 @@ DESTINATIONS = {
     "linkedin": "https://linkedin.com/in/ivanvallejoss",  # PENDIENTE: verificar handle
     "blog": "https://blog.ivanvallejos.dev",
     "smartexpense": "https://github.com/ivanvallejoss/smartexpense",
-    "cv": "/static/cv-ivan-vallejos.pdf",  # placeholder hasta tener el CV subido
+    "cv": "/static/cv.ivanvallejos.pdf",
     "contacto": "mailto:ivan@ivanvallejos.dev",  # CTA primario, trackeado como OutboundClick
 }
 
 
+def resolve_audience(value):
+    """Todo lo que no esté declarado en VARIANTS cae a "default"."""
+    return value if value in VARIANTS else "default"
+
+
 def landing(request):
-    utm = request.GET.get("utm", "")
-    # La allowlist es lo que impide que un utm arbitrario llegue a la DB o al
-    # contexto. Todo lo que no esté declarado en VARIANTS cae a "default".
-    audience = utm if utm in VARIANTS else "default"
+    audience = resolve_audience(request.GET.get("utm", ""))
     Visit.objects.create(audience=audience, path=request.path)
-    context = {
-        "audience": audience,
-    }
-    return render(request, "landing/base.html", context)
+    # La audiencia viaja sin resolver contra plantillas: el sitio sirve una sola
+    # landing y la audiencia solo alimenta el tracking y los links /go/?a=.
+    context = {"audience": audience, **load_content("landing")}
+    return render(request, "landing/landing.html", context)
 
 
 def go(request, destination):
     url = DESTINATIONS.get(destination)
     if url is None:
         return HttpResponseNotFound()
-    audience = request.GET.get("a", "default")
+    # Misma allowlist que la landing: un ?a= arbitrario más largo que el campo
+    # daba 500 en PostgreSQL (SQLite lo truncaba en silencio).
+    audience = resolve_audience(request.GET.get("a", ""))
     OutboundClick.objects.create(destination=destination, audience=audience)
     return GoRedirect(url)
