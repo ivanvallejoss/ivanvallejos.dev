@@ -21,8 +21,8 @@ class GoRedirect(HttpResponseRedirect):
 VARIANTS = {"recruiter", "business", "tech"}
 
 DESTINATIONS = {
-    "github": "https://github.com/ivanvallejoss",  # PENDIENTE: verificar handle
-    "linkedin": "https://linkedin.com/in/ivanvallejoss",  # PENDIENTE: verificar handle
+    "github": "https://github.com/ivanvallejoss",
+    "linkedin": "https://www.linkedin.com/in/ivanvallejoss/",
     "blog": "https://blog.ivanvallejos.dev",
     "smartexpense": "https://github.com/ivanvallejoss/smartexpense",
     "cv": "/static/cv.ivanvallejos.pdf",
