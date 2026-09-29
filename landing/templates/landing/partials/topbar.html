@@ -1,0 +1,18 @@
+{% comment %}
+Barra superior de la landing. README del handoff § Screens / Views, punto 1.
+El mail es texto, no link, como en el prototipo. ES/EN detrás de flags.idiomas
+(A-02). Sin el flag el mail va suelto: un wrapper que por debajo de 820px
+quedara vacío bajaría a otra línea y sumaría el gap.
+{% endcomment %}
+<div class="topbar">
+  <span>{{ barra.texto }}</span>
+  {% if flags.idiomas %}
+  <span class="topbar__right">
+    <span class="topbar__mail">{{ sitio.mail }}</span>
+    <span class="topbar__lang topbar__lang--on">ES</span>
+    <span class="topbar__lang">EN</span>
+  </span>
+  {% else %}
+  <span class="topbar__mail">{{ sitio.mail }}</span>
+  {% endif %}
+</div>

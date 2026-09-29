@@ -1,0 +1,10 @@
+{# Footer. Lo usan la landing y los casos de estudio (fase 6). #}
+<footer class="site-footer rule-top-strong">
+  <span class="site-footer__legal">© {% now "Y" %} {{ sitio.footer.copyright }}</span>
+  <div class="site-footer__links">
+    {% for link in sitio.footer.links %}
+    <a href="{% url 'go' link.destino %}?a={{ audience }}">{{ link.label }}</a>
+    {% endfor %}
+    <a href="{% url 'go' 'contacto' %}?a={{ audience }}">{{ sitio.mail }}</a>
+  </div>
+</footer>

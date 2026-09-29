@@ -1,10 +1,18 @@
 {% extends "landing/base.html" %}
+{% load static %}
 
-{# Las secciones llegan en las fases siguientes: barra superior, nav, hero,
-   stack, 01 Áreas, 02 Trabajo, 03 En curso, 04 Escritura, 05 Verificable,
-   contacto y footer. Ver docs/design/handoff/README.md § Screens / Views. #}
+{# Las secciones del <main> llegan en las fases siguientes: hero, stack,
+   01 Áreas, 02 Trabajo, 03 En curso, 04 Escritura, 05 Verificable y contacto.
+   Ver docs/design/handoff/README.md § Screens / Views. #}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'landing/css/estructura.css' %}">
+{% endblock %}
 
 {% block content %}
+{% include "landing/partials/topbar.html" %}
+{% include "landing/partials/nav.html" %}
 <main>
 </main>
+{% include "landing/partials/footer.html" %}
 {% endblock %}

@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="{% static 'landing/css/tokens.css' %}">
     <link rel="stylesheet" href="{% static 'landing/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'landing/css/primitives.css' %}">
+
+    {# CSS y JS propios de cada página. #}
+    {% block head_extra %}{% endblock %}
 </head>
 <body>
 {% block content %}{% endblock %}
