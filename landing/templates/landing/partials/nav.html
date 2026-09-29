@@ -2,9 +2,10 @@
 Nav de la landing y su menú móvil. README del handoff § Screens / Views,
 punto 2, y § Interactions & Behavior, "Menú móvil".
 
-Sin JS: el panel se renderiza abierto y el botón oculto, así que por debajo
-de 820px los links quedan a la vista. nav.js cierra el panel y muestra el
-botón al iniciar.
+El estado inicial lo decide el CSS según la clase `js` de <html> (base.html):
+el panel se renderiza con `hidden` y el botón visible. Sin JS, estructura.css
+muestra el panel y oculta el botón, así que por debajo de 820px los links
+quedan a la vista. nav.js solo abre y cierra.
 {% endcomment %}
 <header class="site-nav rule-bottom-strong">
   <div class="site-nav__brand">
@@ -26,12 +27,12 @@ botón al iniciar.
   Un solo flex item con el espacio adentro: así "MENÚ ☰" queda separado por
   un espacio, como en el prototipo, y no por el gap del botón.
   {% endcomment %}
-  <button type="button" class="site-nav__toggle" aria-expanded="false" aria-controls="menu-movil" hidden>
+  <button type="button" class="site-nav__toggle" aria-expanded="false" aria-controls="menu-movil">
     <span><span class="site-nav__toggle-label">Menú</span> <span class="site-nav__toggle-icon" aria-hidden="true">☰</span></span>
   </button>
 </header>
 
-<nav id="menu-movil" class="nav-menu rule-bottom-strong" aria-label="Secciones">
+<nav id="menu-movil" class="nav-menu rule-bottom-strong" aria-label="Secciones" hidden>
   {% for item in nav %}{% if item.href != "#escritura" or flags.escritura %}
   <a class="nav-menu__item rule-bottom-soft" href="{{ item.href }}">
     <span>{{ item.label }}</span>

@@ -1,9 +1,10 @@
 /* Menú móvil de la landing (<820px).
    README del handoff § Interactions & Behavior, "Menú móvil".
 
-   Sin JS el panel queda abierto y el botón oculto (ver partials/nav.html):
-   este script es el que los invierte al iniciar. El panel usa `hidden`
-   cuando está cerrado; el nombre accesible del botón es "Menú" o "Cerrar". */
+   El estado inicial (panel cerrado, botón visible) lo da el HTML más la clase
+   `js` que base.html pone en <html>; este script solo abre y cierra. El panel
+   usa `hidden` cuando está cerrado; el nombre accesible del botón es "Menú" o
+   "Cerrar". */
 (function () {
   "use strict";
 
@@ -26,9 +27,6 @@
     label.textContent = abrir ? "Cerrar" : "Menú";
     icono.textContent = abrir ? "✕" : "☰";
   }
-
-  set(false);
-  boton.hidden = false;
 
   boton.addEventListener("click", function () {
     set(!abierto());

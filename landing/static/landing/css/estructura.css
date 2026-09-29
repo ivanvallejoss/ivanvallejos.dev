@@ -114,8 +114,8 @@
   cursor: pointer;
 }
 
-/* Sin esto, el display del autor le gana al [hidden] del navegador. */
-.site-nav__toggle[hidden] {
+/* Sin JS el botón no sirve: se oculta y el panel queda a la vista (abajo). */
+html:not(.js) .site-nav__toggle {
   display: none;
 }
 
@@ -129,8 +129,15 @@
   padding: 8px var(--gutter) 24px;
 }
 
+/* Sin esto, el display del autor le gana al [hidden] del navegador. */
 .nav-menu[hidden] {
   display: none;
+}
+
+/* Sin JS el panel se muestra aunque traiga `hidden`: es la única navegación
+   por debajo de 820px. */
+html:not(.js) .nav-menu[hidden] {
+  display: flex;
 }
 
 .nav-menu__item {
@@ -174,7 +181,8 @@
   .topbar__mail     { display: inline; }
   .site-nav__links  { display: flex; }
   .site-nav__toggle { display: none; }
-  .nav-menu         { display: none; }
+  .nav-menu,
+  html:not(.js) .nav-menu[hidden] { display: none; }
 }
 
 

@@ -281,11 +281,19 @@ usa `hidden` cerrado. El texto del botón se escribe "Menú"/"Cerrar" (nombre ac
 ve en mayúsculas por CSS; los glifos llevan `aria-hidden`. Se cierra al tocar un link del
 panel, con Escape (el foco vuelve al botón) y al pasar a ≥820px (`matchMedia`).
 
-**Sin JS:** el HTML trae el panel abierto y el botón con `hidden`; `nav.js` los invierte al
-iniciar. Si el script no carga, por debajo de 820px los links quedan a la vista.
+**Estado inicial y sin JS:** `base.html` pone la clase `js` en `<html>` con un script
+inline de una línea, antes de las hojas de estilo. El HTML trae el panel con `hidden` y el
+botón visible, y el CSS decide según la clase:
 
-`[hidden]` necesita regla explícita (`.nav-menu[hidden]`, `.site-nav__toggle[hidden]`):
-el `display` del autor le gana al del navegador. "Escritura" se omite con `flags.escritura`.
+- **con `js`:** desde el primer render el panel está cerrado y el botón visible (sin flash);
+- **sin `js`:** `html:not(.js)` oculta el botón y muestra el panel aunque traiga `hidden`,
+  así que por debajo de 820px los links quedan a la vista.
+
+`nav.js` no toca nada al cargar: solo abre y cierra. Si JS está activo pero `nav.js` no
+carga, el botón queda visible y sin efecto.
+
+`.nav-menu[hidden]` necesita regla explícita: el `display` del autor le gana al del
+navegador. "Escritura" se omite con `flags.escritura`.
 
 ### Footer — `partials/footer.html` · landing y caso
 
