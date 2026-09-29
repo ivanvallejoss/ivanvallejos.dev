@@ -22,12 +22,13 @@ CSS de sección.
 | `landing/static/landing/css/base.css` | reset y decisiones de documento |
 | `landing/static/landing/css/primitives.css` | lo que se repite en todas las pantallas |
 | `landing/static/landing/css/estructura.css` | barra superior, nav con menú móvil y footer |
+| `landing/static/landing/css/landing.css` | secciones de la landing, un bloque por sección |
 | `landing/static/landing/js/nav.js` | comportamiento del menú móvil |
 | `landing/templates/landing/base.html` | layout del documento; `{% block head_extra %}` para el CSS y JS de cada página |
 | `landing/templates/landing/landing.html` | la landing |
-| `landing/templates/landing/partials/` | `topbar.html`, `nav.html` (con el panel del menú), `footer.html` |
+| `landing/templates/landing/partials/` | `topbar.html`, `nav.html` (con el panel del menú), `footer.html`, `hero.html`, `stack.html` |
 | `landing/content/sitio.yaml` | lo compartido entre la landing y los casos: identidad, CTA, mail, footer |
-| `landing/content/landing.yaml` | el contenido editable de la landing: meta, flags, barra, nav |
+| `landing/content/landing.yaml` | el contenido editable de la landing: meta, flags, barra, nav, hero, retrato, antecedentes, stack |
 
 El orden de carga importa: `tokens.css` define las variables que consumen las otras dos.
 
@@ -213,8 +214,9 @@ Sirven para `<a>` y para `<button>`. El alto mínimo de 44px lo pide el README p
 `.btn--compact` lo suelta recién en ≥820px, así que en mobile ningún botón queda por
 debajo del hit target.
 
-Los botones de color no viran a `--accent-soft` en hover como los links: `.btn--outline-accent`
-es el único con hover de relleno del sistema.
+Hover por variante: `.btn--primary` y `.btn--light` conservan su texto; `.btn--outline`
+pasa el texto a `--accent-soft`, como los links (A-04); `.btn--outline-accent` es el único
+con hover de relleno del sistema.
 
 ### Filas de etiqueta y valor
 
@@ -302,6 +304,43 @@ navegador. "Escritura" se omite con `flags.escritura`.
 | `.site-footer` (+ `.rule-top-strong`) | padding 44px + gutter, wrap con gap 24px |
 | `.site-footer__legal` | `© {% now "Y" %}` + `sitio.footer.copyright`, mono 12px `--muted` |
 | `.site-footer__links` | links de `sitio.footer.links` + el mail (`/go/contacto`), 14.5px `--muted` |
+
+## Secciones de la landing
+
+Viven en `landing.css` (un bloque por sección, lo cargan solo las páginas que las usan
+vía `head_extra`) y en `partials/`. Consumen las primitivas; lo que aparece una sola vez
+queda escrito en el bloque de su sección, sin subir a `primitives.css`. Ningún hex.
+Los textos salen de `landing.yaml`.
+
+### Hero — `partials/hero.html` · landing, `#perfil`
+
+`<section id="perfil" class="grid-div hero" style="--col: 420px">`: dos celdas con
+divisor de 2px, que se apilan solas por debajo de 2×420px.
+
+| Clase | Qué es |
+|---|---|
+| `.hero__main` (+ `.section--hero`) | celda izquierda: padding `--pad-hero` + gutter, columna con gap 30px |
+| `.hero__kicker` (+ `.t-label.t-label--wide`) | kicker en `--signal` |
+| `.t-h1` | el único `<h1>` de la página |
+| `.hero__lead` (+ `.t-lead`) | lead, max-w 580px |
+| `.hero__ctas` | fila de CTAs: wrap, gap 12px, padding-top 8px; `.btn--light` + `.btn--outline` |
+| `.hero__aside` | celda derecha: padding `clamp(40px,7vw,88px)` + gutter, columna centrada con gap 34px |
+| `.retrato` · `.retrato__marco` | `<figure>` con caja 4:5, `--surface`, borde 1px `--rule-strong` y `filter: grayscale(1) contrast(1.05)` en la caja |
+| `figcaption.t-label.t-label--tight` | leyenda del retrato (11.5px; el prototipo usa 11px) |
+| `.antecedentes` · `.antecedentes__titulo` (+ `.t-label`) | título con 18px abajo y filas `.rows.rows--closed` > `.row.row--split` |
+
+**Retrato:** detrás de `flags.retrato`. Con `retrato.ruta` vacía queda la caja sola como
+placeholder y no se renderiza ningún `<img>`. Con ruta (relativa a `static/`), el `<img>`
+declara `width`/`height` en relación 4:5 para que el layout no salte y no lleva lazy-load:
+en la compu está arriba del pliegue.
+
+**CTAs:** `hero.cta_principal` y `hero.cta_secundario`, cada uno con `texto` y `destino`
+(clave de `DESTINATIONS`), armados como `/go/<destino>?a={{ audience }}`.
+
+### Stack — `partials/stack.html` · landing, bajo el hero
+
+`<ul class="stack rule-top-strong t-meta">`: regla superior 2px, padding 16px + gutter,
+wrap con gap 22px. Un `<li>` por ítem de `stack`.
 
 ## Lo que NO está en las primitivas
 

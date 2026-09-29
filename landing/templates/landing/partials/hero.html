@@ -1,0 +1,45 @@
+{% load static %}
+{% comment %}
+Hero de la landing (#perfil). README del handoff § Screens / Views, punto 3;
+valores del bloque id="perfil" de "Landing Oscura.dc.html".
+
+Grilla con divisores de dos celdas: se apila sola por debajo de 2×420px.
+El retrato va detrás de flags.retrato; con retrato.ruta vacía queda el
+placeholder (la caja sin <img>). width/height del <img> declaran la relación
+4:5 para que el layout no salte; el tamaño real lo fija la caja por CSS. Sin
+lazy-load: en la compu está arriba del pliegue.
+{% endcomment %}
+<section id="perfil" class="grid-div hero" style="--col: 420px">
+  <div class="section--hero hero__main">
+    <span class="t-label t-label--wide hero__kicker">{{ hero.kicker }}</span>
+    <h1 class="t-h1">{{ hero.titulo }}</h1>
+    <p class="t-lead hero__lead">{{ hero.lead }}</p>
+    <div class="hero__ctas">
+      <a class="btn btn--light" href="{% url 'go' hero.cta_principal.destino %}?a={{ audience }}">{{ hero.cta_principal.texto }}</a>
+      <a class="btn btn--outline" href="{% url 'go' hero.cta_secundario.destino %}?a={{ audience }}">{{ hero.cta_secundario.texto }}</a>
+    </div>
+  </div>
+
+  <div class="hero__aside">
+    {% if flags.retrato %}
+    <figure class="retrato">
+      <div class="retrato__marco">
+        {% if retrato.ruta %}<img src="{% static retrato.ruta %}" alt="{{ retrato.alt }}" width="800" height="1000">{% endif %}
+      </div>
+      <figcaption class="t-label t-label--tight">{{ retrato.leyenda }}</figcaption>
+    </figure>
+    {% endif %}
+
+    <div class="antecedentes">
+      <span class="t-label antecedentes__titulo">{{ antecedentes.titulo }}</span>
+      <div class="rows rows--closed">
+        {% for fila in antecedentes.filas %}
+        <div class="row row--split">
+          <span class="row__label">{{ fila.label }}</span>
+          <span class="row__value">{{ fila.valor }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

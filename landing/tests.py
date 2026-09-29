@@ -46,20 +46,29 @@ class LandingTests(TestCase):
                 self.assertEqual(Visit.objects.get().audience, "default")
 
 
-def con_flags(**flags):
-    """Parchea el loader de la vista para cambiar flags de landing.yaml.
+def con_contenido(flags=None, **bloques):
+    """Parchea el loader de la vista para cambiar bloques de landing.yaml.
 
-    Devuelve una copia: con DEBUG=False el loader cachea el dict, y mutarlo
-    en el lugar contaminaría a los demás tests.
+    `flags` se mezcla con los del YAML; cada bloque de `bloques` (p. ej.
+    retrato={"ruta": ...}) se mezcla con el suyo. Devuelve una copia: con
+    DEBUG=False el loader cachea el dict, y mutarlo en el lugar contaminaría
+    a los demás tests.
     """
 
     def fake(name):
         data = copy.deepcopy(content_loader.load_content(name))
         if name == "landing":
-            data["flags"].update(flags)
+            data["flags"].update(flags or {})
+            for clave, valores in bloques.items():
+                data[clave].update(valores)
         return data
 
     return mock.patch("landing.views.load_content", side_effect=fake)
+
+
+def con_flags(**flags):
+    """Atajo de con_contenido para cambiar solo flags."""
+    return con_contenido(flags=flags)
 
 
 class EstructuraTests(TestCase):
@@ -107,6 +116,84 @@ class EstructuraTests(TestCase):
         self.assertIn('aria-expanded="false"', boton.group())
         controls = re.search(r'aria-controls="([^"]+)"', boton.group()).group(1)
         self.assertIn(f'id="{controls}"', html)
+
+
+class HeroTests(TestCase):
+    """Hero (#perfil) con retrato y Antecedentes, y la fila de stack.
+
+    Los textos se leen del YAML: el copy es provisorio y el autor lo reescribe.
+    """
+
+    def get(self, query=""):
+        response = self.client.get(reverse("landing") + query)
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_h1_y_ctas(self):
+        hero = load_content("landing")["hero"]
+        for query, audiencia in [("", "default"), ("?utm=recruiter", "recruiter")]:
+            with self.subTest(audiencia=audiencia):
+                html = self.get(query)
+                self.assertIn(hero["titulo"], html)
+                self.assertIn(
+                    f'href="/go/contacto?a={audiencia}">{hero["cta_principal"]["texto"]}</a>', html
+                )
+                self.assertIn(
+                    f'href="/go/cv?a={audiencia}">{hero["cta_secundario"]["texto"]}</a>', html
+                )
+
+    def test_ancla_perfil_y_un_solo_h1(self):
+        html = self.get()
+        self.assertIn('id="perfil"', html)
+        self.assertEqual(html.count("<h1"), 1)
+
+    def test_sin_retrato(self):
+        leyenda = load_content("landing")["retrato"]["leyenda"]
+        with con_flags(retrato=False):
+            html = self.get()
+        self.assertNotIn("retrato__marco", html)
+        self.assertNotIn(leyenda, html)
+        # Control positivo: con el flag, la caja y la leyenda están.
+        with con_flags(retrato=True):
+            html = self.get()
+        self.assertIn("retrato__marco", html)
+        self.assertIn(leyenda, html)
+
+    def test_ruta_vacia_muestra_el_placeholder(self):
+        with con_contenido(flags={"retrato": True}, retrato={"ruta": ""}):
+            html = self.get()
+        self.assertIn("retrato__marco", html)
+        self.assertNotIn("<img", html)
+
+    def test_con_ruta_hay_img_con_medidas(self):
+        # Control positivo del anterior. Sin lazy-load: está arriba del pliegue.
+        with con_contenido(flags={"retrato": True}, retrato={"ruta": "landing/img/retrato.jpg"}):
+            html = self.get()
+        img = re.search(r"<img[^>]*>", html)
+        self.assertIsNotNone(img)
+        self.assertIn('src="/static/landing/img/retrato.jpg"', img.group())
+        self.assertIn(f'alt="{load_content("landing")["retrato"]["alt"]}"', img.group())
+        self.assertRegex(img.group(), r'width="\d+"')
+        self.assertRegex(img.group(), r'height="\d+"')
+        self.assertNotIn("loading=", img.group())
+
+    def test_antecedentes(self):
+        filas = load_content("landing")["antecedentes"]["filas"]
+        self.assertEqual(len(filas), 5)
+        html = self.get()
+        self.assertEqual(html.count("row row--split"), len(filas))
+        for fila in filas:
+            with self.subTest(fila=fila["label"]):
+                self.assertIn(f'<span class="row__label">{fila["label"]}</span>', html)
+                self.assertIn(f'<span class="row__value">{fila["valor"]}</span>', html)
+
+    def test_stack(self):
+        stack = load_content("landing")["stack"]
+        self.assertEqual(len(stack), 12)
+        html = self.get()
+        ul = re.search(r'<ul class="stack[^"]*">(.*?)</ul>', html, re.S)
+        self.assertIsNotNone(ul)
+        self.assertEqual(re.findall(r"<li>(.*?)</li>", ul.group(1)), stack)
 
 
 class ComentariosTests(TestCase):

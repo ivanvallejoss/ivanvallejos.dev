@@ -36,3 +36,55 @@ nav:
   - href: "#escritura"
     label: "Escritura"
     num: "04"
+
+# Hero (#perfil). README del handoff § Screens / Views, punto 3.
+# `destino` es una clave de DESTINATIONS (landing/views.py): el link sale como
+# /go/<destino>?a=<audiencia>.
+hero:
+  kicker: "DESARROLLO DE SISTEMAS A MEDIDA"
+  titulo: "Sistemas de backend construidos, desplegados y sostenidos en producción."
+  lead: "Diseño el modelo de datos, construyo la aplicación y me hago cargo de la infraestructura donde corre. Trabajo con empresas y particulares que necesitan software que quede operando."
+  cta_principal:
+    texto: "Consultar disponibilidad"
+    destino: contacto
+  cta_secundario:
+    texto: "Descargar CV (PDF)"
+    destino: cv
+
+# Retrato del hero, detrás de flags.retrato. `ruta` es relativa a static/
+# (p. ej. "landing/img/retrato.jpg"), 4:5 vertical. Vacía: se muestra el
+# placeholder y no se renderiza ningún <img>.
+retrato:
+  ruta: ""
+  alt: "Retrato de Iván Vallejos"
+  leyenda: "IVÁN VALLEJOS · BUENOS AIRES"
+
+# Tabla Antecedentes, en la columna derecha del hero.
+antecedentes:
+  titulo: "ANTECEDENTES"
+  filas:
+    - label: "Experiencia"
+      valor: "+2 años"
+    - label: "Formación"
+      valor: "Analista en Sistemas"
+    - label: "Inglés"
+      valor: "C1"
+    - label: "Sistemas en producción"
+      valor: "1 cliente"
+    - label: "Modalidad"
+      valor: "Remoto · AR"
+
+# Fila de stack bajo el hero. README § Screens / Views, punto 4.
+stack:
+  - "Python"
+  - "Django"
+  - "FastAPI"
+  - "Celery"
+  - "PostgreSQL"
+  - "Redis"
+  - "Docker"
+  - "Go"
+  - "Linux"
+  - "pytest"
+  - "Sentry"
+  - "Cloudflare R2"

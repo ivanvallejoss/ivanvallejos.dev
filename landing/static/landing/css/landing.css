@@ -1,0 +1,83 @@
+/* ============================================================
+   SECCIONES DE LA LANDING — un bloque por sección.
+   Catálogo: docs/design/sistema.md § Secciones de la landing.
+
+   Valores del estilo inline exacto de "Landing Oscura.dc.html". Lo que
+   aparece una sola vez queda escrito acá; lo que se repite ya está en
+   primitives.css. Ningún hex: solo tokens.
+   ============================================================ */
+
+
+/* ── Hero (#perfil) ─────────────────────────────────────────── */
+/* .grid-div con --col: 420px. La celda izquierda toma el padding de
+   .section--hero; la derecha lleva el suyo. */
+
+.hero__main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.hero__kicker {
+  color: var(--signal);
+}
+
+.hero__lead {
+  max-width: 580px;
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.hero__aside {
+  padding: clamp(40px, 7vw, 88px) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 34px;
+}
+
+/* Retrato: caja 4:5. El filtro va en la caja, como en el prototipo. */
+.retrato {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.retrato__marco {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  filter: grayscale(1) contrast(1.05);
+}
+
+.retrato__marco img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Antecedentes: las filas salen de .rows.rows--closed y .row--split. */
+.antecedentes {
+  display: flex;
+  flex-direction: column;
+}
+
+.antecedentes__titulo {
+  padding-bottom: 18px;
+}
+
+
+/* ── Stack ──────────────────────────────────────────────────── */
+
+.stack {
+  padding: 16px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
