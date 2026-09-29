@@ -1,6 +1,11 @@
+import copy
+import re
+from unittest import mock
+
 from django.test import TestCase
 from django.urls import reverse
 
+from . import content_loader
 from .content_loader import load_content
 from .models import OutboundClick, Visit
 from .views import VARIANTS
@@ -39,6 +44,69 @@ class LandingTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(response.context["audience"], "default")
                 self.assertEqual(Visit.objects.get().audience, "default")
+
+
+def con_flags(**flags):
+    """Parchea el loader de la vista para cambiar flags de landing.yaml.
+
+    Devuelve una copia: con DEBUG=False el loader cachea el dict, y mutarlo
+    en el lugar contaminaría a los demás tests.
+    """
+
+    def fake(name):
+        data = copy.deepcopy(content_loader.load_content(name))
+        if name == "landing":
+            data["flags"].update(flags)
+        return data
+
+    return mock.patch("landing.views.load_content", side_effect=fake)
+
+
+class EstructuraTests(TestCase):
+    """Barra superior, nav con menú móvil y footer (partials/)."""
+
+    def get(self, query=""):
+        response = self.client.get(reverse("landing") + query)
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_nav_y_cta(self):
+        html = self.get()
+        for item in load_content("landing")["nav"]:
+            with self.subTest(item=item["label"]):
+                self.assertIn(f'href="{item["href"]}"', html)
+                self.assertIn(item["label"], html)
+        cta = load_content("sitio")["cta"]
+        self.assertIn(f'href="/go/{cta["destino"]}?a=default">{cta["texto"]}</a>', html)
+
+    def test_sin_escritura(self):
+        with con_flags(escritura=False):
+            html = self.get()
+        self.assertNotIn("#escritura", html)
+        self.assertNotIn("Escritura", html)
+
+    def test_links_go_llevan_la_audiencia(self):
+        html = self.get("?utm=recruiter")
+        links = re.findall(r'href="(/go/[^"]*)"', html)
+        self.assertTrue(links)
+        for link in links:
+            with self.subTest(link=link):
+                self.assertTrue(link.endswith("?a=recruiter"))
+
+    def test_selector_de_idioma_detras_del_flag(self):
+        with con_flags(idiomas=False):
+            self.assertNotIn("topbar__lang", self.get())
+        # Control positivo: sin él, el test pasaría aunque la clase cambiara.
+        with con_flags(idiomas=True):
+            self.assertIn("topbar__lang", self.get())
+
+    def test_boton_del_menu(self):
+        html = self.get()
+        boton = re.search(r"<button[^>]*site-nav__toggle[^>]*>", html)
+        self.assertIsNotNone(boton)
+        self.assertIn('aria-expanded="false"', boton.group())
+        controls = re.search(r'aria-controls="([^"]+)"', boton.group()).group(1)
+        self.assertIn(f'id="{controls}"', html)
 
 
 class GoTests(TestCase):
