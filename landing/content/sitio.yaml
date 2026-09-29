@@ -1,0 +1,29 @@
+# Contenido compartido entre la landing y los casos de estudio (fase 6).
+# Los textos salen del prototipo (docs/design/handoff/Landing Oscura.dc.html);
+# la única excepción es el mail, que es el del repo y no el hola@ del prototipo.
+
+identidad:
+  monograma: "IV"
+  nombre: "Iván Vallejos"
+  subtitulo: "BACKEND & FULLSTACK · PYTHON"
+
+# CTA primario. `destino` es una clave de DESTINATIONS (landing/views.py):
+# el link sale como /go/<destino>?a=<audiencia>.
+cta:
+  texto: "Agendar una llamada"
+  destino: contacto
+
+# Mail que se muestra. El link de mail pasa por /go/contacto.
+mail: "ivan@ivanvallejos.dev"
+
+footer:
+  # El template antepone "© <año actual> ".
+  copyright: "IVÁN VALLEJOS · SOFTWARE DEVELOPER · AR"
+  # Después de estos va el mail, armado con `mail` y /go/contacto.
+  links:
+    - label: "GitHub"
+      destino: github
+    - label: "LinkedIn"
+      destino: linkedin
+    - label: "Blog"
+      destino: blog

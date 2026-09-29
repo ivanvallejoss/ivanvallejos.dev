@@ -40,7 +40,13 @@ def landing(request):
     Visit.objects.create(audience=audience, path=request.path)
     # La audiencia viaja sin resolver contra plantillas: el sitio sirve una sola
     # landing y la audiencia solo alimenta el tracking y los links /go/?a=.
-    context = {"audience": audience, **load_content("landing")}
+    # sitio.yaml es lo compartido con los casos (identidad, CTA, mail, footer) y
+    # queda bajo "sitio"; landing.yaml va al primer nivel (meta, flags, barra, nav).
+    context = {
+        "audience": audience,
+        "sitio": load_content("sitio"),
+        **load_content("landing"),
+    }
     return render(request, "landing/landing.html", context)
 
 
