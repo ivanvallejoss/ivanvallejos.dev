@@ -21,9 +21,13 @@ CSS de sección.
 | `landing/static/landing/css/tokens.css` | todas las custom properties. **Ningún hex vive fuera de acá** |
 | `landing/static/landing/css/base.css` | reset y decisiones de documento |
 | `landing/static/landing/css/primitives.css` | lo que se repite en todas las pantallas |
-| `landing/templates/landing/base.html` | layout del documento |
+| `landing/static/landing/css/estructura.css` | barra superior, nav con menú móvil y footer |
+| `landing/static/landing/js/nav.js` | comportamiento del menú móvil |
+| `landing/templates/landing/base.html` | layout del documento; `{% block head_extra %}` para el CSS y JS de cada página |
 | `landing/templates/landing/landing.html` | la landing |
-| `landing/content/landing.yaml` | el contenido editable |
+| `landing/templates/landing/partials/` | `topbar.html`, `nav.html` (con el panel del menú), `footer.html` |
+| `landing/content/sitio.yaml` | lo compartido entre la landing y los casos: identidad, CTA, mail, footer |
+| `landing/content/landing.yaml` | el contenido editable de la landing: meta, flags, barra, nav |
 
 El orden de carga importa: `tokens.css` define las variables que consumen las otras dos.
 
@@ -239,12 +243,72 @@ regla de la sección siguiente ya hace de cierre.
 `.status` más `.status--prod` (`--accent-soft`), `.status--dev` (`--signal-soft`) o
 `.status--form` (`--muted`).
 
+## Componentes de página
+
+Viven en `estructura.css` y en `partials/`. No son primitivas: la barra y la nav son solo
+de la landing; el footer lo reusa el caso (que carga `estructura.css` por él). Los textos
+salen de `sitio.yaml` (contexto `sitio`) y de `landing.yaml` (`barra`, `nav`, `flags`).
+Todo link saliente se arma con `{% url 'go' destino %}?a={{ audience }}`.
+
+### Barra superior — `partials/topbar.html` · solo landing
+
+| Clase | Qué es |
+|---|---|
+| `.topbar` | contenedor: `--surface`, borde inferior 1px `--rule-strong`, mono 11.5px · ls 0.07em · `--muted` |
+| `.topbar__mail` | mail como texto; oculto por debajo de 820px |
+| `.topbar__right` · `.topbar__lang` · `.topbar__lang--on` | selector ES/EN, solo con `flags.idiomas` (A-02) |
+
+La tipografía va en `.topbar` y no con `.t-label--bar`, porque `.t-label` pasa el mail a
+mayúsculas. Sin `flags.idiomas` el mail va suelto, sin wrapper: un wrapper vacío por debajo
+de 820px bajaría a otra línea y sumaría el gap.
+
+### Nav y menú móvil — `partials/nav.html` + `js/nav.js` · solo landing
+
+| Clase | Qué es |
+|---|---|
+| `.site-nav` (+ `.rule-bottom-strong`) | `<header>`: marca a la izquierda, links o botón a la derecha |
+| `.site-nav__brand` · `__mono` · `__id` · `__name` | monograma 36×36 `--accent`, nombre 16.5px/600; subtítulo con `.t-label.t-label--sm` |
+| `.site-nav__links` | `<nav>` de links 14px `--text`; visible desde 820px |
+| `.site-nav__cta` | modificador sobre `.btn.btn--primary.btn--compact`: 11×20 y 14px como el prototipo |
+| `.site-nav__toggle` (+ `__toggle-label`, `__toggle-icon`) | botón "MENÚ ☰" / "CERRAR ✕", alto mínimo 44px; solo por debajo de 820px |
+| `.nav-menu` (+ `.rule-bottom-strong`) | panel `#menu-movil`, inline bajo la nav (no overlay) |
+| `.nav-menu__item` (+ `.rule-bottom-soft`) · `.nav-menu__num` | filas de 52px: label 17px `--ink` + número mono 11px |
+| `.nav-menu__cta` | modificador sobre `.btn.btn--primary`: 48px de alto, padding 0 20px, texto a la izquierda |
+| `.nav-menu__mail` | mail como texto, mono 12px |
+
+**Comportamiento:** el botón lleva `aria-expanded` y `aria-controls="menu-movil"`; el panel
+usa `hidden` cerrado. El texto del botón se escribe "Menú"/"Cerrar" (nombre accesible) y se
+ve en mayúsculas por CSS; los glifos llevan `aria-hidden`. Se cierra al tocar un link del
+panel, con Escape (el foco vuelve al botón) y al pasar a ≥820px (`matchMedia`).
+
+**Estado inicial y sin JS:** `base.html` pone la clase `js` en `<html>` con un script
+inline de una línea, antes de las hojas de estilo. El HTML trae el panel con `hidden` y el
+botón visible, y el CSS decide según la clase:
+
+- **con `js`:** desde el primer render el panel está cerrado y el botón visible (sin flash);
+- **sin `js`:** `html:not(.js)` oculta el botón y muestra el panel aunque traiga `hidden`,
+  así que por debajo de 820px los links quedan a la vista.
+
+`nav.js` no toca nada al cargar: solo abre y cierra. Si JS está activo pero `nav.js` no
+carga, el botón queda visible y sin efecto.
+
+`.nav-menu[hidden]` necesita regla explícita: el `display` del autor le gana al del
+navegador. "Escritura" se omite con `flags.escritura`.
+
+### Footer — `partials/footer.html` · landing y caso
+
+| Clase | Qué es |
+|---|---|
+| `.site-footer` (+ `.rule-top-strong`) | padding 44px + gutter, wrap con gap 24px |
+| `.site-footer__legal` | `© {% now "Y" %}` + `sitio.footer.copyright`, mono 12px `--muted` |
+| `.site-footer__links` | links de `sitio.footer.links` + el mail (`/go/contacto`), 14.5px `--muted` |
+
 ## Lo que NO está en las primitivas
 
 Son componentes de una sola pantalla; los trae la fase que implementa esa sección, con su
 propio CSS:
 
-- **pestañas de proyecto** y **menú móvil** (landing);
+- **pestañas de proyecto** (landing);
 - **índice lateral / barra sticky**, **timeline** y **diagrama mono** (caso Bricka).
 
 El criterio: una primitiva es algo que se repite en todas las pantallas. Si aparece una

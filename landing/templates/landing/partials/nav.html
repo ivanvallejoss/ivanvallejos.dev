@@ -1,0 +1,44 @@
+{% comment %}
+Nav de la landing y su menú móvil. README del handoff § Screens / Views,
+punto 2, y § Interactions & Behavior, "Menú móvil".
+
+El estado inicial lo decide el CSS según la clase `js` de <html> (base.html):
+el panel se renderiza con `hidden` y el botón visible. Sin JS, estructura.css
+muestra el panel y oculta el botón, así que por debajo de 820px los links
+quedan a la vista. nav.js solo abre y cierra.
+{% endcomment %}
+<header class="site-nav rule-bottom-strong">
+  <div class="site-nav__brand">
+    <span class="site-nav__mono" aria-hidden="true">{{ sitio.identidad.monograma }}</span>
+    <div class="site-nav__id">
+      <span class="site-nav__name">{{ sitio.identidad.nombre }}</span>
+      <span class="t-label t-label--sm">{{ sitio.identidad.subtitulo }}</span>
+    </div>
+  </div>
+
+  <nav class="site-nav__links" aria-label="Secciones">
+    {% for item in nav %}{% if item.href != "#escritura" or flags.escritura %}
+    <a href="{{ item.href }}">{{ item.label }}</a>
+    {% endif %}{% endfor %}
+    <a class="btn btn--primary btn--compact site-nav__cta" href="{% url 'go' sitio.cta.destino %}?a={{ audience }}">{{ sitio.cta.texto }}</a>
+  </nav>
+
+  {% comment %}
+  Un solo flex item con el espacio adentro: así "MENÚ ☰" queda separado por
+  un espacio, como en el prototipo, y no por el gap del botón.
+  {% endcomment %}
+  <button type="button" class="site-nav__toggle" aria-expanded="false" aria-controls="menu-movil">
+    <span><span class="site-nav__toggle-label">Menú</span> <span class="site-nav__toggle-icon" aria-hidden="true">☰</span></span>
+  </button>
+</header>
+
+<nav id="menu-movil" class="nav-menu rule-bottom-strong" aria-label="Secciones" hidden>
+  {% for item in nav %}{% if item.href != "#escritura" or flags.escritura %}
+  <a class="nav-menu__item rule-bottom-soft" href="{{ item.href }}">
+    <span>{{ item.label }}</span>
+    <span class="nav-menu__num">{{ item.num }}</span>
+  </a>
+  {% endif %}{% endfor %}
+  <a class="btn btn--primary nav-menu__cta" href="{% url 'go' sitio.cta.destino %}?a={{ audience }}">{{ sitio.cta.texto }}</a>
+  <span class="nav-menu__mail">{{ sitio.mail }}</span>
+</nav>

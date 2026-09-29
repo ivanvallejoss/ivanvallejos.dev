@@ -11,3 +11,28 @@ flags:
   retrato: true
   escritura: true
   verificable: false
+  # A-02 (docs/design/ajustes.md): el selector ES/EN no se muestra hasta que
+  # exista la versión en inglés.
+  idiomas: false
+
+# Barra superior: texto de la izquierda.
+barra:
+  texto: "DESARROLLO DE SOFTWARE · ARGENTINA, REMOTO"
+
+# Ítems de la nav y del menú móvil. "Escritura" se oculta con flags.escritura.
+nav:
+  - href: "#perfil"
+    label: "Perfil"
+    num: "00"
+  - href: "#areas"
+    label: "Áreas"
+    num: "01"
+  - href: "#trabajo"
+    label: "Trabajo"
+    num: "02"
+  - href: "#curso"
+    label: "En curso"
+    num: "03"
+  - href: "#escritura"
+    label: "Escritura"
+    num: "04"

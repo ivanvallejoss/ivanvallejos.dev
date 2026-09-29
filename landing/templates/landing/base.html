@@ -8,9 +8,15 @@
     <meta name="description" content="{{ meta.description }}">
     <link rel="canonical" href="https://ivanvallejos.dev/">
 
-    {# Geist y Geist Mono se sirven desde el propio sitio: el handoff usa Google
-       Fonts, pero son las mismas familias. Las rutas del preload tienen que
-       coincidir con las de @font-face en fonts.css. #}
+    {# Antes de cualquier CSS: con la clase ya puesta, el primer render sale en su estado final. #}
+    {# Sin JS la clase no está y el CSS muestra la versión sin script (ver estructura.css). #}
+    <script>document.documentElement.classList.add("js")</script>
+
+    {% comment %}
+    Geist y Geist Mono se sirven desde el propio sitio: el handoff usa Google
+    Fonts, pero son las mismas familias. Las rutas del preload tienen que
+    coincidir con las de @font-face en fonts.css.
+    {% endcomment %}
     <link rel="preload" href="{% static 'landing/fonts/Geist-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{% static 'landing/fonts/GeistMono-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
 
@@ -19,6 +25,9 @@
     <link rel="stylesheet" href="{% static 'landing/css/tokens.css' %}">
     <link rel="stylesheet" href="{% static 'landing/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'landing/css/primitives.css' %}">
+
+    {# CSS y JS propios de cada página. #}
+    {% block head_extra %}{% endblock %}
 </head>
 <body>
 {% block content %}{% endblock %}
