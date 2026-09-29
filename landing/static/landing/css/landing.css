@@ -72,6 +72,26 @@
   padding-bottom: 18px;
 }
 
+/* A-06 (docs/design/ajustes.md): desde 1180px el retrato va a la izquierda de
+   Antecedentes y el padding vertical sigue al alto de la pantalla. Por debajo
+   de 1180px, Antecedentes queda tan angosto que sus filas pasan a dos líneas. */
+@media (min-width: 1180px) {
+  .hero__main,
+  .hero__aside {
+    padding-block: clamp(32px, 6vh, 88px);
+  }
+
+  /* Solo con retrato: sin él, Antecedentes sigue a todo el ancho. El 40% es
+     del ancho útil de la celda (sin el padding lateral). */
+  .hero__aside:has(.retrato) {
+    display: grid;
+    grid-template-columns: clamp(180px, 40%, 340px) minmax(0, 1fr);
+    column-gap: 34px;
+    align-content: center;   /* el bloque, centrado en la celda como hoy */
+    align-items: start;      /* retrato y Antecedentes, alineados arriba */
+  }
+}
+
 
 /* ── Stack ──────────────────────────────────────────────────── */
 
