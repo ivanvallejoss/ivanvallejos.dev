@@ -20,3 +20,5 @@ Rediseño **Minimalismo Editorial** de `ivanvallejos.dev`. Handoff en
 
 | # | Fecha | Pantalla/sección | Cambio respecto del handoff | Decidido por |
 |---|-------|------------------|-----------------------------|--------------|
+| A-01 | 2026-09-29 | Botones (todo el sitio) | Por debajo de 820px todo botón mide al menos 44px de alto (el CTA de contacto pasa de ~41px a 44px). Desde 820px se respetan los tamaños del prototipo. | Ivan |
+| A-02 | 2026-09-29 | Barra superior | El selector ES/EN queda detrás del flag `idiomas`, apagado hasta que exista la versión en inglés. | Ivan |
