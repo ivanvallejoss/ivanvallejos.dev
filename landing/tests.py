@@ -109,6 +109,22 @@ class EstructuraTests(TestCase):
         self.assertIn(f'id="{controls}"', html)
 
 
+class ComentariosTests(TestCase):
+    """{# #} de Django es de una sola línea: uno de varias líneas sale como texto.
+
+    Pasó en base.html dentro del <head>: el parser cerraba el head ahí y el
+    comentario quedaba visible arriba de la página.
+    """
+
+    def test_ningun_comentario_se_filtra_al_html(self):
+        with self.settings(DEBUG=True):
+            for url in [reverse("landing"), reverse("muestra")]:
+                with self.subTest(url=url):
+                    html = self.client.get(url).content.decode()
+                    self.assertNotIn("{#", html)
+                    self.assertNotIn("#}", html)
+
+
 class GoTests(TestCase):
     """Los redirects /go/<destino>?a=<audiencia> y su OutboundClick."""
 
