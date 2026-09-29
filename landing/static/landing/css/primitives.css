@@ -223,11 +223,12 @@
 }
 
 /* Hover explícito por variante. Un .btn usado como <a> no puede quedar librado
-   al a:hover genérico (--accent-soft), ni a un `inherit` que toma el color del
-   contenedor: los botones de color conservan su texto en hover. */
+   al a:hover genérico ni a un `inherit` que toma el color del contenedor: los
+   botones de color conservan su texto en hover; el outline vira a --accent-soft
+   como los links (A-04, docs/design/ajustes.md). */
 .btn--primary:hover { color: var(--on-accent); }
 .btn--light:hover   { color: var(--bg); }
-.btn--outline:hover { color: var(--ink); }
+.btn--outline:hover { color: var(--accent-soft); }
 
 /* Único hover con relleno del sistema. */
 .btn--outline-accent:hover {

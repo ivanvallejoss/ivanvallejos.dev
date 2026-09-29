@@ -213,8 +213,9 @@ Sirven para `<a>` y para `<button>`. El alto mínimo de 44px lo pide el README p
 `.btn--compact` lo suelta recién en ≥820px, así que en mobile ningún botón queda por
 debajo del hit target.
 
-Los botones de color no viran a `--accent-soft` en hover como los links: `.btn--outline-accent`
-es el único con hover de relleno del sistema.
+Hover por variante: `.btn--primary` y `.btn--light` conservan su texto; `.btn--outline`
+pasa el texto a `--accent-soft`, como los links (A-04); `.btn--outline-accent` es el único
+con hover de relleno del sistema.
 
 ### Filas de etiqueta y valor
 
