@@ -2,13 +2,14 @@
 {% load static %}
 
 {% comment %}
-Las secciones del <main> llegan en las fases siguientes: hero, stack,
+Secciones del <main>: hero y stack (fase 3). Llegan en las fases siguientes:
 01 Áreas, 02 Trabajo, 03 En curso, 04 Escritura, 05 Verificable y contacto.
 Ver docs/design/handoff/README.md § Screens / Views.
 {% endcomment %}
 
 {% block head_extra %}
     <link rel="stylesheet" href="{% static 'landing/css/estructura.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/landing.css' %}">
     <script src="{% static 'landing/js/nav.js' %}" defer></script>
 {% endblock %}
 
@@ -16,6 +17,8 @@ Ver docs/design/handoff/README.md § Screens / Views.
 {% include "landing/partials/topbar.html" %}
 {% include "landing/partials/nav.html" %}
 <main>
+{% include "landing/partials/hero.html" %}
+{% include "landing/partials/stack.html" %}
 </main>
 {% include "landing/partials/footer.html" %}
 {% endblock %}
