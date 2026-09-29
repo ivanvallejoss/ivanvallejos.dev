@@ -96,13 +96,6 @@
   font-size: 14px;
 }
 
-/* .btn--primary:hover hereda el color del padre, y acá el padre es --text.
-   Los botones de color no cambian de color en hover (sistema.md § Botones). */
-.site-nav__cta:hover,
-.nav-menu__cta:hover {
-  color: var(--on-accent);
-}
-
 .site-nav__toggle {
   display: flex;
   align-items: center;

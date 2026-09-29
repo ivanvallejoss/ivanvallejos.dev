@@ -222,17 +222,17 @@
   color: var(--ink);
 }
 
+/* Hover explícito por variante. Un .btn usado como <a> no puede quedar librado
+   al a:hover genérico (--accent-soft), ni a un `inherit` que toma el color del
+   contenedor: los botones de color conservan su texto en hover. */
+.btn--primary:hover { color: var(--on-accent); }
+.btn--light:hover   { color: var(--bg); }
+.btn--outline:hover { color: var(--ink); }
+
 /* Único hover con relleno del sistema. */
 .btn--outline-accent:hover {
   background: var(--accent);
   color: var(--on-accent);
-}
-
-/* Los botones de color no viran a verde claro como los links. */
-.btn--primary:hover,
-.btn--light:hover,
-.btn--outline:hover {
-  color: inherit;
 }
 
 .btn--compact {

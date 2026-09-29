@@ -196,7 +196,15 @@
     <div class="m-demo-row">
       <button type="button" class="btn btn--compact btn--primary">.btn--compact</button>
       <button type="button" class="btn btn--compact btn--outline">.btn--compact</button>
-      <a href="#" class="btn btn--outline-accent">como &lt;a&gt; · hover rellena</a>
+    </div>
+    {# Como <a>, el caso que puede heredar el a:hover genérico. #}
+    {# Solo .btn--outline-accent cambia en hover: se rellena de verde. #}
+    <div class="m-demo-row">
+      <a href="#" class="btn btn--primary">&lt;a&gt; .btn--primary</a>
+      <a href="#" class="btn btn--light">&lt;a&gt; .btn--light</a>
+      <a href="#" class="btn btn--outline">&lt;a&gt; .btn--outline</a>
+      <a href="#" class="btn btn--outline-accent">&lt;a&gt; .btn--outline-accent</a>
+      <a href="#" class="btn btn--compact btn--primary">&lt;a&gt; .btn--compact</a>
     </div>
     <p class="t-body" style="color: var(--muted)">
       Navegar con Tab para ver el foco: outline de 2px --accent-soft con offset de 2px.
