@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:#0C0E0C; color:#ECE6D9; font-family:'Geist',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#8FB596; }
+  ::selection { background:#4F7A57; color:#ECE6D9; }
+  p { text-wrap:pretty; margin:0; }
+  h1, h2, h3 { margin:0; font-weight:600; }
+</style>
+</helmet>
+
+<div style="background:#0C0E0C;color:#ECE6D9;min-width:0">
+
+  <div style="padding:22px clamp(20px,4vw,60px);border-bottom:2px solid #2E3329;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+    <a href="Landing Oscura.dc.html" style="display:flex;align-items:center;gap:16px">
+      <span style="width:36px;height:36px;flex:none;background:#4F7A57;color:#F2EFE6;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">IV</span>
+      <span style="display:flex;flex-direction:column">
+        <span style="font-size:16.5px;font-weight:600;letter-spacing:-0.012em;color:#ECE6D9">Iván Vallejos</span>
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">← VOLVER AL PORTFOLIO</span>
+      </span>
+    </a>
+    <a href="mailto:hola@ivanvallejos.dev" style="background:#4F7A57;color:#F2EFE6;padding:11px 20px;font-size:14px;font-weight:600">Agendar una llamada</a>
+  </div>
+
+  <div style="padding:clamp(48px,7vw,88px) clamp(20px,4vw,60px) clamp(40px,5vw,60px);display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-wrap:wrap;gap:10px 22px;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.12em">
+      <span style="color:#C0662F">CASO 01</span>
+      <span style="color:#9C9789">CLIENTE · INMOBILIARIA</span>
+      <span style="color:#8FB596">● EN PRODUCCIÓN</span>
+    </div>
+    <h1 style="font-size:clamp(36px,5vw,60px);line-height:1.05;letter-spacing:-0.03em;max-width:900px">Bricka — CRM inmobiliario</h1>
+    <p style="font-size:clamp(16px,1.6vw,19px);line-height:1.6;color:#C9C3B4;max-width:680px">
+      CRM a medida para una agencia que gestionaba propiedades en planillas y carpetas de fotos compartidas. Diseñé el modelo, construí la aplicación y opero la infraestructura donde corre.
+    </p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:0 28px;padding:0 clamp(20px,4vw,60px);border-top:2px solid #2E3329;border-bottom:2px solid #2E3329">
+    <div style="min-width:0;padding:22px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">ROL</span>
+      <span style="font-size:15.5px;font-weight:500">Único desarrollador, de punta a punta</span>
+    </div>
+    <div style="min-width:0;padding:22px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">PERÍODO</span>
+      <span style="font-size:15.5px;font-weight:500">2025 — hoy</span>
+    </div>
+    <div style="min-width:0;padding:22px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">USUARIOS</span>
+      <span style="font-size:15.5px;font-weight:500">Equipo de la agencia, uso diario</span>
+    </div>
+    <div style="min-width:0;padding:22px 0;display:flex;flex-direction:column;gap:8px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">CÓDIGO</span>
+      <span style="font-size:15.5px;font-weight:500">Privado · recorrido en llamada</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+    <div style="position:sticky;top:0;z-index:5;background:#0C0E0C;border-bottom:1px solid #2E3329;display:flex;overflow-x:auto;padding:0 clamp(20px,4vw,60px)">
+      <sc-for list="{{ index }}" as="it" hint-placeholder-count="6">
+        <a href="{{ it.href }}" style="flex:none;display:flex;gap:8px;padding:14px 16px 12px;border-bottom:2px solid {{ it.bar }};font-size:13.5px;color:{{ it.ink }};white-space:nowrap">
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;color:#9C9789;padding-top:1px">{{ it.num }}</span>{{ it.label }}
+        </a>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <div style="display:flex;gap:clamp(32px,5vw,80px);padding:0 clamp(20px,4vw,60px)">
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:0 0 200px">
+        <div style="position:sticky;top:0;padding-top:clamp(48px,6vw,76px);display:flex;flex-direction:column">
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.11em;color:#9C9789;padding-bottom:14px">ÍNDICE</span>
+          <sc-for list="{{ index }}" as="it" hint-placeholder-count="6">
+            <a href="{{ it.href }}" style="display:flex;gap:12px;padding:10px 0 10px 14px;border-left:2px solid {{ it.bar }};font-size:14.5px;color:{{ it.ink }}">
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;color:#9C9789;padding-top:2px">{{ it.num }}</span>{{ it.label }}
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="flex:1 1 0;min-width:0;max-width:820px;display:flex;flex-direction:column">
+
+      <div id="contexto" style="scroll-margin-top:60px;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">01</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Contexto</h2>
+        </div>
+        <p style="font-size:17px;line-height:1.7;color:#C9C3B4">
+          La agencia manejaba su cartera en planillas, con las fotos de cada propiedad repartidas en carpetas compartidas. Buscar por zona implicaba memoria del equipo, y cada publicación se armaba a mano.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:2px;background:#2E3329;border:1px solid #2E3329">
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">ANTES</span>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.55;color:#C9C3B4">
+              <span>Planillas por agente, sin fuente única</span>
+              <span>Fotos en carpetas, sin vínculo a la propiedad</span>
+              <span>Búsqueda por zona de memoria</span>
+            </div>
+          </div>
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#8FB596">DESPUÉS</span>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.55;color:#ECE6D9">
+              <span>Una base compartida por todo el equipo</span>
+              <span>Fotos en object storage, atadas a cada ficha</span>
+              <span>Búsqueda geográfica en la base</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="arquitectura" style="scroll-margin-top:60px;border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">02</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Arquitectura</h2>
+        </div>
+        <div style="background:#101310;border:1px solid #2E3329;padding:clamp(22px,3vw,34px);overflow-x:auto">
+          <div style="display:flex;flex-direction:column;white-space:pre;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.85;color:#C9C3B4">
+            <span style="color:#ECE6D9">Navegador — equipo de la agencia</span>
+            <span>  │</span>
+            <span>  └─ Nginx · TLS</span>
+            <span>       └─ Django + Gunicorn <span style="color:#9C9789">— panel, API interna</span></span>
+            <span>            ├─ PostgreSQL + PostGIS <span style="color:#9C9789">— propiedades, zonas</span></span>
+            <span>            ├─ Redis <span style="color:#9C9789">— broker</span></span>
+            <span>            │    └─ Celery worker <span style="color:#9C9789">— imágenes, tareas</span></span>
+            <span>            │         └─ Cloudflare R2 <span style="color:#9C9789">— fotos</span></span>
+            <span>            └─ Sentry <span style="color:#9C9789">— errores, performance</span></span>
+            <span> </span>
+            <span style="color:#9C9789">todo en un VPS Linux · Docker Compose</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:12px 0;border-bottom:1px solid #2E3329;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">
+            <span style="flex:0 0 180px">COMPONENTE</span><span style="flex:1 1 300px">RESPONSABILIDAD</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:15px 0;border-bottom:1px solid #23271F;font-size:15px;line-height:1.55">
+            <span style="flex:0 0 180px;font-weight:600">Django</span><span style="flex:1 1 300px;min-width:0;color:#C9C3B4">Modelo de dominio, panel de carga, permisos por agente.</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:15px 0;border-bottom:1px solid #23271F;font-size:15px;line-height:1.55">
+            <span style="flex:0 0 180px;font-weight:600">PostGIS</span><span style="flex:1 1 300px;min-width:0;color:#C9C3B4">Consultas por radio y por polígono de barrio.</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:15px 0;border-bottom:1px solid #23271F;font-size:15px;line-height:1.55">
+            <span style="flex:0 0 180px;font-weight:600">Celery + Redis</span><span style="flex:1 1 300px;min-width:0;color:#C9C3B4">Procesamiento de imágenes fuera del request.</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:15px 0;border-bottom:1px solid #23271F;font-size:15px;line-height:1.55">
+            <span style="flex:0 0 180px;font-weight:600">R2</span><span style="flex:1 1 300px;min-width:0;color:#C9C3B4">Almacenamiento de fotos, servido sin pasar por el VPS.</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px 28px;padding:15px 0;border-bottom:1px solid #23271F;font-size:15px;line-height:1.55">
+            <span style="flex:0 0 180px;font-weight:600">Sentry</span><span style="flex:1 1 300px;min-width:0;color:#C9C3B4">Errores y trazas de requests lentos.</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="flujo" style="scroll-margin-top:60px;border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px">
+          <div style="display:flex;align-items:baseline;gap:22px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">03</span>
+            <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Flujo: alta de una propiedad</h2>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;border-left:1px solid #2E3329;margin-left:5px">
+          <div style="position:relative;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0 0 30px 30px">
+            <span style="position:absolute;left:-6px;top:6px;width:11px;height:11px;background:#0C0E0C;border:1px solid #9C9789"></span>
+            <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:17px;font-weight:600">El agente carga la ficha y las fotos</span>
+              <p style="font-size:15px;line-height:1.6;color:#9C9789">Formulario del panel con validación de dirección y datos obligatorios.</p>
+            </div>
+            <span style="flex:none;align-self:flex-start;border:1px solid #2E3329;padding:4px 9px;font-family:'Geist Mono',monospace;font-size:11.5px;color:#C9C3B4">Django</span>
+          </div>
+          <div style="position:relative;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0 0 30px 30px">
+            <span style="position:absolute;left:-6px;top:6px;width:11px;height:11px;background:#0C0E0C;border:1px solid #9C9789"></span>
+            <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:17px;font-weight:600">La dirección se geocodifica</span>
+              <p style="font-size:15px;line-height:1.6;color:#9C9789">Se guarda como punto geográfico; el barrio se resuelve por polígono.</p>
+            </div>
+            <span style="flex:none;align-self:flex-start;border:1px solid #2E3329;padding:4px 9px;font-family:'Geist Mono',monospace;font-size:11.5px;color:#C9C3B4">PostGIS</span>
+          </div>
+          <div style="position:relative;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0 0 30px 30px">
+            <span style="position:absolute;left:-6px;top:6px;width:11px;height:11px;background:#0C0E0C;border:1px solid #9C9789"></span>
+            <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:17px;font-weight:600">Las fotos se procesan en segundo plano</span>
+              <p style="font-size:15px;line-height:1.6;color:#9C9789">El request responde de inmediato; el worker redimensiona, genera miniaturas y sube a R2.</p>
+            </div>
+            <span style="flex:none;align-self:flex-start;border:1px solid #2E3329;padding:4px 9px;font-family:'Geist Mono',monospace;font-size:11.5px;color:#C9C3B4">Celery → R2</span>
+          </div>
+          <div style="position:relative;display:flex;flex-wrap:wrap;gap:8px 24px;padding:0 0 0 30px">
+            <span style="position:absolute;left:-6px;top:6px;width:11px;height:11px;background:#4F7A57;border:1px solid #4F7A57"></span>
+            <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:17px;font-weight:600">La propiedad queda buscable por zona</span>
+              <p style="font-size:15px;line-height:1.6;color:#9C9789">Disponible para todo el equipo. Cualquier falla del proceso llega a Sentry con contexto.</p>
+            </div>
+            <span style="flex:none;align-self:flex-start;border:1px solid #2E3329;padding:4px 9px;font-family:'Geist Mono',monospace;font-size:11.5px;color:#C9C3B4">Sentry</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="decisiones" style="scroll-margin-top:60px;border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">04</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Decisiones</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;background:#2E3329;border:1px solid #2E3329">
+          <div style="background:#0C0E0C;padding:clamp(22px,2.6vw,30px);display:flex;flex-direction:column;gap:18px">
+            <span style="font-size:19px;font-weight:600;letter-spacing:-0.01em">PostGIS en lugar de lat/lng en columnas</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:18px 28px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#8FB596">ELEGÍ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Tipos geográficos y consultas espaciales en la base.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">DESCARTÉ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Filtrar distancias en Python sobre dos floats.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#D07B45">COSTO</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Una extensión más para instalar y mantener.</span></div>
+            </div>
+          </div>
+          <div style="background:#0C0E0C;padding:clamp(22px,2.6vw,30px);display:flex;flex-direction:column;gap:18px">
+            <span style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Object storage desde el primer día</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:18px 28px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#8FB596">ELEGÍ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Fotos en R2, fuera del servidor.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">DESCARTÉ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Guardarlas en el disco del VPS.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#D07B45">COSTO</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Un servicio externo y URLs firmadas.</span></div>
+            </div>
+          </div>
+          <div style="background:#0C0E0C;padding:clamp(22px,2.6vw,30px);display:flex;flex-direction:column;gap:18px">
+            <span style="font-size:19px;font-weight:600;letter-spacing:-0.01em">Deploy propio en lugar de PaaS</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:18px 28px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#8FB596">ELEGÍ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">VPS con Docker Compose.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">DESCARTÉ</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">Plataformas gestionadas con costo por servicio.</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#D07B45">COSTO</span><span style="font-size:14.5px;line-height:1.6;color:#C9C3B4">La operación queda a mi cargo.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="operacion" style="scroll-margin-top:60px;border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">05</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Operación</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:2px;background:#2E3329;border:1px solid #2E3329">
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">DEPLOY</span>
+            <span style="font-size:15px;line-height:1.6;color:#C9C3B4">Imagen Docker versionada, migraciones antes del reinicio.</span>
+          </div>
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">MONITOREO</span>
+            <span style="font-size:15px;line-height:1.6;color:#C9C3B4">Sentry con alertas por mail ante errores nuevos.</span>
+          </div>
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">BACKUPS</span>
+            <span style="font-size:15px;line-height:1.6;color:#C9C3B4">Dump diario de la base, restauración probada.</span>
+          </div>
+          <div style="background:#0C0E0C;padding:24px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">TESTS</span>
+            <span style="font-size:15px;line-height:1.6;color:#C9C3B4">pytest sobre modelos, permisos y tareas.</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;padding:24px 0 0;border-top:1px solid #23271F">
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#D07B45">INCIDENTE</span>
+          <span style="font-size:17px;font-weight:600">Lo que se rompió y cómo se resolvió</span>
+          <p style="font-size:15.5px;line-height:1.65;color:#C9C3B4">Un problema real en producción: cómo se detectó, qué lo causó y qué cambió después. Es el párrafo que más le dice a quien lee sobre cómo trabajás.</p>
+        </div>
+      </div>
+
+      <div id="sigue" style="scroll-margin-top:60px;border-top:2px solid #2E3329;padding:clamp(48px,6vw,76px) 0;display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;align-items:baseline;gap:22px">
+          <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.11em;color:#C0662F">06</span>
+          <h2 style="font-size:clamp(24px,2.6vw,30px);letter-spacing:-0.018em">Qué sigue</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;padding:20px 0;border-top:1px solid #23271F;border-bottom:1px solid #23271F">
+          <span style="flex:0 0 180px;display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:16px;font-weight:600">Fase 2</span>
+            <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.09em;color:#D07B45">EN DESARROLLO</span>
+          </span>
+          <p style="flex:1 1 300px;min-width:0;font-size:15.5px;line-height:1.65;color:#C9C3B4">Publicación automática de listados hacia plataformas externas, con reintentos y trazabilidad por publicación.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:2px;background:#2E3329;border-top:2px solid #2E3329">
+    <a href="Landing Oscura.dc.html#trabajo" style="background:#0C0E0C;padding:clamp(28px,3vw,40px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:10px" style-hover="background:#101310">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#9C9789">← VOLVER</span>
+      <span style="font-size:clamp(19px,2vw,22px);font-weight:600">Todos los proyectos</span>
+    </a>
+    <a href="mailto:hola@ivanvallejos.dev" style="background:#0C0E0C;padding:clamp(28px,3vw,40px) clamp(20px,4vw,60px);display:flex;flex-direction:column;gap:10px" style-hover="background:#101310">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;color:#D07B45">¿UN PROBLEMA PARECIDO? →</span>
+      <span style="font-size:clamp(19px,2vw,22px);font-weight:600">Agendar una llamada</span>
+    </a>
+  </div>
+
+  <div style="border-top:2px solid #2E3329;padding:32px clamp(20px,4vw,60px);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;font-family:'Geist Mono',monospace;font-size:12px;color:#9C9789">
+    <span>© 2026 IVÁN VALLEJOS · SOFTWARE DEVELOPER · AR</span>
+    <span>hola@ivanvallejos.dev</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 'contexto', narrow: false };
+  sections = [['contexto','Contexto'],['arquitectura','Arquitectura'],['flujo','Flujo'],['decisiones','Decisiones'],['operacion','Operación'],['sigue','Qué sigue']];
+  componentDidMount() {
+    this.onScroll = () => {
+      let cur = this.sections[0][0];
+      for (const [id] of this.sections) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top < 180) cur = id;
+      }
+      if (cur !== this.state.active) this.setState({ active: cur });
+    };
+    this.onResize = () => {
+      const n = window.innerWidth < 900;
+      if (n !== this.state.narrow) this.setState({ narrow: n });
+    };
+    document.addEventListener('scroll', this.onScroll, { passive: true, capture: true });
+    window.addEventListener('resize', this.onResize);
+    this.onResize(); this.onScroll();
+  }
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.onScroll, { capture: true });
+    window.removeEventListener('resize', this.onResize);
+  }
+  renderVals() {
+    const { active, narrow } = this.state;
+    const index = this.sections.map(([id, label], i) => ({
+      href: '#' + id, label, num: String(i + 1).padStart(2, '0'),
+      ink: id === active ? '#ECE6D9' : '#9C9789',
+      bar: id === active ? '#C0662F' : 'transparent',
+    }));
+    return { index, narrow, wide: !narrow };
+  }
+}
+</script>
+</body>
+</html>

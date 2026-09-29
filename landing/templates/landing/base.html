@@ -3,42 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Iván Vallejos — Software Developer</title>
-    <meta name="description" content="Construyo y ensamblo los sistemas detrás del producto: del modelo de datos al deploy.">
+
+    <title>{{ meta.title }}</title>
+    <meta name="description" content="{{ meta.description }}">
     <link rel="canonical" href="https://ivanvallejos.dev/">
+
+    {# Geist y Geist Mono se sirven desde el propio sitio: el handoff usa Google
+       Fonts, pero son las mismas familias. Las rutas del preload tienen que
+       coincidir con las de @font-face en fonts.css. #}
     <link rel="preload" href="{% static 'landing/fonts/Geist-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{% static 'landing/fonts/GeistMono-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
+
+    {# El orden importa: tokens define las variables que consumen las otras dos. #}
     <link rel="stylesheet" href="{% static 'landing/css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'landing/css/tokens.css' %}">
-    <link rel="stylesheet" href="{% static 'landing/css/layout.css' %}">
-    <link rel="stylesheet" href="{% static 'landing/css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/primitives.css' %}">
 </head>
 <body>
-
-{# backdrop: sistema de módulos + señales en los gaps #}
-{% include "landing/partials/backdrop.html" %}
-
-<div class="page">
-
-    {% include "landing/partials/nav.html" %}
-
-    {# 01 · hero — el partial varía por audiencia #}
-    {% include "landing/partials/hero_"|add:audience|add:".html" %}
-
-    {% include "landing/partials/ticker.html" %}
-
-    {# Composición de la variante default. Las variantes por audiencia #}
-    {# reordenan / reemplazan estos mismos partials en fases posteriores. #}
-    {% include "landing/partials/section_perfil.html" %}
-    {% include "landing/partials/section_proyectos.html" %}
-    {% include "landing/partials/interlude_blog.html" %}
-    {% comment %} {% include "landing/partials/section_confianza.html" %} {% endcomment %}
-     {# section_confianza queda fuera de la composición hasta tener testimonios/logos reales #}
-    {% include "landing/partials/section_senales.html" %}
-    {% include "landing/partials/section_links.html" %}
-    {% include "landing/partials/interlude_quote.html" %}
-    {% include "landing/partials/footer.html" %}
-
-</div>
+{% block content %}{% endblock %}
 </body>
 </html>

@@ -1,5 +1,7 @@
-import environ
+import sys
 from pathlib import Path
+
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,6 +57,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 DATABASES = {"default": env.db("DATABASE_URL")}
+
+# Los tests corren sobre SQLite en memoria: el rol de PostgreSQL de desarrollo
+# no tiene CREATEDB, así que Django no puede crear test_landing.
+# Decisión de Ivan 2026-09-28. Contrapartida a tener presente: SQLite trunca en
+# silencio los CharField, así que un test que dependa del error de longitud de
+# PostgreSQL no falla acá. Los tests de audiencia afirman sobre el valor
+# guardado y no sobre la excepción, justamente por eso.
+if sys.argv[1:2] == ["test"]:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
 
 LANGUAGE_CODE = "es"
 TIME_ZONE = "America/Argentina/Buenos_Aires"

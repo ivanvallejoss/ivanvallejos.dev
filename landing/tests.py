@@ -1,78 +1,130 @@
-import unittest
-
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 
+from .content_loader import load_content
+from .models import OutboundClick, Visit
+from .views import VARIANTS
 
-class VariantResolutionTests(TestCase):
-    """Resolución de variante por ?utm= en la view landing.
 
-    La variante se resuelve en views.py:32, filtrando el querystring contra la
-    allowlist VARIANTS (views.py:12). El string resultante se convierte en un
-    nombre de plantilla por concatenación en base.html:26.
+class LandingTests(TestCase):
+    """La landing y la atribución de audiencia por ?utm=.
 
-    El cliente se instancia con raise_request_exception=False para que un fallo
-    de render llegue como respuesta 500 en lugar de propagar la excepción: así
-    todos los tests pueden afirmar sobre el status code, incluso los rotos.
-
-    Los tres tests de variantes válidas están marcados como expectedFailure. El
-    día que exista el partial correspondiente van a pasar, unittest los va a
-    reportar como unexpected success y el runner se va a poner en rojo, lo que
-    obliga a sacar el decorador.
+    El sitio sirve una sola landing: la audiencia ya no elige plantilla, solo
+    alimenta el tracking y los links /go/?a=. Se afirma sobre la Visit guardada
+    y sobre el contexto, que es lo que consumen los links.
     """
 
-    def setUp(self):
-        self.client = Client(raise_request_exception=False)
-
-    def assertHero(self, query, hero):
-        response = self.client.get(reverse("landing") + query)
+    def test_landing_200(self):
+        response = self.client.get(reverse("landing"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, f"landing/partials/hero_{hero}.html")
+        self.assertTemplateUsed(response, "landing/landing.html")
 
-    def test_sin_parametro(self):
-        self.assertHero("", "default")
+    def test_variante_valida_se_registra_y_llega_al_contexto(self):
+        for variante in sorted(VARIANTS):
+            with self.subTest(variante=variante):
+                Visit.objects.all().delete()
+                response = self.client.get(reverse("landing") + f"?utm={variante}")
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.context["audience"], variante)
+                self.assertEqual(Visit.objects.get().audience, variante)
 
-    def test_utm_vacio(self):
-        self.assertHero("?utm=", "default")
+    def test_utm_fuera_de_la_allowlist_cae_a_default(self):
+        # Candado sobre la allowlist (views.py VARIANTS): es lo único que impide
+        # que un querystring arbitrario llegue a un CharField(max_length=20).
+        # Si alguien la reemplaza por algo permisivo, este test se cae.
+        for utm in ["", "marketing", "../../../etc/passwd", "a" * 25]:
+            with self.subTest(utm=utm):
+                Visit.objects.all().delete()
+                response = self.client.get(reverse("landing") + f"?utm={utm}")
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.context["audience"], "default")
+                self.assertEqual(Visit.objects.get().audience, "default")
 
-    def test_utm_desconocido(self):
-        self.assertHero("?utm=marketing", "default")
 
-    @unittest.expectedFailure
-    def test_variante_recruiter(self):
-        # Falla hoy: "recruiter" pasa la allowlist, pero no existe
-        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
-        # y se renderiza el hero equivocado (200, no el partial esperado).
-        # Bug preexistente registrado en docs/frontend/cimientos.md:106.
-        self.assertHero("?utm=recruiter", "recruiter")
+class GoTests(TestCase):
+    """Los redirects /go/<destino>?a=<audiencia> y su OutboundClick."""
 
-    @unittest.expectedFailure
-    def test_variante_business(self):
-        # Falla hoy: "business" pasa la allowlist, pero no existe
-        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
-        # y se renderiza el hero equivocado (200, no el partial esperado).
-        # Bug preexistente registrado en docs/frontend/cimientos.md:106.
-        self.assertHero("?utm=business", "business")
+    def test_audiencia_valida(self):
+        response = self.client.get(reverse("go", args=["github"]) + "?a=recruiter")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(OutboundClick.objects.get().audience, "recruiter")
 
-    @unittest.expectedFailure
-    def test_variante_tech(self):
-        # Falla hoy: "tech" pasa la allowlist, pero no existe
-        # hero_recruiter.html, así que resolve_hero_audience cae a "default"
-        # y se renderiza el hero equivocado (200, no el partial esperado).
-        # Bug preexistente registrado en docs/frontend/cimientos.md:106.
-        self.assertHero("?utm=tech", "tech")
+    def test_audiencia_fuera_de_la_allowlist_cae_a_default(self):
+        # El caso largo es el que daba 500 en PostgreSQL: el valor entraba sin
+        # validar en un CharField(max_length=20).
+        for a in ["", "marketing", "x" * 25]:
+            with self.subTest(a=a):
+                OutboundClick.objects.all().delete()
+                response = self.client.get(reverse("go", args=["github"]) + f"?a={a}")
+                self.assertEqual(response.status_code, 302)
+                self.assertEqual(OutboundClick.objects.get().audience, "default")
 
-    def test_utm_path_traversal(self):
-        # Candado sobre la protección que da la allowlist: el valor de ?utm= se
-        # concatena a un nombre de plantilla en base.html:26, así que un utm
-        # arbitrario llegaría al loader si views.py:32 no filtrara antes.
-        # Al caer a "default" nunca sale de la allowlist. Si alguien reemplaza
-        # el filtro por algo permisivo, este test se cae.
-        self.assertHero("?utm=../../../etc/passwd", "default")
+    def test_destino_inexistente(self):
+        response = self.client.get(reverse("go", args=["inexistente"]))
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(OutboundClick.objects.exists())
 
-    def test_variante_valida_no_rompe(self):
-        # A propósito SIN expectedFailure: deja la suite en rojo mientras una
-        # variante declarada en VARIANTS (views.py:12) siga devolviendo 500 por
-        # no tener su partial. Ver docs/frontend/cimientos.md:106.
-        response = self.client.get(reverse("landing") + "?utm=recruiter")
+    def test_cv_apunta_al_archivo_que_existe(self):
+        # El destino apuntaba a /static/cv-ivan-vallejos.pdf y el archivo del
+        # repo es landing/static/cv.ivanvallejos.pdf.
+        response = self.client.get(reverse("go", args=["cv"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/static/cv.ivanvallejos.pdf")
+
+    def test_destino_mailto(self):
+        # GoRedirect habilita el esquema mailto:, que Django bloquea por defecto.
+        response = self.client.get(reverse("go", args=["contacto"]))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response["Location"].startswith("mailto:"))
+
+
+class ContentLoaderTests(TestCase):
+    """El loader de YAML (landing/content_loader.py)."""
+
+    def test_flags(self):
+        flags = load_content("landing")["flags"]
+        self.assertIs(flags["verificable"], False)
+        self.assertIs(flags["retrato"], True)
+        self.assertIs(flags["escritura"], True)
+
+    def test_meta_llega_al_documento(self):
+        response = self.client.get(reverse("landing"))
+        meta = load_content("landing")["meta"]
+        self.assertContains(response, f"<title>{meta['title']}</title>", html=False)
+        self.assertContains(response, meta["description"])
+
+    def test_contenido_inexistente(self):
+        with self.assertRaises(FileNotFoundError):
+            load_content("no-existe")
+
+    def test_nombre_invalido(self):
+        for name in ["../config/settings", "/etc/passwd", "casos/../../x"]:
+            with self.subTest(name=name):
+                with self.assertRaises(ValueError):
+                    load_content(name)
+
+
+class MuestraTests(TestCase):
+    """El catálogo del sistema visual: /_muestra/ es solo de desarrollo."""
+
+    def test_responde_con_debug(self):
+        with self.settings(DEBUG=True):
+            response = self.client.get(reverse("muestra"))
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "landing/muestra.html")
+
+    def test_404_sin_debug(self):
+        with self.settings(DEBUG=False):
+            response = self.client.get(reverse("muestra"))
+        self.assertEqual(response.status_code, 404)
+
+    def test_las_fichas_salen_de_tokens_css(self):
+        # El catálogo parsea tokens.css en vez de declarar sus propios hex.
+        # Si el parseo se rompe, la muestra queda vacía sin avisar.
+        with self.settings(DEBUG=True):
+            response = self.client.get(reverse("muestra"))
+        colores = dict(response.context["colores"])
+        self.assertEqual(colores["--bg"], "#0C0E0C")
+        self.assertEqual(colores["--accent-soft"], "#8FB596")
+        self.assertEqual(len(colores), 18)
+        self.assertIn("--gutter", dict(response.context["medidas"]))
