@@ -42,13 +42,14 @@ y el `@font-face`.
 
 ## Breakpoints
 
-Mobile-first: la base es mobile y se crece con `min-width`. Dos breakpoints, los del
-prototipo (que allá eran JS y acá son media queries):
+Mobile-first: la base es mobile y se crece con `min-width`. Dos breakpoints son los del
+prototipo (que allá eran JS y acá son media queries); el de 1180px sale de un ajuste:
 
 | Ancho | Qué cambia |
 |---|---|
 | **820px** | nav de la landing: abajo, botón "MENÚ ☰"; arriba, los links y el CTA |
 | **900px** | índice del caso: abajo, barra horizontal sticky; arriba, columna lateral sticky |
+| **1180px** | solo el hero: arriba, retrato a la izquierda de Antecedentes y padding vertical por alto de pantalla (A-06) |
 
 ## Tokens
 
@@ -336,6 +337,19 @@ en la compu está arriba del pliegue.
 
 **CTAs:** `hero.cta_principal` y `hero.cta_secundario`, cada uno con `texto` y `destino`
 (clave de `DESTINATIONS`), armados como `/go/<destino>?a={{ audience }}`.
+
+**Desde 1180px (A-06):** para que el hero entre en la pantalla, una media query en el
+bloque del hero de `landing.css`:
+
+- el padding vertical de `.hero__main` y `.hero__aside` pasa a `clamp(32px, 6vh, 88px)`;
+- con retrato (`.hero__aside:has(.retrato)`), la celda derecha pasa a grilla de dos
+  columnas: el retrato a la izquierda, con `clamp(180px, 40%, 340px)` (40% del ancho útil,
+  sin el padding lateral), y Antecedentes en el resto, con 34px entre los dos. Quedan
+  alineados arriba (`align-items: start`) y el bloque sigue centrado en vertical
+  (`align-content: center`). Sin retrato, Antecedentes sigue a todo el ancho.
+
+Por debajo de 1180px el hero no cambia: Antecedentes quedaría tan angosto que sus filas
+pasan a dos líneas.
 
 ### Stack — `partials/stack.html` · landing, bajo el hero
 
