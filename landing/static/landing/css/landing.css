@@ -101,3 +101,24 @@
   flex-wrap: wrap;
   gap: 22px;
 }
+
+
+/* ── 01 Áreas de trabajo (#areas) ───────────────────────────── */
+/* .grid-gap con --col: 260px y el gap por defecto, clamp(28px,3.4vw,44px). */
+
+.areas {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+.area__texto {
+  color: var(--muted);
+}
