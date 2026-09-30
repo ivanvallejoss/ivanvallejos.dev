@@ -24,11 +24,12 @@ CSS de sección.
 | `landing/static/landing/css/estructura.css` | barra superior, nav con menú móvil y footer |
 | `landing/static/landing/css/landing.css` | secciones de la landing, un bloque por sección |
 | `landing/static/landing/js/nav.js` | comportamiento del menú móvil |
+| `landing/static/landing/js/tabs.js` | comportamiento de las pestañas de proyecto |
 | `landing/templates/landing/base.html` | layout del documento; `{% block head_extra %}` para el CSS y JS de cada página |
 | `landing/templates/landing/landing.html` | la landing |
-| `landing/templates/landing/partials/` | `topbar.html`, `nav.html` (con el panel del menú), `footer.html`, `hero.html`, `stack.html` |
+| `landing/templates/landing/partials/` | `topbar.html`, `nav.html` (con el panel del menú), `footer.html`, `hero.html`, `stack.html`, `areas.html`, `trabajo.html` |
 | `landing/content/sitio.yaml` | lo compartido entre la landing y los casos: identidad, CTA, mail, footer |
-| `landing/content/landing.yaml` | el contenido editable de la landing: meta, flags, barra, nav, hero, retrato, antecedentes, stack |
+| `landing/content/landing.yaml` | el contenido editable de la landing: meta, flags, barra, nav, hero, retrato, antecedentes, stack, áreas, trabajo |
 
 El orden de carga importa: `tokens.css` define las variables que consumen las otras dos.
 
@@ -233,7 +234,9 @@ con hover de relleno del sistema.
 
 `.rows` pone 2px `--rule-strong` arriba de la primera fila y 1px `--rule-soft` entre las
 demás. `.rows--closed` agrega el cierre de 2px abajo de la última — se omite cuando la
-regla de la sección siguiente ya hace de cierre.
+regla de la sección siguiente ya hace de cierre. `.rows--soft` es el bloque de 1px
+`--rule-soft` en todos los bordes, sin los 2px de los extremos: lo usa la tabla
+Alcance / Stack / Estado de cada proyecto, que en el prototipo va así (Antecedentes no).
 
 | Modificador | Cuándo |
 |---|---|
@@ -356,12 +359,85 @@ pasan a dos líneas.
 `<ul class="stack rule-top-strong t-meta">`: regla superior 2px, padding 16px + gutter,
 wrap con gap 22px. Un `<li>` por ítem de `stack`.
 
+### 01 Áreas de trabajo — `partials/areas.html` · landing, `#areas`
+
+`<section id="areas" class="section rule-top-strong areas">`: lleva su propia regla de 2px
+porque el stack no tiene regla abajo. Encabezado `.sec-head__title` y 44px hasta la grilla.
+
+| Clase | Qué es |
+|---|---|
+| `.areas` | columna con gap 44px |
+| `.grid-gap` (`--col: 260px`) | tres columnas con el gap por defecto, `clamp(28px,3.4vw,44px)` |
+| `.area` (+ `.rule-top-strong`) | columna: regla 2px, padding-top 20px, gap 12px |
+| `h3.t-sub` · `.area__texto` (+ `.t-body`) | título 19px/600 y texto 15px en `--muted` |
+
+Textos en `areas` de `landing.yaml`.
+
+### 02 Trabajo entregado — `partials/trabajo.html` · landing, `#trabajo`
+
+`<section id="trabajo" class="section rule-top-strong trabajo">`: columna con gap 40px;
+`.sec-head` con `.sec-note` a la derecha. Un `<article>` por proyecto de `trabajo.proyectos`.
+
+| Clase | Qué es |
+|---|---|
+| `.proyecto` (+ `.grid-gap.rule-top-strong`) | `--col: 320px`, `--gap: clamp(28px,4vw,52px)`, padding-top 34px: texto y panel lado a lado cuando entran |
+| `.proyecto__texto` | columna con gap 22px |
+| `.proyecto__cabeza` · `.proyecto__kicker` (+ `.t-label.t-label--kicker`) · `h3.t-project` | kicker en `--accent-soft` y título, gap 8px |
+| `.proyecto__parrafo` (+ `.t-body-l`) | 16.5px en `--text`, max-w 640px |
+| `.rows.rows--soft` > `.row.row--keyed` | Alcance / Stack / Estado; `.row__value--prod` pinta el valor en `--accent-soft` (fila con `produccion: true`) |
+| `.proyecto__acciones` | wrap, gap 12px 24px: botón del caso + `.proyecto__nota` (14px `--muted`) |
+| `.proyecto__caso` | modificador de `.btn.btn--outline-accent`: 11×18 y 14.5px como el prototipo; 44px de alto mínimo por debajo de 820px (A-01) |
+| `.proyecto__panel` · `.proyecto__leyenda` | columna de max-w 420px con gap 10px: pestañas + leyenda 12.5px `--muted` |
+
+`.row__value--prod` no reusa `.status--prod`: `.status` es mono en mayúsculas y el Estado
+es texto de fila.
+
+**"Ver el caso completo →":** solo si el proyecto tiene caso, es decir si existe
+`landing/content/casos/<slug>.yaml` (`content_loader.caso_existe`). La vista arma
+`tiene_caso` en un dict nuevo, sin tocar el que cachea el loader. Enlaza a
+`/proyectos/<slug>/` (fase 6). Hoy ningún proyecto tiene caso.
+
+#### Pestañas de proyecto — en `trabajo.html` + `js/tabs.js`
+
+| Clase | Qué es |
+|---|---|
+| `.tabs` | contenedor: borde 1px `--rule-strong`, fondo `--surface` |
+| `.tabs__list` | `role="tablist"`: flex con wrap, borde inferior 1px |
+| `.tabs__tab` (+ `.t-label.t-label--sm`) | `role="tab"`: `flex: 1 1 auto`, 13×16, mono 11px ls 0.1em, separador 1px a la derecha salvo la última. Inactiva `--muted`, activa y hover `--ink`; la activa lleva una barra de 2px `--signal` (`::before`, `top: -2px`). 44px de alto mínimo por debajo de 820px (A-01) |
+| `.tabs__panel` | `role="tabpanel"`: padding 24px, `min-height: 196px` en `content-box` |
+| `.tabs__panel-label` | label del panel, visible solo sin JS |
+| `pre.tabs__diagrama` | mono 12.5px, lh 1.75, `--text`, `overflow-x: auto` (el scroll queda en el panel) |
+| `ol.tabs__pasos` · `.tabs__paso-num` | pasos: gap 11px, 14px/1.6; número mono 11.5px `--muted` (sale del orden) |
+| `ul.tabs__decisiones` · `.tabs__decision-titulo` | decisiones: gap 14px, 14px/1.6; título 600 `--ink`, 3px hasta el texto |
+
+**Contenido:** cada pestaña de `pestanas` tiene `id`, `label` y `tipo`: `diagrama` (texto
+literal `|-` en el YAML, conserva los espacios), `pasos` (lista de textos) o `decisiones`
+(lista de `titulo` + `texto`). El `label` va en mayúscula inicial y se ve en mayúsculas por
+CSS, así el lector de pantalla no lo deletrea.
+
+**`min-height` en `content-box`:** el prototipo no usa `border-box`, así que sus 196px son
+de contenido y el panel mide 196 + 48 = 244px. Aun así el alto cambia al pasar a una
+pestaña con más contenido (Pasos, Decisiones), igual que en el prototipo.
+
+**Accesibilidad:** ids `tab-<slug>-<id>` y `panel-<slug>-<id>`, únicos en la página;
+`aria-selected`, `aria-controls` y `aria-labelledby`. Tabindex itinerante: la pestaña
+activa tiene 0 y las demás -1, y el panel lleva `tabindex="0"`: `Tab` entra por la activa
+y el siguiente pasa al panel. ←/→ (circular), Inicio y Fin mueven el foco y activan.
+
+**Estado inicial y sin JS:** mismo patrón que la nav. El HTML trae la primera pestaña
+activa y los demás paneles con `hidden`, así que con la clase `js` el primer render ya es
+el final (sin flash). Sin `js`, `html:not(.js)` oculta `.tabs__list` y muestra todos los
+paneles en orden, cada uno con su `.tabs__panel-label`, separados por 1px y sin alto
+mínimo. `tabs.js` no toca nada al cargar; cada lista es independiente.
+`.tabs__panel[hidden]` necesita regla explícita, como `.nav-menu[hidden]`.
+
 ## Lo que NO está en las primitivas
 
 Son componentes de una sola pantalla; los trae la fase que implementa esa sección, con su
 propio CSS:
 
-- **pestañas de proyecto** (landing);
+- **pestañas de proyecto** (landing) — ya implementadas en el bloque de Trabajo
+  entregado de `landing.css`;
 - **índice lateral / barra sticky**, **timeline** y **diagrama mono** (caso Bricka).
 
 El criterio: una primitiva es algo que se repite en todas las pantallas. Si aparece una
