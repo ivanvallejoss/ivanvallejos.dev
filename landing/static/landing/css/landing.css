@@ -207,9 +207,11 @@
 /* README § Interactions & Behavior. El estado lo lleva el HTML (aria-selected
    y hidden); tabs.js solo lo cambia. Sin JS: ver el final del bloque. */
 
+/* Grilla de una columna: la barra en la fila 1 y los paneles debajo.
+   minmax(0, 1fr) deja que el diagrama scrollee dentro del panel. */
 .tabs {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   border: 1px solid var(--rule-strong);
   background: var(--surface);
 }
@@ -265,9 +267,19 @@
   min-height: 196px;
 }
 
-/* Sin esto, el display del autor le gana al [hidden] del navegador. */
-.tabs__panel[hidden] {
-  display: none;
+/* A-07 (docs/design/ajustes.md): con JS, los paneles de un proyecto comparten
+   la misma celda y la fila toma el alto del más largo, así el layout no se
+   mueve al cambiar de pestaña. Los inactivos (con `hidden`) siguen en el
+   layout pero con visibility: hidden, que los saca del orden de Tab y del
+   árbol de accesibilidad. Sin JS no aplica: ver el final del bloque. */
+html.js .tabs__panel {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+html.js .tabs__panel[hidden] {
+  display: block;
+  visibility: hidden;
 }
 
 /* El label del panel solo se ve sin JS (abajo). */
