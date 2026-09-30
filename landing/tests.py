@@ -196,6 +196,100 @@ class HeroTests(TestCase):
         self.assertEqual(re.findall(r"<li>(.*?)</li>", ul.group(1)), stack)
 
 
+class AreasTests(TestCase):
+    """01 Áreas de trabajo (#areas)."""
+
+    def test_ancla_y_tres_items(self):
+        items = load_content("landing")["areas"]["items"]
+        self.assertEqual(len(items), 3)
+        html = self.client.get(reverse("landing")).content.decode()
+        self.assertIn('id="areas"', html)
+        self.assertEqual(html.count('class="area '), len(items))
+        for item in items:
+            with self.subTest(item=item["titulo"]):
+                self.assertIn(item["titulo"], html)
+                self.assertIn(item["texto"], html)
+
+
+class TrabajoTests(TestCase):
+    """02 Trabajo entregado (#trabajo) y sus pestañas.
+
+    La existencia del caso se parchea en la vista: los tests no crean archivos
+    en content/casos/.
+    """
+
+    def get(self, tiene_caso=False):
+        with mock.patch("landing.views.caso_existe", return_value=tiene_caso):
+            response = self.client.get(reverse("landing"))
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_ancla_y_dos_proyectos(self):
+        proyectos = load_content("landing")["trabajo"]["proyectos"]
+        self.assertEqual(len(proyectos), 2)
+        html = self.get()
+        self.assertIn('id="trabajo"', html)
+        self.assertEqual(len(re.findall(r'<article class="[^"]*\bproyecto\b', html)), len(proyectos))
+        for proyecto in proyectos:
+            with self.subTest(proyecto=proyecto["slug"]):
+                self.assertIn(proyecto["titulo"], html)
+
+    def test_pestanas_accesibles(self):
+        html = self.get()
+        listas = re.findall(r'role="tablist".*?</div>', html, re.S)
+        self.assertEqual(len(listas), 2)
+        for lista in listas:
+            with self.subTest(lista=lista[:80]):
+                self.assertEqual(lista.count('aria-selected="true"'), 1)
+        # Solo las pestañas: el botón del menú también lleva aria-controls.
+        controls = re.findall(r'role="tab"[^>]*aria-controls="([^"]+)"', html)
+        self.assertEqual(len(controls), 5)
+        for panel in controls:
+            with self.subTest(panel=panel):
+                self.assertRegex(html, rf'id="{panel}"[^>]*role="tabpanel"|role="tabpanel"[^>]*id="{panel}"')
+
+    def test_ids_unicos(self):
+        ids = re.findall(r'\sid="([^"]+)"', self.get())
+        repetidos = {i for i in ids if ids.count(i) > 1}
+        self.assertEqual(repetidos, set())
+
+    def test_boton_del_caso_solo_con_caso(self):
+        cta = load_content("landing")["trabajo"]["cta_caso"]
+        html = self.get(tiene_caso=False)
+        self.assertNotIn(cta, html)
+        self.assertNotIn("/proyectos/", html)
+        # Control positivo: con caso, el botón apunta a /proyectos/<slug>/.
+        html = self.get(tiene_caso=True)
+        self.assertIn(f'href="/proyectos/bricka/">{cta}</a>', html)
+
+    def test_estado_en_produccion(self):
+        # Bricka está en producción y Pipeline no: solo la fila marcada con
+        # `produccion` lleva la clase. Los valores salen del YAML (copy provisorio).
+        estado = {
+            p["slug"]: next(f for f in p["filas"] if f["label"] == "Estado")
+            for p in load_content("landing")["trabajo"]["proyectos"]
+        }
+        self.assertIs(estado["bricka"].get("produccion"), True)
+        self.assertFalse(estado["pipeline"].get("produccion"))
+        html = self.get()
+        self.assertIn(f'<span class="row__value row__value--prod">{estado["bricka"]["valor"]}</span>', html)
+        self.assertIn(f'<span class="row__value">{estado["pipeline"]["valor"]}</span>', html)
+        self.assertEqual(html.count("row__value--prod"), 1)
+
+
+class CasoExisteTests(TestCase):
+    """content_loader.caso_existe: decide si hay "Ver el caso completo"."""
+
+    def test_sin_archivo_de_caso(self):
+        self.assertIs(content_loader.caso_existe("no-existe"), False)
+
+    def test_slug_invalido(self):
+        for slug in ["../landing", "/etc/passwd", "casos/../x"]:
+            with self.subTest(slug=slug):
+                with self.assertRaises(ValueError):
+                    content_loader.caso_existe(slug)
+
+
 class ComentariosTests(TestCase):
     """{# #} de Django es de una sola línea: uno de varias líneas sale como texto.
 
