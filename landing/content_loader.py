@@ -47,3 +47,14 @@ def load_content(name):
     if not settings.DEBUG:
         _CACHE[name] = data
     return data
+
+
+def caso_existe(slug):
+    """True si el proyecto `slug` tiene caso de estudio (content/casos/<slug>.yaml).
+
+    Decide si la landing muestra "Ver el caso completo". Valida como
+    load_content: el slug sale del YAML, y en la fase 6 también de la URL.
+    """
+    if not _NAME.fullmatch(slug):
+        raise ValueError(f"Slug de caso inválido: {slug!r}")
+    return (content_dir() / "casos" / f"{slug}.yaml").is_file()

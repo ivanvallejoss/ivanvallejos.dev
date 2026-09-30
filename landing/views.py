@@ -6,7 +6,7 @@ from django.contrib.staticfiles import finders
 from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 
-from .content_loader import load_content
+from .content_loader import caso_existe, load_content
 from .models import OutboundClick, Visit
 
 
@@ -46,6 +46,15 @@ def landing(request):
         "audience": audience,
         "sitio": load_content("sitio"),
         **load_content("landing"),
+    }
+    # "Ver el caso completo" solo va si el proyecto tiene caso. Se arma un dict
+    # nuevo en vez de anotar el del YAML: con DEBUG=False el loader lo cachea.
+    trabajo = context["trabajo"]
+    context["trabajo"] = {
+        **trabajo,
+        "proyectos": [
+            {**p, "tiene_caso": caso_existe(p["slug"])} for p in trabajo["proyectos"]
+        ],
     }
     return render(request, "landing/landing.html", context)
 

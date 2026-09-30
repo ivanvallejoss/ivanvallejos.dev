@@ -1,0 +1,83 @@
+{% comment %}
+02 Trabajo entregado (#trabajo). README del handoff § Screens / Views, punto 6,
+y § Interactions & Behavior, "Pestañas de proyecto"; valores del bloque
+id="trabajo" de "Landing Oscura.dc.html".
+
+Cada proyecto es una grilla de dos columnas (texto y panel) que se apila sola
+cuando no entran dos de 320px. El panel no pasa de 420px.
+
+Pestañas: el HTML trae la primera activa y los demás paneles con `hidden`, así
+que con JS el primer render ya sale en su estado final. Sin JS, landing.css
+oculta la barra de pestañas y muestra todos los paneles en orden, cada uno con
+su label (ver docs/design/sistema.md). tabs.js solo cambia de pestaña.
+Los ids llevan el slug del proyecto: son únicos en la página.
+
+"Ver el caso completo" solo aparece si el proyecto tiene caso (tiene_caso lo
+arma la vista con content_loader.caso_existe).
+{% endcomment %}
+<section id="trabajo" class="section rule-top-strong trabajo">
+  <div class="sec-head">
+    <div class="sec-head__title">
+      <span class="sec-num">{{ trabajo.numero }}</span>
+      <h2 class="t-h2">{{ trabajo.titulo }}</h2>
+    </div>
+    <span class="sec-note">{{ trabajo.nota }}</span>
+  </div>
+
+  {% for proyecto in trabajo.proyectos %}
+  <article class="grid-gap proyecto rule-top-strong" style="--col: 320px; --gap: clamp(28px, 4vw, 52px)">
+    <div class="proyecto__texto">
+      <div class="proyecto__cabeza">
+        <span class="t-label t-label--kicker proyecto__kicker">{{ proyecto.kicker }}</span>
+        <h3 class="t-project">{{ proyecto.titulo }}</h3>
+      </div>
+      <p class="t-body-l proyecto__parrafo">{{ proyecto.parrafo }}</p>
+      <div class="rows rows--soft">
+        {% for fila in proyecto.filas %}
+        <div class="row row--keyed">
+          <span class="row__label">{{ fila.label }}</span>
+          <span class="row__value{% if fila.produccion %} row__value--prod{% endif %}">{{ fila.valor }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="proyecto__acciones">
+        {% if proyecto.tiene_caso %}
+        <a class="btn btn--outline-accent proyecto__caso" href="/proyectos/{{ proyecto.slug }}/">{{ trabajo.cta_caso }}</a>
+        {% endif %}
+        <span class="proyecto__nota">{{ proyecto.nota_codigo }}</span>
+      </div>
+    </div>
+
+    <div class="proyecto__panel">
+      <div class="tabs">
+        <div class="tabs__list" role="tablist" aria-label="{{ proyecto.titulo }}">
+          {% for pestana in proyecto.pestanas %}
+          <button type="button" role="tab" class="tabs__tab t-label t-label--sm" id="tab-{{ proyecto.slug }}-{{ pestana.id }}" aria-controls="panel-{{ proyecto.slug }}-{{ pestana.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">{{ pestana.label }}</button>
+          {% endfor %}
+        </div>
+        {% for pestana in proyecto.pestanas %}
+        <div class="tabs__panel" role="tabpanel" id="panel-{{ proyecto.slug }}-{{ pestana.id }}" aria-labelledby="tab-{{ proyecto.slug }}-{{ pestana.id }}" tabindex="0"{% if not forloop.first %} hidden{% endif %}>
+          <span class="tabs__panel-label t-label t-label--sm" aria-hidden="true">{{ pestana.label }}</span>
+          {% if pestana.tipo == "diagrama" %}
+          <pre class="tabs__diagrama">{{ pestana.contenido }}</pre>
+          {% elif pestana.tipo == "pasos" %}
+          <ol class="tabs__pasos">
+            {% for paso in pestana.contenido %}
+            <li><span class="tabs__paso-num">{{ forloop.counter|stringformat:"02d" }}</span><span>{{ paso }}</span></li>
+            {% endfor %}
+          </ol>
+          {% elif pestana.tipo == "decisiones" %}
+          <ul class="tabs__decisiones">
+            {% for decision in pestana.contenido %}
+            <li><span class="tabs__decision-titulo">{{ decision.titulo }}</span><span>{{ decision.texto }}</span></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <span class="proyecto__leyenda">{{ proyecto.leyenda }}</span>
+    </div>
+  </article>
+  {% endfor %}
+</section>
