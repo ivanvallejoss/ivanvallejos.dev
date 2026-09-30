@@ -191,7 +191,8 @@
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  line-height: 1.2;
+  /* `normal`, como el <a> del prototipo: con 1.2 cada botón medía 1px menos. */
+  line-height: normal;
   text-align: center;
   cursor: pointer;
   appearance: none;
