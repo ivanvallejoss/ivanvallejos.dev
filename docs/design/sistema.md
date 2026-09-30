@@ -401,10 +401,10 @@ es texto de fila.
 
 | Clase | Qué es |
 |---|---|
-| `.tabs` | contenedor: borde 1px `--rule-strong`, fondo `--surface` |
+| `.tabs` | contenedor: grilla de una columna (`minmax(0, 1fr)`), borde 1px `--rule-strong`, fondo `--surface` |
 | `.tabs__list` | `role="tablist"`: flex con wrap, borde inferior 1px |
 | `.tabs__tab` (+ `.t-label.t-label--sm`) | `role="tab"`: `flex: 1 1 auto`, 13×16, mono 11px ls 0.1em, separador 1px a la derecha salvo la última. Inactiva `--muted`, activa y hover `--ink`; la activa lleva una barra de 2px `--signal` (`::before`, `top: -2px`). 44px de alto mínimo por debajo de 820px (A-01) |
-| `.tabs__panel` | `role="tabpanel"`: padding 24px, `min-height: 196px` en `content-box` |
+| `.tabs__panel` | `role="tabpanel"`: padding 24px, `min-height: 196px` en `content-box`; con JS, todos en la fila 2 de la grilla (A-07) |
 | `.tabs__panel-label` | label del panel, visible solo sin JS |
 | `pre.tabs__diagrama` | mono 12.5px, lh 1.75, `--text`, `overflow-x: auto` (el scroll queda en el panel) |
 | `ol.tabs__pasos` · `.tabs__paso-num` | pasos: gap 11px, 14px/1.6; número mono 11.5px `--muted` (sale del orden) |
@@ -413,11 +413,17 @@ es texto de fila.
 **Contenido:** cada pestaña de `pestanas` tiene `id`, `label` y `tipo`: `diagrama` (texto
 literal `|-` en el YAML, conserva los espacios), `pasos` (lista de textos) o `decisiones`
 (lista de `titulo` + `texto`). El `label` va en mayúscula inicial y se ve en mayúsculas por
-CSS, así el lector de pantalla no lo deletrea.
+CSS, como el botón del menú. Chromium arma el nombre accesible con el texto ya
+transformado ("ARQUITECTURA"); cómo lo pronuncia cada lector de pantalla no se verificó.
 
-**`min-height` en `content-box`:** el prototipo no usa `border-box`, así que sus 196px son
-de contenido y el panel mide 196 + 48 = 244px. Aun así el alto cambia al pasar a una
-pestaña con más contenido (Pasos, Decisiones), igual que en el prototipo.
+**Alto del panel (A-07):** con JS, los paneles de un proyecto comparten la celda de la fila
+2 (`html.js .tabs__panel { grid-row: 2; grid-column: 1 }`), así que la fila toma el alto
+de la pestaña más larga y el layout no se mueve al cambiar de pestaña. Los inactivos
+conservan `hidden`, pero `html.js .tabs__panel[hidden]` los deja en el layout con
+`display: block; visibility: hidden`: siguen fuera del orden de Tab y del árbol de
+accesibilidad. En el prototipo, en cambio, el panel crece cuando el contenido supera el
+mínimo. Ese mínimo es `min-height: 196px` en `content-box`: el prototipo no usa
+`border-box`, así que sus 196px son de contenido y el panel mide al menos 196 + 48 = 244px.
 
 **Accesibilidad:** ids `tab-<slug>-<id>` y `panel-<slug>-<id>`, únicos en la página;
 `aria-selected`, `aria-controls` y `aria-labelledby`. Tabindex itinerante: la pestaña
@@ -428,8 +434,8 @@ y el siguiente pasa al panel. ←/→ (circular), Inicio y Fin mueven el foco y 
 activa y los demás paneles con `hidden`, así que con la clase `js` el primer render ya es
 el final (sin flash). Sin `js`, `html:not(.js)` oculta `.tabs__list` y muestra todos los
 paneles en orden, cada uno con su `.tabs__panel-label`, separados por 1px y sin alto
-mínimo. `tabs.js` no toca nada al cargar; cada lista es independiente.
-`.tabs__panel[hidden]` necesita regla explícita, como `.nav-menu[hidden]`.
+mínimo; cada panel ocupa su propia fila de la grilla. `tabs.js` no toca nada al cargar;
+cada lista es independiente.
 
 ## Lo que NO está en las primitivas
 

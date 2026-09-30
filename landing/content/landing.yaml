@@ -110,7 +110,7 @@ areas:
 #     pasos      → `contenido` es una lista de textos; el número sale del orden.
 #     decisiones → `contenido` es una lista de {titulo, texto}.
 # - El `label` de la pestaña se escribe en mayúscula inicial; se ve en
-#   mayúsculas por CSS y así el lector de pantalla no lo deletrea.
+#   mayúsculas por CSS, como el botón del menú.
 trabajo:
   numero: "02"
   titulo: "Trabajo entregado"
