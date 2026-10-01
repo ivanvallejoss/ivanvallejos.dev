@@ -193,3 +193,102 @@ trabajo:
             - titulo: "Looker Studio y no un dashboard propio"
               texto: "El cliente ya lo usaba. Mantener una app más no le sumaba nada."
       leyenda: "corrida diaria, sin intervención manual"
+
+# 03 En curso (#curso). README § Screens / Views, punto 7.
+# - `estado.tipo` es `dev` (EN DESARROLLO, siena claro) o `form` (FORMACIÓN,
+#   atenuado). `estado.texto` va en mayúscula inicial; se ve en mayúsculas por CSS.
+# - `stack` y `link` son opcionales. `link.destino` es una clave de
+#   DESTINATIONS (landing/views.py): sale como /go/<destino>?a=<audiencia>.
+curso:
+  numero: "03"
+  titulo: "En curso"
+  nota: "Actualizado 12 sep 2026"
+  items:
+    - nombre: "SmartExpense"
+      estado:
+        tipo: dev
+        texto: "En desarrollo"
+      descripcion: "Gestión de gastos sobre arquitectura asíncrona desacoplada: receiver en Go que responde de inmediato y encola con manejo idempotente (Redis SETNX + TTL), y workers en Python que categorizan y persisten en background. 151 tests validando contratos de API e integración."
+      stack: "Go · Python · Redis · ARQ · pytest"
+      link:
+        texto: "↗ GitHub"
+        destino: smartexpense
+    - nombre: "Bricka · fase 2"
+      estado:
+        tipo: dev
+        texto: "En desarrollo"
+      descripcion: "Publicación automática de listados hacia plataformas externas desde el CRM, con reintentos y trazabilidad de cada publicación."
+      stack: "Django · Celery · APIs externas"
+    - nombre: "Go e ingeniería de datos"
+      estado:
+        tipo: form
+        texto: "Formación"
+      descripcion: "Go como segundo lenguaje e ingeniería de datos. Lo que estoy incorporando, no lo que vendo todavía — lo escribo en el blog mientras avanza."
+      link:
+        texto: "↗ Notas en el blog"
+        destino: blog
+
+# 04 Escritura técnica (#escritura), detrás de flags.escritura.
+# README § Screens / Views, punto 8.
+# - Los posts se cargan a mano. `url` es la del post y va directa, sin /go/.
+#   Mientras no haya posts reales, van los del prototipo apuntando al blog.
+# - El template arma la línea de arriba como "<fecha> · <minutos> MIN".
+# - `blog.destino` es una clave de DESTINATIONS: sale como /go/blog?a=<audiencia>.
+escritura:
+  numero: "04"
+  titulo: "Escritura técnica"
+  blog:
+    texto: "↗ Ver el blog completo"
+    destino: blog
+  posts:
+    - titulo: "Cómo estructuro el logging de un Django en producción"
+      fecha: "12 JUL 2026"
+      minutos: 6
+      url: "https://blog.ivanvallejos.dev"
+    - titulo: "Idempotencia en workers: qué testeo"
+      fecha: "JUN 2026"
+      minutos: 8
+      url: "https://blog.ivanvallejos.dev"
+    - titulo: "De SQLite a PostgreSQL sin drama"
+      fecha: "MAY 2026"
+      minutos: 5
+      url: "https://blog.ivanvallejos.dev"
+
+# 05 Verificable, detrás de flags.verificable. README § Screens / Views, punto 9.
+# Copy pendiente de reescritura: "Código público" contradice que el código de
+# Bricka es privado. El flag sigue apagado hasta que Ivan lo reescriba.
+verificable:
+  label: "05 — VERIFICABLE"
+  frase: "Todo lo que afirmo acá se puede comprobar."
+  filas:
+    - label: "Cliente en producción"
+      texto: "Un equipo depende de Bricka a diario. No es un proyecto de práctica."
+    - label: "Código público"
+      texto: "Los proyectos principales están en GitHub con su historia de commits."
+    - label: "Blog activo"
+      texto: "Escribo sobre decisiones, errores y operación de sistemas reales."
+    - label: "Criterios de trabajo"
+      texto: "Testing con pytest, monitoreo con Sentry y deploy propio sobre VPS."
+
+# Contacto (#contacto). README § Screens / Views, punto 10.
+# - `tono` pinta el kicker: `accent` (verde claro) o `signal` (siena claro).
+# - `cta.variante` es el modificador de .btn: `outline` o `primary`.
+# - `cta.destino` es una clave de DESTINATIONS: sale como /go/<destino>?a=<audiencia>.
+contacto:
+  celdas:
+    - kicker: "PARA EQUIPOS Y RECRUITERS"
+      tono: accent
+      titulo: "Busco mi primer rol formal"
+      texto: "Backend con Python, con disposición a hacerme cargo de infraestructura. CV y referencias técnicas a disposición."
+      cta:
+        texto: "Descargar CV"
+        destino: cv
+        variante: outline
+    - kicker: "PARA EMPRESAS Y PARTICULARES"
+      tono: signal
+      titulo: "Tomo proyectos freelance"
+      texto: "Desarrollo a medida, con alcance y entrega acordados por escrito. Primera llamada sin costo para evaluar el problema."
+      cta:
+        texto: "Agendar una llamada"
+        destino: contacto
+        variante: primary
