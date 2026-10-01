@@ -1,0 +1,27 @@
+{% comment %}
+04 Escritura técnica (#escritura). README del handoff § Screens / Views,
+punto 8; valores del bloque id="escritura" de "Landing Oscura.dc.html".
+landing.html solo la incluye con flags.escritura.
+
+Tres columnas de 260px como mínimo que se apilan solas. Toda la celda es el
+link: el foco (:focus-visible de base.css) rodea la celda entera. El link de
+cada post va directo a su URL, sin /go/; "Ver el blog completo" sí pasa por
+/go/blog.
+{% endcomment %}
+<section id="escritura" class="section rule-top-strong escritura">
+  <div class="sec-head">
+    <div class="sec-head__title">
+      <span class="sec-num">{{ escritura.numero }}</span>
+      <h2 class="t-h2">{{ escritura.titulo }}</h2>
+    </div>
+    <a class="escritura__blog" href="{% url 'go' escritura.blog.destino %}?a={{ audience }}">{{ escritura.blog.texto }}</a>
+  </div>
+  <div class="grid-gap" style="--col: 260px">
+    {% for post in escritura.posts %}
+    <a class="post rule-top-strong" href="{{ post.url }}">
+      <span class="post__fecha">{{ post.fecha }} · {{ post.minutos }} MIN</span>
+      <h3 class="post__titulo">{{ post.titulo }}</h3>
+    </a>
+    {% endfor %}
+  </div>
+</section>

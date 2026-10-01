@@ -361,3 +361,165 @@ html:not(.js) .tabs__panel + .tabs__panel {
 html:not(.js) .tabs__panel-label {
   display: block;
 }
+
+
+/* ── 03 En curso (#curso) ───────────────────────────────────── */
+/* .section--surface con regla superior de 2px. Cada ítem es una grilla de
+   columnas de 220px como mínimo. La descripción ocupa dos: con una sola
+   columna se genera una implícita de 0px, como en el prototipo. */
+
+.curso {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.curso__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.curso__item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  padding: 28px 0;
+  align-items: start;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.curso__item:first-child {
+  border-top: 2px solid var(--rule-strong);
+}
+
+.curso__item:last-child {
+  border-bottom: 2px solid var(--rule-strong);
+}
+
+.curso__cabeza {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.curso__desc {
+  grid-column: span 2;
+  min-width: 0;
+  color: var(--text);
+}
+
+.curso__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.curso__link {
+  font-size: 14px;
+  color: var(--accent-soft);
+}
+
+
+/* ── 04 Escritura técnica (#escritura) ──────────────────────── */
+/* .grid-gap con --col: 260px y el gap por defecto, clamp(28px,3.4vw,44px).
+   Cada post es un <a> que ocupa toda la celda. */
+
+.escritura {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.escritura__blog {
+  font-size: 14.5px;
+  color: var(--accent-soft);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+.post__fecha {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.post__titulo {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+
+/* ── 05 Verificable ─────────────────────────────────────────── */
+/* Panel invertido. Las filas salen de .rows.rows--inv.rows--closed y
+   .row--inv (primitives.css): etiqueta de 240px, descripción flexible y
+   reglas de 2px en los extremos y 1px entre filas. */
+
+.verificable {
+  border-top: 2px solid var(--rule-strong);
+  background: var(--inv-bg);
+  color: var(--inv-ink);
+  padding: clamp(40px, 5vw, 60px) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.verificable__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.verificable__label {
+  color: var(--inv-label);
+}
+
+.verificable__frase {
+  font-size: 15px;
+  color: var(--inv-text);
+}
+
+.verificable__filas {
+  min-width: 0;
+}
+
+
+/* ── Contacto (#contacto) ───────────────────────────────────── */
+/* .section + .grid-div con --col: 320px. El fondo --rule-strong del
+   contenedor ocupa también su padding: esa es la banda alrededor de las
+   celdas. Los CTAs son .btn--compact (A-01) y el outline vira a verde claro
+   en hover (A-04). */
+
+.contacto__celda {
+  padding: clamp(28px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contacto__kicker--accent { color: var(--accent-soft); }
+.contacto__kicker--signal { color: var(--signal-soft); }
+
+/* Tamaño propio del prototipo, fuera de la escala tipográfica. */
+.contacto__titulo {
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+}
+
+.contacto__texto {
+  color: var(--muted);
+}
+
+.contacto__cta {
+  align-self: flex-start;
+  margin-top: 8px;
+}

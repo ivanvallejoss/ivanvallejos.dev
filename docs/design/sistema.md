@@ -437,6 +437,94 @@ paneles en orden, cada uno con su `.tabs__panel-label`, separados por 1px y sin 
 mínimo; cada panel ocupa su propia fila de la grilla. `tabs.js` no toca nada al cargar;
 cada lista es independiente.
 
+### 03 En curso — `partials/curso.html` · landing, `#curso`
+
+`<section id="curso" class="section section--surface rule-top-strong curso">`: columna con
+gap 40px; `.sec-head` con la nota "Actualizado…" en `.sec-note`. Un `.curso__item` por ítem
+de `curso.items`.
+
+| Clase | Qué es |
+|---|---|
+| `.curso__items` | columna sin gap: las reglas las ponen los ítems |
+| `.curso__item` | grilla `repeat(auto-fit, minmax(min(100%,220px),1fr))`, gap `clamp(20px,3vw,44px)`, padding 28px 0, alineada arriba. 1px `--rule-soft` arriba; el primero lleva 2px `--rule-strong` arriba y el último también 2px abajo |
+| `.curso__cabeza` · `h3.t-sub` · `.status.status--dev` / `.status--form` | nombre y estado, gap 8px. El estado va en mayúscula inicial en el YAML y en mayúsculas por CSS |
+| `.curso__desc` (+ `.t-body-m`) | 15.5px en `--text`, `grid-column: span 2`, `min-width: 0` |
+| `.curso__meta` · `.t-meta` · `.curso__link` | columna con gap 10px: stack (opcional) y link 14px `--accent-soft` (opcional) |
+
+**Columnas:** la grilla se reacomoda como en el prototipo, según el ancho de pantalla:
+
+- desde ~1064px, cuatro: nombre, descripción (dos columnas) y meta en una fila;
+- entre ~768 y ~1064px, tres: nombre y descripción arriba, meta debajo del nombre;
+- entre ~500 y ~768px, dos: nombre, la descripción en su propia fila y la meta debajo;
+- por debajo de ~500px, una: el `span 2` crea una columna implícita de 0px y no hay desborde,
+  pero el gap también la rodea: el nombre y la meta quedan ~20px más angostos que la
+  descripción (a 375px, 315px contra 335px). Es lo que hace el prototipo; no se corrigió.
+
+**Contenido:** `curso.items` con `nombre`, `estado` (`tipo`: `dev` | `form`, y `texto`),
+`descripcion`, `stack` opcional y `link` opcional (`texto` + `destino`, clave de
+`DESTINATIONS`). El link sale como `/go/<destino>?a={{ audience }}`: "↗ GitHub" a
+`/go/smartexpense` y "↗ Notas en el blog" a `/go/blog`.
+
+### 04 Escritura técnica — `partials/escritura.html` · landing, `#escritura`
+
+Detrás de `flags.escritura`: el `{% if %}` está en `landing.html`, y la nav ya oculta su
+link. `<section id="escritura" class="section rule-top-strong escritura">`: columna con gap
+36px.
+
+| Clase | Qué es |
+|---|---|
+| `.escritura__blog` | link del encabezado, a la derecha: 14.5px `--accent-soft`, a `/go/blog?a=…` |
+| `.grid-gap` (`--col: 260px`) | tres columnas con el gap por defecto, `clamp(28px,3.4vw,44px)` |
+| `a.post` (+ `.rule-top-strong`) | toda la celda es el link: flex en columna, gap 12px, padding-top 20px. El `:focus-visible` de base.css rodea la celda entera |
+| `.post__fecha` · `h3.post__titulo` | fecha mono 11.5px `--muted`; título 18px/600, lh 1.35 |
+
+**Columnas:** tres desde ~915px de pantalla; entre ~596 y ~915px, dos, con el tercer post
+solo en la segunda fila (igual que el prototipo); una por debajo de ~596px.
+
+**Contenido:** `escritura.posts` se carga a mano con `titulo`, `fecha` (texto, tal cual se
+muestra), `minutos` y `url`. El template arma "`<fecha>` · `<minutos>` MIN". El link de cada
+post va **directo** a su `url`, sin `/go/`. Hasta que haya posts reales, son los tres del
+prototipo y apuntan a la home del blog.
+
+### 05 Verificable — `partials/verificable.html` · landing, sin id
+
+Detrás de `flags.verificable`, **apagado**: el copy ("Código público") contradice que el
+código de Bricka es privado y lo reescribe Ivan. Panel invertido sin título grande.
+
+| Clase | Qué es |
+|---|---|
+| `.verificable` | `border-top` 2px `--rule-strong`, fondo `--inv-bg`, texto `--inv-ink`, padding `clamp(40px,5vw,60px)` + gutter, columna con gap 26px |
+| `.verificable__head` | flex con wrap, baseline, `space-between`, gap 16px |
+| `.verificable__label` (+ `.t-label`) | "05 — VERIFICABLE": mono 11.5px, ls 0.11em, `--inv-label` |
+| `.verificable__frase` | 15px `--inv-text` |
+| `.rows.rows--inv.rows--closed.verificable__filas` > `.row.row--inv` | las primitivas de filas invertidas: etiqueta `flex: 0 0 240px` 15px/600, descripción `flex: 1 1 300px` 15px/1.6 `--inv-text`, gap 6px 40px, padding 19px 0, 2px `--inv-rule-strong` en los extremos y 1px `--inv-rule-soft` entre filas. `.verificable__filas` agrega `min-width: 0` |
+
+**Contenido:** `verificable` con `label`, `frase` y `filas` (`label` + `texto`).
+
+### Contacto — `partials/contacto.html` · landing, `#contacto`
+
+`<section id="contacto" class="section grid-div contacto" style="--col: 320px">`. `.section`
+pone el padding `--pad-section` + gutter, y `.grid-div` el fondo `--rule-strong`, el gap de
+2px y el fondo `--bg` de las celdas. Como el fondo del contenedor también pinta su padding,
+queda una **banda** del color de las reglas alrededor de las dos celdas. Lado a lado cuando
+entran dos de 320px; si no, apiladas, con la regla de 2px entre las dos.
+
+| Clase | Qué es |
+|---|---|
+| `.contacto__celda` | padding `clamp(28px,3vw,40px)`, columna con gap 14px |
+| `.t-label.t-label--kicker.contacto__kicker--accent` / `--signal` | kicker en `--accent-soft` (recruiters) o `--signal-soft` (empresas) |
+| `h2.contacto__titulo` | `clamp(20px,2.2vw,24px)`/600, ls -0.018em. Valor local: no está en la escala |
+| `.contacto__texto` (+ `.t-body`) | 15px/1.65 en `--muted` |
+| `.btn.btn--outline` / `.btn--primary` + `.btn--compact.contacto__cta` | `align-self: flex-start`, margin-top 8px. ≥44px de alto por debajo de 820px (A-01); el outline vira a `--accent-soft` en hover (A-04) y el primario no cambia |
+
+**Contenido:** `contacto.celdas` con `kicker`, `tono` (`accent` | `signal`), `titulo`, `texto` y
+`cta` (`texto`, `destino` y `variante`: `outline` | `primary`). "Descargar CV" va a
+`/go/cv?a=…` y "Agendar una llamada" a `/go/contacto?a=…`.
+
+**Transiciones:** Escritura y Verificable abren con 2px `--rule-strong`; Contacto no lleva
+regla propia, su banda empieza donde termina la sección anterior. La regla de 2px del footer
+se funde con la banda. Todo igual que el prototipo.
+
 ## Lo que NO está en las primitivas
 
 Son componentes de una sola pantalla; los trae la fase que implementa esa sección, con su

@@ -2,9 +2,9 @@
 {% load static %}
 
 {% comment %}
-Secciones del <main>: hero y stack (fase 3), 01 Áreas y 02 Trabajo (fase 4).
-Llegan en las fases siguientes: 03 En curso, 04 Escritura, 05 Verificable y
-contacto.
+Secciones del <main>: hero y stack (fase 3), 01 Áreas y 02 Trabajo (fase 4),
+03 En curso, 04 Escritura, 05 Verificable y contacto (fase 5). Escritura y
+Verificable van detrás de sus flags.
 Ver docs/design/handoff/README.md § Screens / Views.
 {% endcomment %}
 
@@ -23,6 +23,10 @@ Ver docs/design/handoff/README.md § Screens / Views.
 {% include "landing/partials/stack.html" %}
 {% include "landing/partials/areas.html" %}
 {% include "landing/partials/trabajo.html" %}
+{% include "landing/partials/curso.html" %}
+{% if flags.escritura %}{% include "landing/partials/escritura.html" %}{% endif %}
+{% if flags.verificable %}{% include "landing/partials/verificable.html" %}{% endif %}
+{% include "landing/partials/contacto.html" %}
 </main>
 {% include "landing/partials/footer.html" %}
 {% endblock %}

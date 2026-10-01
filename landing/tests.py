@@ -277,6 +277,160 @@ class TrabajoTests(TestCase):
         self.assertEqual(html.count("row__value--prod"), 1)
 
 
+def seccion(html, marca):
+    """El <section> que abre con `marca` (p. ej. 'id="curso"'), hasta su cierre.
+
+    Ninguna sección de la landing anida otra, así que el primer </section>
+    después de la apertura es el suyo.
+    """
+    m = re.search(rf"<section [^>]*{marca}[^>]*>.*?</section>", html, re.S)
+    return m.group() if m else None
+
+
+class PaginaTests(TestCase):
+    """La página completa con las secciones de la fase 5."""
+
+    def get(self):
+        response = self.client.get(reverse("landing"))
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_anclas_un_h1_e_ids_unicos(self):
+        # Con todos los flags de sección prendidos: es el caso con más ids.
+        for flags in [{}, {"escritura": True, "verificable": True}]:
+            with self.subTest(flags=flags), con_flags(**flags):
+                html = self.get()
+                for ancla in ["curso", "escritura", "contacto"]:
+                    self.assertIn(f'id="{ancla}"', html)
+                self.assertEqual(html.count("<h1"), 1)
+                ids = re.findall(r'\sid="([^"]+)"', html)
+                self.assertEqual({i for i in ids if ids.count(i) > 1}, set())
+
+
+class CursoTests(TestCase):
+    """03 En curso (#curso)."""
+
+    def test_tres_items(self):
+        items = load_content("landing")["curso"]["items"]
+        self.assertEqual(len(items), 3)
+        html = seccion(self.client.get(reverse("landing")).content.decode(), 'id="curso"')
+        self.assertIsNotNone(html)
+        self.assertEqual(html.count('class="curso__item"'), len(items))
+        for item in items:
+            with self.subTest(item=item["nombre"]):
+                self.assertIn(item["nombre"], html)
+                self.assertIn(
+                    f'<span class="status status--{item["estado"]["tipo"]}">{item["estado"]["texto"]}</span>',
+                    html,
+                )
+
+    def test_link_de_smartexpense(self):
+        html = self.client.get(reverse("landing")).content.decode()
+        self.assertIn('href="/go/smartexpense?a=default">↗ GitHub</a>', html)
+
+
+class EscrituraTests(TestCase):
+    """04 Escritura técnica (#escritura), detrás de flags.escritura."""
+
+    def get(self, query=""):
+        response = self.client.get(reverse("landing") + query)
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_sin_flag_no_hay_seccion(self):
+        titulo = load_content("landing")["escritura"]["titulo"]
+        with con_flags(escritura=False):
+            html = self.get()
+        self.assertNotIn('id="escritura"', html)
+        self.assertNotIn(titulo, html)
+        # Control positivo.
+        with con_flags(escritura=True):
+            html = self.get()
+        self.assertIn('id="escritura"', html)
+        self.assertIn(titulo, html)
+
+    def test_links_al_blog_pasan_por_go(self):
+        escritura = load_content("landing")["escritura"]
+        notas = next(
+            i["link"]
+            for i in load_content("landing")["curso"]["items"]
+            if i.get("link", {}).get("destino") == "blog"
+        )
+        for query, audiencia in [("", "default"), ("?utm=recruiter", "recruiter")]:
+            with self.subTest(audiencia=audiencia):
+                html = self.get(query)
+                self.assertIn(f'href="/go/blog?a={audiencia}">{escritura["blog"]["texto"]}</a>', html)
+                self.assertIn(f'href="/go/blog?a={audiencia}">{notas["texto"]}</a>', html)
+
+    def test_posts_van_directo_a_su_url(self):
+        posts = load_content("landing")["escritura"]["posts"]
+        self.assertEqual(len(posts), 3)
+        html = seccion(self.get(), 'id="escritura"')
+        self.assertIsNotNone(html)
+        links = re.findall(r'<a class="post[^"]*" href="([^"]*)"', html)
+        self.assertEqual(links, [p["url"] for p in posts])
+        for link in links:
+            with self.subTest(link=link):
+                self.assertNotIn("/go/", link)
+        for post in posts:
+            with self.subTest(post=post["titulo"]):
+                self.assertIn(post["titulo"], html)
+                self.assertIn(f'{post["fecha"]} · {post["minutos"]} MIN', html)
+
+
+class VerificableTests(TestCase):
+    """05 Verificable, detrás de flags.verificable (apagado en el YAML).
+
+    El flag se prende parcheando el loader: el YAML real no se toca.
+    """
+
+    def get(self):
+        response = self.client.get(reverse("landing"))
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_sin_flag_no_se_renderiza(self):
+        verificable = load_content("landing")["verificable"]
+        with con_flags(verificable=False):
+            html = self.get()
+        self.assertNotIn('class="verificable"', html)
+        self.assertNotIn(verificable["label"], html)
+
+    def test_con_flag_se_renderiza(self):
+        verificable = load_content("landing")["verificable"]
+        self.assertEqual(len(verificable["filas"]), 4)
+        with con_flags(verificable=True):
+            html = seccion(self.get(), 'class="verificable"')
+        self.assertIsNotNone(html)
+        self.assertIn(verificable["label"], html)
+        self.assertIn(verificable["frase"], html)
+        self.assertEqual(html.count('class="row row--inv"'), len(verificable["filas"]))
+        for fila in verificable["filas"]:
+            with self.subTest(fila=fila["label"]):
+                self.assertIn(f'<span class="row__label">{fila["label"]}</span>', html)
+                self.assertIn(f'<span class="row__value">{fila["texto"]}</span>', html)
+
+
+class ContactoTests(TestCase):
+    """Contacto (#contacto): dos celdas con CTA por /go/."""
+
+    def test_ctas_llevan_la_audiencia(self):
+        celdas = load_content("landing")["contacto"]["celdas"]
+        self.assertEqual(len(celdas), 2)
+        self.assertEqual([c["cta"]["destino"] for c in celdas], ["cv", "contacto"])
+        for query, audiencia in [("", "default"), ("?utm=recruiter", "recruiter")]:
+            with self.subTest(audiencia=audiencia):
+                html = seccion(self.client.get(reverse("landing") + query).content.decode(), 'id="contacto"')
+                self.assertIsNotNone(html)
+                for celda in celdas:
+                    cta = celda["cta"]
+                    self.assertIn(
+                        f'class="btn btn--{cta["variante"]} btn--compact contacto__cta" '
+                        f'href="/go/{cta["destino"]}?a={audiencia}">{cta["texto"]}</a>',
+                        html,
+                    )
+
+
 class CasoExisteTests(TestCase):
     """content_loader.caso_existe: decide si hay "Ver el caso completo"."""
 
