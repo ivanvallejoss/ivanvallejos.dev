@@ -361,3 +361,60 @@ html:not(.js) .tabs__panel + .tabs__panel {
 html:not(.js) .tabs__panel-label {
   display: block;
 }
+
+
+/* ── 03 En curso (#curso) ───────────────────────────────────── */
+/* .section--surface con regla superior de 2px. Cada ítem es una grilla de
+   columnas de 220px como mínimo. La descripción ocupa dos: con una sola
+   columna se genera una implícita de 0px, como en el prototipo. */
+
+.curso {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.curso__items {
+  display: flex;
+  flex-direction: column;
+}
+
+.curso__item {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  padding: 28px 0;
+  align-items: start;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.curso__item:first-child {
+  border-top: 2px solid var(--rule-strong);
+}
+
+.curso__item:last-child {
+  border-bottom: 2px solid var(--rule-strong);
+}
+
+.curso__cabeza {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.curso__desc {
+  grid-column: span 2;
+  min-width: 0;
+  color: var(--text);
+}
+
+.curso__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.curso__link {
+  font-size: 14px;
+  color: var(--accent-soft);
+}

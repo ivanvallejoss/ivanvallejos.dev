@@ -1,0 +1,34 @@
+{% comment %}
+03 En curso (#curso). README del handoff § Screens / Views, punto 7; valores
+del bloque id="curso" de "Landing Oscura.dc.html".
+
+Cada ítem es una grilla de columnas de 220px como mínimo: nombre y estado,
+descripción en dos columnas y la meta (stack y link). Con una sola columna,
+el span 2 de la descripción genera una columna implícita de 0px, como en el
+prototipo: no desborda. Reglas: 2px arriba del primero, 1px suave entre ítems
+y 2px abajo del último.
+{% endcomment %}
+<section id="curso" class="section section--surface rule-top-strong curso">
+  <div class="sec-head">
+    <div class="sec-head__title">
+      <span class="sec-num">{{ curso.numero }}</span>
+      <h2 class="t-h2">{{ curso.titulo }}</h2>
+    </div>
+    <span class="sec-note">{{ curso.nota }}</span>
+  </div>
+  <div class="curso__items">
+    {% for item in curso.items %}
+    <div class="curso__item">
+      <div class="curso__cabeza">
+        <h3 class="t-sub">{{ item.nombre }}</h3>
+        <span class="status status--{{ item.estado.tipo }}">{{ item.estado.texto }}</span>
+      </div>
+      <p class="t-body-m curso__desc">{{ item.descripcion }}</p>
+      <div class="curso__meta">
+        {% if item.stack %}<span class="t-meta">{{ item.stack }}</span>{% endif %}
+        {% if item.link %}<a class="curso__link" href="{% url 'go' item.link.destino %}?a={{ audience }}">{{ item.link.texto }}</a>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
