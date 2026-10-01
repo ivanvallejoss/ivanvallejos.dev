@@ -1,0 +1,23 @@
+{% comment %}
+05 Verificable. README del handoff § Screens / Views, punto 9; valores del
+panel que sigue a Escritura en "Landing Oscura.dc.html" (no tiene id).
+landing.html solo lo incluye con flags.verificable, apagado hasta que se
+reescriba el copy: "Código público" contradice que Bricka es privado.
+
+Panel invertido, sin título grande: una fila con el label y la frase, y las
+filas de .rows--inv / .row--inv (primitives.css).
+{% endcomment %}
+<section class="verificable">
+  <div class="verificable__head">
+    <span class="t-label verificable__label">{{ verificable.label }}</span>
+    <span class="verificable__frase">{{ verificable.frase }}</span>
+  </div>
+  <div class="rows rows--inv rows--closed verificable__filas">
+    {% for fila in verificable.filas %}
+    <div class="row row--inv">
+      <span class="row__label">{{ fila.label }}</span>
+      <span class="row__value">{{ fila.texto }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>

@@ -453,3 +453,40 @@ html:not(.js) .tabs__panel-label {
   font-weight: 600;
   line-height: 1.35;
 }
+
+
+/* ── 05 Verificable ─────────────────────────────────────────── */
+/* Panel invertido. Las filas salen de .rows.rows--inv.rows--closed y
+   .row--inv (primitives.css): etiqueta de 240px, descripción flexible y
+   reglas de 2px en los extremos y 1px entre filas. */
+
+.verificable {
+  border-top: 2px solid var(--rule-strong);
+  background: var(--inv-bg);
+  color: var(--inv-ink);
+  padding: clamp(40px, 5vw, 60px) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.verificable__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.verificable__label {
+  color: var(--inv-label);
+}
+
+.verificable__frase {
+  font-size: 15px;
+  color: var(--inv-text);
+}
+
+.verificable__filas {
+  min-width: 0;
+}
