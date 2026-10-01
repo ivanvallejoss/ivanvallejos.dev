@@ -24,6 +24,7 @@ Ver docs/design/handoff/README.md § Screens / Views.
 {% include "landing/partials/areas.html" %}
 {% include "landing/partials/trabajo.html" %}
 {% include "landing/partials/curso.html" %}
+{% if flags.escritura %}{% include "landing/partials/escritura.html" %}{% endif %}
 </main>
 {% include "landing/partials/footer.html" %}
 {% endblock %}

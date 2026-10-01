@@ -418,3 +418,38 @@ html:not(.js) .tabs__panel-label {
   font-size: 14px;
   color: var(--accent-soft);
 }
+
+
+/* ── 04 Escritura técnica (#escritura) ──────────────────────── */
+/* .grid-gap con --col: 260px y el gap por defecto, clamp(28px,3.4vw,44px).
+   Cada post es un <a> que ocupa toda la celda. */
+
+.escritura {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.escritura__blog {
+  font-size: 14.5px;
+  color: var(--accent-soft);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+.post__fecha {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.post__titulo {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
