@@ -1,0 +1,22 @@
+{% comment %}
+01 Áreas de trabajo (#areas). README del handoff § Screens / Views, punto 5;
+valores del bloque id="areas" de "Landing Oscura.dc.html".
+
+Lleva su propia regla superior de 2px: el stack no tiene regla abajo.
+Tres columnas separadas por aire, de 260px como mínimo: se apilan solas
+cuando no entran.
+{% endcomment %}
+<section id="areas" class="section rule-top-strong areas">
+  <div class="sec-head__title">
+    <span class="sec-num">{{ areas.numero }}</span>
+    <h2 class="t-h2">{{ areas.titulo }}</h2>
+  </div>
+  <div class="grid-gap" style="--col: 260px">
+    {% for item in areas.items %}
+    <div class="area rule-top-strong">
+      <h3 class="t-sub">{{ item.titulo }}</h3>
+      <p class="t-body area__texto">{{ item.texto }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>

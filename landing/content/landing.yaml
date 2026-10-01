@@ -88,3 +88,108 @@ stack:
   - "pytest"
   - "Sentry"
   - "Cloudflare R2"
+
+# 01 Áreas de trabajo (#areas). README § Screens / Views, punto 5.
+areas:
+  numero: "01"
+  titulo: "Áreas de trabajo"
+  items:
+    - titulo: "Aplicaciones y APIs"
+      texto: "Django y FastAPI: modelado de datos, integraciones, colas de tareas y testing con pytest."
+    - titulo: "Infraestructura y operación"
+      texto: "Deploy sobre Linux, Docker y VPS, con observabilidad y monitoreo de errores en Sentry."
+    - titulo: "Datos y reporting"
+      texto: "Ingesta y limpieza con Python y Polars, con salida a tableros para decisiones del negocio."
+
+# 02 Trabajo entregado (#trabajo). README § Screens / Views, punto 6.
+# - `slug` arma los ids de las pestañas y la URL del caso (/proyectos/<slug>/).
+#   "Ver el caso completo" solo aparece si existe content/casos/<slug>.yaml.
+# - En `filas`, `produccion: true` pinta el valor en verde claro.
+# - Cada pestaña tiene `tipo`:
+#     diagrama   → `contenido` es texto literal (|-): conserva los espacios.
+#     pasos      → `contenido` es una lista de textos; el número sale del orden.
+#     decisiones → `contenido` es una lista de {titulo, texto}.
+# - El `label` de la pestaña se escribe en mayúscula inicial; se ve en
+#   mayúsculas por CSS, como el botón del menú.
+trabajo:
+  numero: "02"
+  titulo: "Trabajo entregado"
+  nota: "Proyectos operando para terceros."
+  cta_caso: "Ver el caso completo →"
+  proyectos:
+    - slug: bricka
+      kicker: "CLIENTE · INMOBILIARIA"
+      titulo: "Bricka — CRM inmobiliario"
+      parrafo: "CRM a medida para la gestión de propiedades y sus fotos en object storage, operado a diario por el equipo de la agencia. Corre en producción sobre VPS propio con monitoreo de errores."
+      filas:
+        - label: "Alcance"
+          valor: "Datos, aplicación, deploy y operación"
+        - label: "Stack"
+          valor: "Django · PostGIS · Celery · Cloudflare R2 · Sentry"
+        - label: "Estado"
+          valor: "En producción desde 2025"
+          produccion: true
+      nota_codigo: "Código privado"
+      pestanas:
+        - id: arquitectura
+          label: "Arquitectura"
+          tipo: diagrama
+          contenido: |-
+            Equipo de la agencia
+              └ Django · PostGIS
+                  ├ Celery — fotos → R2
+                  └ Sentry — errores
+                      └ VPS Linux · Docker
+        - id: flujo
+          label: "Flujo"
+          tipo: pasos
+          contenido:
+            - "El agente carga la propiedad y sus fotos desde el panel."
+            - "Celery procesa las imágenes fuera del request y las sube a R2."
+            - "La propiedad queda geolocalizada y buscable por zona."
+            - "Si algo falla, el error llega a Sentry antes que el reclamo."
+        - id: decisiones
+          label: "Decisiones"
+          tipo: decisiones
+          contenido:
+            - titulo: "PostGIS y no lat/lng a mano"
+              texto: "La búsqueda por zona es el caso de uso central; delegarla a la base evita filtrar en Python."
+            - titulo: "Object storage desde el día uno"
+              texto: "Las fotos son el volumen del sistema. En disco del VPS, el backup se vuelve inmanejable."
+            - titulo: "Deploy propio, no PaaS"
+              texto: "Costo previsible para una agencia chica, a cambio de hacerme cargo de la operación."
+      leyenda: "un solo servicio, operación propia"
+
+    - slug: pipeline
+      kicker: "CLIENTE · COMERCIO"
+      titulo: "Pipeline de ventas y tablero"
+      parrafo: "Ingesta y limpieza de ventas con Polars y salida a un tablero en Looker Studio para el seguimiento diario del negocio."
+      filas:
+        - label: "Alcance"
+          valor: "Ingesta, limpieza y reporte"
+        - label: "Stack"
+          valor: "Python · Polars · Looker Studio"
+        - label: "Estado"
+          valor: "Entregado · en uso"
+      nota_codigo: "Código privado — disponible a pedido en una llamada."
+      pestanas:
+        - id: flujo
+          label: "Flujo"
+          tipo: diagrama
+          contenido: |-
+            Exports de ventas
+              └ Python · Polars
+                  ├ normalización
+                  └ validación
+                      └ Looker Studio
+        - id: decisiones
+          label: "Decisiones"
+          tipo: decisiones
+          contenido:
+            - titulo: "Polars sobre pandas"
+              texto: "Los exports crecen mes a mes; el consumo de memoria dejó de ser un problema."
+            - titulo: "Validar antes de cargar"
+              texto: "Un dato roto en el tablero cuesta más que una corrida que falla temprano y avisa."
+            - titulo: "Looker Studio y no un dashboard propio"
+              texto: "El cliente ya lo usaba. Mantener una app más no le sumaba nada."
+      leyenda: "corrida diaria, sin intervención manual"

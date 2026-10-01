@@ -191,7 +191,8 @@
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  line-height: 1.2;
+  /* `normal`, como el <a> del prototipo: con 1.2 cada botón medía 1px menos. */
+  line-height: normal;
   text-align: center;
   cursor: pointer;
   appearance: none;
@@ -272,6 +273,11 @@
 .rows--closed > .row:last-child {
   border-bottom: 2px solid var(--rule-strong);
 }
+
+/* Bloque de 1px suave en todos los bordes, sin los 2px de los extremos
+   (Alcance / Stack / Estado de cada proyecto). */
+.rows--soft > .row:first-child { border-top: 1px solid var(--rule-soft); }
+.rows--soft > .row:last-child  { border-bottom: 1px solid var(--rule-soft); }
 
 /* Etiqueta y valor a los extremos (Antecedentes). */
 .row--split {

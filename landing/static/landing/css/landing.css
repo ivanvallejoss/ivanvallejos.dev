@@ -101,3 +101,263 @@
   flex-wrap: wrap;
   gap: 22px;
 }
+
+
+/* ── 01 Áreas de trabajo (#areas) ───────────────────────────── */
+/* .grid-gap con --col: 260px y el gap por defecto, clamp(28px,3.4vw,44px). */
+
+.areas {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+}
+
+.area__texto {
+  color: var(--muted);
+}
+
+
+/* ── 02 Trabajo entregado (#trabajo) ────────────────────────── */
+/* Cada proyecto es un .grid-gap con --col: 320px y --gap: clamp(28px,4vw,52px). */
+
+.trabajo {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.proyecto {
+  padding-top: 34px;
+}
+
+.proyecto__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.proyecto__cabeza {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.proyecto__kicker {
+  color: var(--accent-soft);
+}
+
+.proyecto__parrafo {
+  max-width: 640px;
+  color: var(--text);
+}
+
+/* Estado de un proyecto en producción. No es .status: aquel es mono en
+   mayúsculas y acá el valor es texto de fila. Lleva .row--keyed para ganarle
+   al color de valor de la primitiva. */
+.row--keyed .row__value--prod {
+  color: var(--accent-soft);
+}
+
+.proyecto__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+/* Botón del caso: el prototipo usa 11×18 y 14.5px/500. Por debajo de 820px
+   conserva los 44px de .btn (A-01); desde 820px vuelve al tamaño del prototipo. */
+.proyecto__caso {
+  padding: 11px 18px;
+  font-size: 14.5px;
+}
+
+.proyecto__nota {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.proyecto__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+}
+
+.proyecto__leyenda {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+@media (min-width: 820px) {
+  .proyecto__caso {
+    min-height: 0;
+  }
+}
+
+
+/* ── Pestañas de proyecto ───────────────────────────────────── */
+/* README § Interactions & Behavior. El estado lo lleva el HTML (aria-selected
+   y hidden); tabs.js solo lo cambia. Sin JS: ver el final del bloque. */
+
+/* Grilla de una columna: la barra en la fila 1 y los paneles debajo.
+   minmax(0, 1fr) deja que el diagrama scrollee dentro del panel. */
+.tabs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+}
+
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+/* Tipografía de .t-label.t-label--sm (mono 11px, ls 0.1em, mayúsculas). */
+.tabs__tab {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 44px;   /* A-01: hit target por debajo de 820px */
+  padding: 13px 16px;
+  appearance: none;
+  background: none;
+  border: none;
+  border-top: 2px solid transparent;
+  border-right: 1px solid var(--rule-strong);
+  text-align: left;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.tabs__tab:last-child {
+  border-right: none;
+}
+
+.tabs__tab:hover,
+.tabs__tab[aria-selected="true"] {
+  color: var(--ink);
+}
+
+/* Barra de la pestaña activa, sobre el borde transparente de 2px. */
+.tabs__tab[aria-selected="true"]::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--signal);
+}
+
+/* min-height: que el layout no salte al cambiar de pestaña. El prototipo no
+   usa border-box: sus 196px son de contenido y el panel mide 196 + 48 = 244px.
+   content-box conserva el valor del prototipo y el alto que se ve. */
+.tabs__panel {
+  box-sizing: content-box;
+  padding: 24px;
+  min-height: 196px;
+}
+
+/* A-07 (docs/design/ajustes.md): con JS, los paneles de un proyecto comparten
+   la misma celda y la fila toma el alto del más largo, así el layout no se
+   mueve al cambiar de pestaña. Los inactivos (con `hidden`) siguen en el
+   layout pero con visibility: hidden, que los saca del orden de Tab y del
+   árbol de accesibilidad. Sin JS no aplica: ver el final del bloque. */
+html.js .tabs__panel {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+html.js .tabs__panel[hidden] {
+  display: block;
+  visibility: hidden;
+}
+
+/* El label del panel solo se ve sin JS (abajo). */
+.tabs__panel-label {
+  display: none;
+}
+
+/* Diagrama: el scroll horizontal queda dentro del panel, no en la página. */
+.tabs__diagrama {
+  margin: 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.tabs__pasos,
+.tabs__decisiones {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.tabs__pasos      { gap: 11px; }
+.tabs__decisiones { gap: 14px; }
+
+.tabs__pasos li {
+  display: flex;
+  gap: 12px;
+}
+
+.tabs__paso-num {
+  flex: none;
+  padding-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.tabs__decisiones li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tabs__decision-titulo {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (min-width: 820px) {
+  .tabs__tab {
+    min-height: 0;
+  }
+}
+
+/* Sin JS no hay pestañas: la barra se oculta y todos los paneles se ven en
+   orden, cada uno con su label y separados por 1px. Sin cambio de pestaña no
+   hay salto que evitar, así que se suelta el alto mínimo. */
+html:not(.js) .tabs__list {
+  display: none;
+}
+
+html:not(.js) .tabs__panel,
+html:not(.js) .tabs__panel[hidden] {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+
+html:not(.js) .tabs__panel + .tabs__panel {
+  border-top: 1px solid var(--rule-strong);
+}
+
+html:not(.js) .tabs__panel-label {
+  display: block;
+}
