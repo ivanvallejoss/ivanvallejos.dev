@@ -490,3 +490,36 @@ html:not(.js) .tabs__panel-label {
 .verificable__filas {
   min-width: 0;
 }
+
+
+/* ── Contacto (#contacto) ───────────────────────────────────── */
+/* .section + .grid-div con --col: 320px. El fondo --rule-strong del
+   contenedor ocupa también su padding: esa es la banda alrededor de las
+   celdas. Los CTAs son .btn--compact (A-01) y el outline vira a verde claro
+   en hover (A-04). */
+
+.contacto__celda {
+  padding: clamp(28px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contacto__kicker--accent { color: var(--accent-soft); }
+.contacto__kicker--signal { color: var(--signal-soft); }
+
+/* Tamaño propio del prototipo, fuera de la escala tipográfica. */
+.contacto__titulo {
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+}
+
+.contacto__texto {
+  color: var(--muted);
+}
+
+.contacto__cta {
+  align-self: flex-start;
+  margin-top: 8px;
+}

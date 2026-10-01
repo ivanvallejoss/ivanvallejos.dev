@@ -1,0 +1,19 @@
+{% comment %}
+Contacto (#contacto). README del handoff § Screens / Views, punto 10; valores
+del bloque id="contacto" de "Landing Oscura.dc.html".
+
+Patrón grilla con divisores (.grid-div) sobre el padding de sección: el
+contenedor pinta --rule-strong también en su padding, y eso forma la banda
+alrededor de las dos celdas. Lado a lado cuando entran dos de 320px.
+Los CTAs pasan por /go/<destino>?a=<audiencia>.
+{% endcomment %}
+<section id="contacto" class="section grid-div contacto" style="--col: 320px">
+  {% for celda in contacto.celdas %}
+  <div class="contacto__celda">
+    <span class="t-label t-label--kicker contacto__kicker--{{ celda.tono }}">{{ celda.kicker }}</span>
+    <h2 class="contacto__titulo">{{ celda.titulo }}</h2>
+    <p class="t-body contacto__texto">{{ celda.texto }}</p>
+    <a class="btn btn--{{ celda.cta.variante }} btn--compact contacto__cta" href="{% url 'go' celda.cta.destino %}?a={{ audience }}">{{ celda.cta.texto }}</a>
+  </div>
+  {% endfor %}
+</section>
